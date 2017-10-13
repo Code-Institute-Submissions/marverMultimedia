@@ -59,7 +59,7 @@ ROOT_URLCONF = 'marverProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['eventsdisplay/templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'marverProject.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'eb',
+            'NAME': 'heroku_0db0465f4f1942b',
             'USER': DATABASE_USERNAME,
             'PASSWORD':DATABASE_PASSWORD,
             'HOST':DATABASE_HOST,

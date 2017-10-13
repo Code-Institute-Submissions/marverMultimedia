@@ -1,0 +1,94 @@
+{% load static from staticfiles %}
+
+<!doctype html ><html lang="en"  >
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/css/normalize.css'%}">
+	<link rel="stylesheet" href="{% static 'css/main.css'%}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="all" href="{% static '/jquery-ui-1.12.1/jquery-ui.css'%}"/>
+    <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bluebird.js'%}"></script>
+    <script> webcastId={{ webcast.id }}; agenda_id = {{ agenda_id }};</script>
+    {{ videoUpload.media }}
+</head>
+<body >
+    <div class="container">
+        <div class="navbar navbar-default navbar-fixed-top main-website-navbar" >
+            <div class="container">
+                <div class="navbar-header">
+                    <img class="menu-header-image" src="{% static '/img/logo-main.png'%}" width="300" height="80" alt="Marver Logo">
+                    </div>
+                    <div class="navigation-list">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/" >HOME</a>
+                            </li>
+                            <li>
+                                <a href="/webcasts">EVENT LIBRARY</a>
+                            </li>
+                            <li>
+                                <a href="#">HELP</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% block page_content %}
+{% endblock %}
+
+<footer class="container">
+    <div class="navbar navbar-default" >
+        <ul class="nav navbar-nav">
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/">
+                    <i class="fa fa-external fa-lg"></i> UKParliament Site
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/azindex/">
+                    <i class="fa fa-external fa-lg"></i> A-Z index
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/glossary/">
+                    <i class="fa fa-external fa-lg"></i> Glossary
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/contact-us/">
+                    <i class="fa fa-external fa-lg"></i> Contact us
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/foi/">
+                    <i class="fa fa-external fa-lg"></i> Freedom of Information
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/job-opportunities/">
+                    <i class="fa fa-external fa-lg"></i> Jobs
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/using-this-website/">
+                    <i class="fa fa-external fa-lg"></i> Using this website
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/copyright/">
+                    <i class="fa fa-external fa-lg"></i> Copyright
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+        <script src="/static/js/plugins.js"></script>
+        <script src="{% static 'js/main.js'%}" ></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{% extends "marver/index.html" %}
+{% block page_content %}
+    {% load static from staticfiles %}
+
+<div class="container home-page-container">
+    <div class="header-container">
+        <h2>NOW & NEXT</h2><hr>
+    </div>
+
+
+    <!-- Nav tabs -->
+    <header class="home-page-header-container">
+          <h1>HOUSE OF COMMONS</h1>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#upcoming" role="tab" data-toggle="tab">COMING UP</a></li>
+        </ul>
+
+    </header>
+
+    <!-- Tab panes -->
+    <section>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active upcoming-events-container" id="upcoming">
+            <div class="row carousel-row" >
+                <div class="chevron-overlay-right" >
+                    <a href="#" onclick="carousell(event,'right','carousel','webcast-image-overlay')"> <span class="fa fa-chevron-right fa-4x" ></span></a>
+
+                </div>
+                    <div class="chevron-overlay-left" >
+                        <a href="#" onclick="carousell(event,'left','carousel','webcast-image-overlay')"><span class="fa fa-chevron-left fa-4x" ></span></a>
+                    </div>
+
+                    <div class="col-lg-12 webcasts-carousel-index-page ">
+                        <div class="events-images-inner-container clearfix" id="carousel">
+                            {% for webcast in webcasts %}
+                            <div class="webcast-image-overlay">
+                                <img src="{{webcast.webcast_img}}" width="600px" height="300px;">
+                                <div class="webcast-shadow-cast"></div>
+                                <div class="single-webcast-text-container">
+                                    <div class="single-webcast-text-inner-container">
+                                    <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
+                                        <h4><b>HOUSE OF COMMONS</b></h4>
+                                    <a href="{{ webcast.get_absolute_url }}" target="_blank">
+                                        <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="70" height="70"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+        </div>
+         <div class="row recent-webcasts">
+         <header class="header-middle">
+              <a class="btn btn-lg btn-success pull-right">VISIT ARCHIVE <i class="fa fa-lg fa-angle-double-right"></i>
+             </a>
+             <h2>RECENTLY ARCHIVED</h2>
+             <hr>
+         </header>
+             {% for webcast in archived_webcasts %}
+           <div class="col-md-5 archive-index-webcast-single-container">
+              <a href="{{ webcast.get_absolute_url }}" target="_blank">
+                  <div class="archive-index-event-single-container-inner">
+                  <div class="recent-webcast-overlay">
+                      <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50">
+                      <div class="archived-overlay-text-container">
+                   <p>{{webcast.webcast_date}} {{webcast.webcast_time}} </p>
+                      <h4><b>HOUSE OF COMMONS</b></h4>
+                          </div>
+                  </div>
+                  <img src="{{webcast.webcast_img}}" width="auto" height="250">
+              </div></a>
+           </div>
+             {% endfor %}
+         </div>
+    </div>
+    </section>
+ <hr>
+</div>
+{% endblock %}
