@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+/virtualenv/
+.idea/workspace.xml
+marverProject/__init__.pyc
+
+/marverProject/config.py
