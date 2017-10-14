@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import *
+from eventmanager_app.models import *
 import datetime
 
 # Create your views here.

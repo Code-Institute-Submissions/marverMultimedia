@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'eventsdisplay',
+    'eventmanager_app',
     'django_mysql',
     'storages',
     's3direct'
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'marverProject.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'heroku_0db0465f4f1942b',
+            'NAME': 'marver',
             'USER': DATABASE_USERNAME,
             'PASSWORD':DATABASE_PASSWORD,
             'HOST':DATABASE_HOST,
@@ -96,6 +97,12 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'eventmanager_app.User'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'eventmanager_app.backends.EmailAuth'
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

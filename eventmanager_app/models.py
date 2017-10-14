@@ -9,8 +9,9 @@ from django.utils import timezone
 from s3direct.fields import S3DirectField
 
 
-def webcast_imagege_path(instance,filename):
+def webcast_image_path(instance,filename):
     return 'media/webcast_{0}/{1}'.format(instance.id,filename)
+
 class AccountUserManager(UserManager):
     def _create_user(self, username, email, password, is_staff, is_superuser,**extra_fields):
         now=timezone.now()
@@ -82,7 +83,7 @@ class Webcast(models.Model):
     webcast_date = models.DateField(default=None)
     webcast_time = models.TimeField(default=None)
     webcast_asset_ID = models.ManyToManyField(Assets,verbose_name='Select Assets',blank=True)
-    webcast_img = models.ImageField(upload_to=webcast_imagege_path,default='marverhigres.png',verbose_name='Upload Main Image',blank=True)
+    webcast_img = models.ImageField(upload_to=webcast_image_path,default='marverhigres.png',verbose_name='Upload Main Image',blank=True)
     speaker_id = models.ManyToManyField(Speakers,verbose_name='Speakers Creation/Selection ',blank=True)
     webcast_description = models.TextField(blank=True)
     webcast_video = S3DirectField(dest='example_destination', verbose_name='On-Demand Video Upload', blank=True)
@@ -118,6 +119,6 @@ class Feedback(models.Model):
 
 
 class Thumbnails(models.Model):
-    webcast_image = models.ImageField(upload_to=webcast_imagege_path, default='marverhigres.png',
+    webcast_image = models.ImageField(upload_to=webcast_image_path, default='marverhigres.png',
                                     verbose_name='Upload Main Image', blank=True)
     webcast_id = models.ForeignKey(Webcast, on_delete=models.CASCADE, to_field='id', default=None)
