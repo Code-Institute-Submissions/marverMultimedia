@@ -1,5 +1,4 @@
-
-@media screen and (min-width:992px) {
+@media screen and (min-width:300px) {
     html {
         -ms-overflow-style: -ms-autohiding-scrollbar;
     }
@@ -26,11 +25,11 @@
         min-height: 100vh;
     }
 
-
     /*Mobile menu Selectors*/
 
     .mobile-menu{
-        display:none;
+        display:block;
+        padding:5px 0 0 0;
     }
 
     /* Index Page Selectors*/
@@ -38,8 +37,7 @@
     div.main-website-navbar {
         background: white;
         border: none;
-        padding-bottom: 15px;
-
+        padding-bottom: 0;
     }
 
     footer div.navbar.navbar-default {
@@ -49,17 +47,17 @@
     }
 
     .navbar-header{
-        width:30%;
+        width:100%;
     }
 
     div.container div.main-website-navbar div.navigation-list ul.navbar-nav {
-        width:70%;
+        width:200px;
         margin:0 auto;
-        padding: 15px 0 0 50px;
+        padding: 15px 0 0 0;
         border: none;
         font-size: 1.2em;
         color: black;
-        display:block;
+        display:none;
     }
 
     footer div.navbar.navbar-default ul {
@@ -74,7 +72,8 @@
         width: 200px;
         text-align: center;
         border-left: 1px solid black;
-        border-right:none;
+        border-right: 1px solid black;
+
         transition: border 0.5s ease, font-weight 0.5s ease;
     }
 
@@ -86,7 +85,7 @@
     }
 
     footer div.navbar.navbar-default ul li:not(:first-child) {
-        border-left: 1px solid black;
+        border-left: none
     }
 
     footer div.navbar.navbar-default ul li a {
@@ -99,21 +98,20 @@
     }
 
     .main-website-navbar img.menu-header-image {
-        margin-top: 10px;
+        margin-top: 0;
         padding: 10px 0 10px 10px;
-        width: 300px;
-        height:80px;
+        width: 200px;
+        height:60px;
     }
 
     ul.nav-tabs li a {
         color: rgb(34, 34, 34);
-        width: 250px;
+        width: 200px;
         height: 50px;
         font-size: 1.8em;
         text-decoration: none;
         padding-top: 5px;
     }
-
 
     /* Home.html Selectors*/
     .upcoming-events-container {
@@ -123,35 +121,30 @@
         background-image: url("../img/House-of-Commons.jpg");
         background-size: cover;
         background-attachment: fixed;
-        display:block;
-    }
-
-    .upcoming-webcast-mobile{
         display:none;
     }
 
-     #upcoming{
+    #upcoming{
+        display:none;
+    }
+
+    .upcoming-webcast-mobile{
         display:block;
+        padding:0 50px;
     }
 
-     .header-middle{
-        padding: 0 15px;
+    .header-middle{
+        padding: 0 30px;
     }
-
-     div.row div.recent-webcast header.header-middle h2{
-         font-size: 5em;
-     }
 
      body > div.container.home-page-container > section > div > div.row.recent-webcasts > header > h2{
-         font-size: 3em;
-         margin-bottom:0;
+         font-size: 2em;
      }
 
     .header-middle a {
         background-color: rgb(6, 97, 53);
         width: 200px;
         transition: background-color 0.5s ease;
-        position:relative;
     }
 
     .header-middle a:hover {
@@ -167,7 +160,7 @@
         border-top-right-radius: 5px;
         padding: 15px;
         color: white;
-        font-size:3em;
+        font-size:2em;
     }
 
     .chevron-overlay-right {
@@ -298,7 +291,7 @@
 
     ul.event-edit-nav-tabs li a {
         color: rgb(34, 34, 34);
-        width: 250px;
+        width: 100px;
         height: 50px;
         font-size: 1.8em;
         text-decoration: none;
@@ -313,8 +306,9 @@
     }
 
     /* player.html Selectors*/
+
     #meetingPlayerAccordion{
-        display:block;
+        display:none;
     }
     svg {
         margin: 20px 0 20px 0;
@@ -337,8 +331,7 @@
     div.video-container {
         position: relative;
         left: 1%;
-        margin-top:0;
-        margin-bottom:0;
+        margin-bottom:20px;
     }
 
     .player-control-icons-container {
@@ -357,7 +350,7 @@
 
     div.container div.webcast-main-container div.video-container #myElement {
         width: 100% !important;
-        height: 350px !important;
+        height: 225px !important;
     }
 
     div.panel-body ol li {
@@ -377,13 +370,24 @@
         text-transform: uppercase;
     }
 
-    div.player-speaker-container{
-        padding:50px 0 0 20px;
+    div.player-speakers-single-container {
+        width: 95%;
+        height: 30%;
+        margin: 0 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    div.player-speakers-single-container p, div.player-speakers-single-container h5 {
+        margin-left: 160px;
+        font-weight: bold;
     }
 
     .webcast-information-row {
         margin: 20px 0;
-        display:block;
+        display:none;
     }
 
     div.container div.webcast-information-row div.meeting {
@@ -481,19 +485,19 @@
 
     /*Archive Webcasts section*/
     div.archive-index-webcast-single-container {
-        padding: 0;
-        margin: 20px 0 20px 5%;
+        padding: 0 30px;
+        margin: 20px 0 ;
         position: relative;
     }
 
     div.recent-webcast-overlay {
-        top: 60%;
-        height: 40%;
+        top: 45%;
+        height: 55%;
         width: 100%;
         position: absolute;
         background: rgba(6, 97, 53, 0.9);
         color: white;
-        padding: 10px;
+        padding: 5px;
         font-size: 100%;
     }
 
@@ -504,8 +508,8 @@
         margin-top: 15px;
     }
 
-    div.archived-overlay-text-container h4 b{
-        font-size:1.4em;
+    div.archive-index-event-single-container-inner div.recent-webcast-overlay div.archived-overlay-text-container h4 b{
+        font-size:0.8em;
     }
 
     div.archive-index-event-single-container-inner {

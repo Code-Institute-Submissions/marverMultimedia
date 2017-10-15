@@ -1,0 +1,21 @@
+{% extends "eventsmanager_app_templates/site_admin.html" %}
+{% load crispy_forms_tags %}
+{% block page_content %}
+    {% load static from staticfiles %}
+
+<div class="container event-creation-container">
+    <h1>Event Creation Form</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form| crispy }}
+        <input type="submit" class="btn btn-success " value="Update">
+        <a href="/administration"><input type="button"  class="btn btn-primary" value="Cancel"></a>
+    <!-- Script to show/hide image and video upload fields when webcast is created-->
+    <script>
+    $('#div_id_webcast_img').css('display','none');
+    $('#div_id_webcast_video').css('display','none');
+    </script>
+    </form>
+</div>
+    <script src="{% static 'js/eventsManager.js'%}"></script>
+{% endblock %}

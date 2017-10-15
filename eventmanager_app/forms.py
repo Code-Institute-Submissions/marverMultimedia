@@ -46,3 +46,14 @@ class UserRegistrationForm(UserCreationForm):
 class UserLoginForm(forms.Form):
     email=forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+class EventCreation(forms.ModelForm):
+    class Meta:
+        model = Webcast
+        fields = '__all__'
+        widgets = {
+            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
+            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
+            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'})
+        }
+        exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
