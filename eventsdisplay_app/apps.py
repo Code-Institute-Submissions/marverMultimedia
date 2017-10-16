@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class EventmanagerAppConfig(AppConfig):
-    name = 'eventmanager_app'
+class EventsdisplayConfig(AppConfig):
+    name = 'eventsdisplay_app'

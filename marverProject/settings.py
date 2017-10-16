@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'eventsdisplay',
-    'eventmanager_app',
+    'eventsdisplay_app',
+    'eventsmanager_app',
     'crispy_forms',
     'django_mysql',
     'storages',
@@ -98,11 +98,11 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-AUTH_USER_MODEL = 'eventmanager_app.User'
+AUTH_USER_MODEL = 'eventsmanager_app.User'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'eventmanager_app.backends.EmailAuth'
+    'eventsmanager_app.backends.EmailAuth'
 )
 
 AUTH_PASSWORD_VALIDATORS = [

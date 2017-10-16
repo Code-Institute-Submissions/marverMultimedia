@@ -96,7 +96,7 @@ class Webcast(models.Model):
         return self.webcast_title
 
     def get_absolute_url(self):
-        return "/webcasts/player/webcast_%s/%s" %(self.id,self.webcast_title)
+        return "/events/player/event_%s/%s" %(self.id,self.webcast_title)
 
 
     def get_absolute_url_edit(self):

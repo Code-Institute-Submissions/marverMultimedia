@@ -1,0 +1,217 @@
+{% extends "eventsdisplay_templates/index.html" %}
+{% block page_content %}
+    {% load static from staticfiles %}
+
+<div class="container player-menu-container">
+    <div class="panel-group" id="meetingPlayerAccordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#meetingPlayerAccordion" href="#playerMenu" aria-expanded="true" aria-controls="collapseOne">
+                        Meeting Player Options
+                        <i class="fa fa "></i>
+                    </a>
+                </h4>
+            </div>
+            <div id="playerMenu" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <div class="player-control-icons-container">
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static '/fonts/Icons/png/open-book.png'%}" width="50" height="50" onclick="toggleInfoAppear(this)" id="buttonChapters" >Chapters</a></div>
+
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static '/fonts/Icons/png/text-lines-4.png'%}" width="50" height="50"  onclick="toggleInfoAppear(this)" id="buttonDocuments">Documents</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false ><img src="{% static 'fonts/Icons/png/chatting-2.png'%}" width="50" height="50" onclick="toggleInfoAppear(this)" id="buttonComments">Meetings</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/assistant.png'%}" width="50" height="50"><br>Support</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/contact-icon-png-4050.png'%}" width="50" height="50"><br>Contact Us</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loader-container">
+    <div id="loader"></div>
+</div>
+
+<section>
+    <div class="container ">
+        <header>
+            <h1 class="player-webcast-title">{{event_id.webcast_title}}</h1>
+        </header>
+        <div class="row webcast-main-container">
+            <div class="col-lg-7 video-container">
+                <div id="myElement" class="img-responsive" ></div>
+                <script type="text/javascript">
+                var playerInstance = jwplayer("myElement");
+                playerInstance.setup({
+                    file: "{{event_id.webcast_video}}",
+                    image:"{{ MEDIA_URL }}{{event_id.webcast_img}}"
+                });
+                </script>
+            </div>
+
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-lg-12 player-agenda-comments-containers">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Order of business
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <ol>
+                                        {% if agenda != None %}
+                                            {% for point in agenda.agenda %}
+                                                <li>{{ point}}</li>
+                                            {% endfor %}
+                                        {% endif %}
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Comments & Feedback
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div class="player-agenda-comments-info-container">
+                                            <form method="post" action="" id="commentForm"> {%csrf_token%}
+                                                <label>
+                                                    <input type="hidden" value="{{event_id.id}}" id="webcast_id">
+                                                </label>
+                                                <label>Name
+                                                    <input type="text" class="form-control" id="name" required/>
+                                                </label>
+                                                <label>Surname
+                                                    <input  type="text" class="form-control" id="surname" required/>
+                                                </label>
+                                                <label>Email
+                                                    <input type="email" class="form-control" id="email" required />
+                                                </label><br>
+                                                <label style="width:100%">Comment
+                                                    <textarea class="form-control" rows="4" id="comment" required></textarea>
+                                                </label><br>
+                                                <input type="submit" class="btn btn-primary" value="Submit">
+                                            </form>
+                                            <script>
+                                                var webcastTitle = "{{ event_id.webcast_title }}";
+                                                $(document).on('submit','#commentForm',function(e){
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "/webcasts/comment/",
+                                                        data: {
+                                                            name: $('#name').val(),
+                                                            surname: $('#surname').val(),
+                                                            email: $('#email').val(),
+                                                            comment: $('#comment').val(),
+                                                            webcast_id: $('#webcast_id').val(),
+                                                            webcast_title : webcastTitle,
+                                                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+
+                                                        },
+                                                        success: function () {
+                                                            alert('successfull')
+                                                        }
+                                                    })
+                                                })
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="row webcast-information-row">
+            <svg width="100%" height="10">
+                <rect width="100%" height="3" ></rect>
+            </svg>
+            <div class="col-lg-4 meeting meeting-chapters" id="chapters">
+                <div class="col-header">
+                    <h4>Meeting Chapters</h4>
+                </div>
+                <hr>
+                <ul >
+                    <li> <img src="{% static '/img/Post event video.jpeg'%}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(20)"> The Power of Video - 00:00:20</a></li>
+                    <li><img src="{% static '/img/The Clients Services.jpeg'%}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(40)"> Engage & Share - 00:00:40</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 meeting meeting-documents" id="documents">
+                <div class="col-header">
+                    <h4>Meeting Documents</h4>
+                </div>
+                <hr>
+                <ul>
+                    {% for asset in assets %}
+                    <li><img src="{%  static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" width="45" height="50"><a href={{ MEDIA_URL }}{{asset.asset_upload}} target="_blank">{{asset.asset_name}}</a></li>
+                   {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-4 meeting upcoming-meetings" id="comments">
+                <div class="col-header">
+                    <h4>Meeting Speakers</h4>
+                </div>
+            <div class="player-speaker-container">
+                {% for speaker in speakers_list %}
+                <div class="single-speaker-container archived">
+                                     <img  src={{ MEDIA_URL }}{{speaker.speaker_pic_url}} width="80px" height="80px" class="pull-left" alt="Speaker Picture">
+                                 <div class="single-speaker-info-container">
+                                     <p >Name: {{ speaker.speaker_name }}  </p>
+                                     <p>Surname: {{speaker.speaker_surname}}</p>
+                                     <p>Role: {{speaker.speaker_title}}</p>
+                                 </div>
+                                 </div>
+                 {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="upcoming-meetings-container container">
+        <svg width="100%" height="10">
+            <rect width="100%" height="3"></rect>
+        </svg>
+        <div class="player-upcoming-meetings-header">
+            <h2>RECENTLY ARCHIVED</h2>
+        </div>
+        <div class="row">
+            {% for webcast in webcasts %}
+                <div class="col-md-3 archive-index-webcast-single-container">
+                    <a href="{{ webcast.get_absolute_url }}" target="_blank"> <div class="archive-index-event-single-container-inner">
+                        <div class="recent-webcast-overlay">
+                            <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
+                            <h5>HOUSE OF COMMONS</h5>
+                        </div>
+                        <img src="{{webcast.webcast_img}}" width="auto" height="250">
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <svg width="100%" height="10">
+            <rect width="100%" height="3" ></rect>
+        </svg>
+    </div>
+</section>
+
+<script src="{% static 'js/main.js'%}" ></script>
+
+{% endblock %}

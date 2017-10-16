@@ -1,5 +1,5 @@
 from django.conf.urls import include,url
-from eventmanager_app import views
+from eventsmanager_app import views
 
 urlpatterns = [
 
