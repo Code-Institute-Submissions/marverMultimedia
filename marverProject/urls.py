@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page),
     url(r'^eventsmanager/', include('eventsmanager_app.urls')),
-    url(r'^events/', include('eventsdisplay_app.urls'))
+    url(r'^events/', include('eventsdisplay_app.urls')),
+
 ]

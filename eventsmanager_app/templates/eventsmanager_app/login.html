@@ -1,0 +1,25 @@
+{% extends "eventsdisplay/index.html" %}
+{% block page_content %}
+    {% load crispy_forms_tags %}
+    {% load static from staticfiles %}
+
+
+<body>
+	<div class="container-form login-container">
+		<form role="form" method="post" action="{% url 'login' %}" id="login-form" >
+			<div class="header">
+				<h3>User Login</h3>
+			</div>
+			<div class="sep"></div>
+			<div class="inputs">
+            {% csrf_token %}
+            {{ form | crispy}}
+
+				<button id="submit" type="submit">Login</button>
+			</div>
+		</form>
+		<p style="margin-top: 20px">Not Registed? <a href="/eventsmanager/register">Click Here</a></p>
+	</div>
+</body>
+
+{% endblock %}

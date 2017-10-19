@@ -1,0 +1,9 @@
+{% extends "eventsdisplay/index.html" %}
+{% block page_content %}
+<body>
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete? "{{ object }}"?</p>
+    <input type="submit" value="Confirm" />
+</form>
+</body>
+{% endblock %}

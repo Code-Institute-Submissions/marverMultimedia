@@ -1,4 +1,4 @@
-{% extends "eventsmanager_app_templates/site_admin.html" %}
+{% extends "eventsmanager_app/site_admin.html" %}
 {% load crispy_forms_tags %}
 {% block page_content %}
     {% load static from staticfiles %}
@@ -17,5 +17,5 @@
     </script>
     </form>
 </div>
-    <script src="{% static 'js/eventsManager.js'%}"></script>
+    <script src="{% static 'js/eventsManager.js' %}"></script>
 {% endblock %}

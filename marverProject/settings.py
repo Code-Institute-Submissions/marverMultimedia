@@ -61,7 +61,7 @@ ROOT_URLCONF = 'marverProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['eventsdisplay_app/templates','eventsmanager_app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

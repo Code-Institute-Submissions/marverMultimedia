@@ -7,16 +7,33 @@ from django.contrib import messages
 from .models import *
 
 class UserRegistrationForm(UserCreationForm):
+    MONTH_ABBREVIATIONS = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June',
+        'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
+    ]
 
-    email = forms.CharField(label='Email Address',widget=forms.EmailInput, help_text='Your email will be the username')
+    MONTH_CHOICES = list(enumerate(MONTH_ABBREVIATIONS, 1))
+    YEAR_CHOICES = [(i, i) for i in range(2015, 2036)]
 
-    password1 = forms.CharField(label='Password',widget=forms.PasswordInput)
+    email = forms.CharField(label='Email Address', widget=forms.EmailInput, help_text='Your email will be the username')
 
-    password2 = forms.CharField(label='Confirm Password',widget=forms.PasswordInput)
+    creditcardnumber = forms.CharField(label="Credit Card Number")
+
+    cvv = forms.CharField(max_length=5, label="Security Code (CVV)")
+
+    expiry_month = forms.ChoiceField(choices=MONTH_CHOICES, label="Month")
+
+    expiry_year = forms.ChoiceField(choices=YEAR_CHOICES, label="Year")
+
+    stripe_id = forms.CharField(widget=forms.HiddenInput)
+
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
         model=User
-        fields = ['email','password1','password2']
+        fields = ['email','password1','password2','stripe_id']
         exclude = ['username']
 
 
