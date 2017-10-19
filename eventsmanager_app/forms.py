@@ -74,3 +74,62 @@ class EventCreation(forms.ModelForm):
             'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'})
         }
         exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
+
+class WebcastCreation(forms.ModelForm):
+    class Meta:
+        model = Webcast
+        fields = '__all__'
+        widgets = {
+            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
+            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
+            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'})
+        }
+        exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
+
+class WebcastEditForm(forms.ModelForm):
+    class Meta:
+        model=Webcast
+        fields = '__all__'
+
+        widgets = {
+            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
+            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
+        }
+        exclude = ('speaker_id','webcast_asset_ID','agenda_id','webcast_img')
+
+class SpeakerCreation(forms.ModelForm):
+    class Meta:
+        model=Speakers
+        fields = '__all__'
+        help_texts = {
+            'speaker_pic_url' : 'Please ensure that the chosen image has an aspect ratio of 4x3 '
+                                'and a size of 100 X 100 Pixels otherwise the image might not appear correctly',
+        }
+        widgets = {
+
+           'speaker_email':widgets.EmailInput,
+            'speaker_pic_url' : widgets.ClearableFileInput,
+            'speaker_bio' : widgets.Textarea
+        }
+
+
+
+class AssetCreation(forms.ModelForm):
+    class Meta:
+        model=Assets
+        fields = '__all__'
+
+
+class AgendaEdit(forms.ModelForm):
+    class Meta:
+        model=Agenda
+        fields = '__all__'
+
+class S3DirectUploadForm(forms.ModelForm):
+    class Meta:
+        model = Webcast
+        fields = ('webcast_video',)
+
+class ThumbnailsUpload(forms.Form):#
+    webcast_image = forms.CharField(max_length=10000 , widget=forms.HiddenInput())
+    webcast_id = forms.CharField(max_length=4, widget=forms.HiddenInput())

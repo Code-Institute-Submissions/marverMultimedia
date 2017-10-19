@@ -1,6 +1,8 @@
 {% extends "eventsdisplay/index.html" %}
 {% block page_content %}
     {% load static from staticfiles %}
+  <script src="{% static 'js/jwplayer-7.12.2/jwplayer.js' %}"></script>
+    <script>jwplayer.key="Bd+SvQlaIgPfkPvQCVEOfpmILmXJNDpt4D2Y0Q==";</script>
 
 <div class="container player-menu-container">
     <div class="panel-group" id="meetingPlayerAccordion" role="tablist" aria-multiselectable="true">

@@ -15,8 +15,8 @@
 
                <h4 >{{webcast.webcast_title}}</h4>
                     <a href="{{webcast.get_absolute_url}}" target="_blank"><button class="btn btn-success pull-right" >View</button></a>
-                    <a href="{% url "webcast_deletion" pk=webcast.id %}"> <button class="btn btn-danger pull-right">Delete</button></a>
-                    <a href="{% url "webcast_update" pk=webcast.id %}"><button class="btn btn-primary pull-right">Edit</button></a>
+                    <a href="{% url "event_deletion" pk=webcast.id %}"> <button class="btn btn-danger pull-right">Delete</button></a>
+                    <a href="{% url "event_edit" pk=webcast.id %}"><button class="btn btn-primary pull-right">Edit</button></a>
                     <p >Date: {{ webcast.webcast_date }}  </p>
                     <p >Time: {{webcast.webcast_time}}</p>
                     <p >Link: {{ current_url }}{{ webcast.get_absolute_url }}</p>

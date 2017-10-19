@@ -1,10 +1,325 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "eventsmanager_app/site_admin.html" %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
 
-</body>
-</html>
+{% block page_content %}
+    {% load static from staticfiles %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/bootstrap-timepicker.min.js'%}"></script>
+    <script src="{% static '/jquery-ui-1.12.1/jquery-ui.min.js'%}"></script>
+    <script src="{% static 'js/bluebird.js'%}"></script>
+    <script> webcastId={{ webcast.id }}; agenda_id = {{ agenda_id }};</script>
+    {{ videoUpload.media }}
+
+
+<div id="loader-container">
+        <div id="loader"></div>
+    </div>
+<div class="container events-edit-container">
+    <div class="navbar navbar-default navbar-fixed-top main-website-navbar" >
+        <div class="container">
+            <div class="navbar-header">
+                <img class="menu-header-image" src="{% static '/img/../../../../../../Diomede/Desktop/marverProject/static/img/logo-main.png'%}" width="300" height="80" alt="Marver Logo">
+                <span class="pull-right fa fa-bars fa-4x mobile-menu"></span>
+            </div>
+            <div class="navigation-list">
+                <ul class="nav navbar-nav">
+                    <li><a href="/administration" >EVENTS MANAGER</a></li>
+                    <li><a href="/administration/webcast_creation" >CREATE EVENT</a></li>
+                    <li><a href="/logout">LOGOUT</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <ul class="nav nav-tabs event-edit-nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">DETAILS</a></li>
+        <li role="presentation"><a href="#speakers" aria-controls="profile" role="tab" data-toggle="tab">SPEAKERS</a></li>
+        <li role="presentation"><a href="#agenda" aria-controls="messages" role="tab" data-toggle="tab">AGENDA/ASSETS</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">CHAPTERS</a></li>
+    </ul>
+
+
+  <!-- Tab panes -->
+
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="details">
+        <div class="container event-edit-container">
+            <h1 >EVENT EDIT PAGE</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form| crispy }}
+
+                <div id="update-cancel-button-containter">
+                    <input type="submit" class="btn btn-success " value="Update">
+                    <button id="cancelbutton" type="button" class="btn btn-primary" >Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+      <div role="tabpanel" class="tab-pane fade" id="speakers">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-6 speaker-container">
+                    <h3>EVENT SPEAKERS</h3>
+                    <div id="speakers-container" >
+                        <div  id="speakers-inner-container">
+                            {% for speaker in speakers %}
+                                <div value= "{{ speaker.id }}" class="single-speaker-container">
+                                    <img src="{{ MEDIA_URL }}{{speaker.speaker_pic_url}}" width="80px" height="80px" class="pull-left" alt="Speaker Picture">
+                                    <div class="single-speaker-info-container">
+                                        <p >Name: {{ speaker.speaker_name }}  </p>
+                                        <input type="checkbox"  class="pull-right delete-checkbox">
+                                        <p>Surname: {{speaker.speaker_surname}}</p>
+                                        <p>Role: {{speaker.speaker_title}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-primary" type="button" data-toggle="modal" aria-expanded="false" data-target="#myModal" aria-controls="collapseExample">
+                                Add Speakers
+                            </button>
+                            <button class="btn btn-danger" type="button"  aria-expanded="false" id="delete-button" style="display:none">
+                                Remove Speakers
+                            </button>
+                            <button class="btn btn-success" type="button"  aria-expanded="false" id="speaker-create-button" data-toggle="modal" data-target="#myModalSpeakerCreation">
+                                Create New Speakers
+                            </button>
+                        </div>
+                    </div>
+                <p id="speaker-update-messages" style="display:none;margin:20px 0;"></p>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modalSpeakerAddition" role="document" id="modalDialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Speaker Addition</h4>
+                        </div>
+                        <div class="modal-body" >
+                        <form method="POST" id="speakersSelection">
+                             {% for speaker in all_speakers %}
+                                 <div value= "{{ speaker.id }}" class="single-speaker-container archived">
+                                 <a href="#" class="speaker-selector-id-add pull-right">Add</a>
+                                     <a href="#" class="speaker-selector-id-remove pull-right" style="display:none">Remove</a>
+                                     <img  src={{ MEDIA_URL }}{{speaker.speaker_pic_url}} width="80px" height="80px" class="pull-left" alt="Speaker Picture">
+                                 <div class="single-speaker-info-container">
+                                     <p >Name: {{ speaker.speaker_name }}  </p>
+                                     <p>Surname: {{speaker.speaker_surname}}</p>
+                                     <p>Role: {{speaker.speaker_title}}</p>
+                                 </div>
+                                 </div>
+                             {% endfor %}
+                        </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="speakerSelectionSaveButton">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          <div class="modal fade" id="myModalSpeakerCreation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document" id="modalDialogSpeakerCreation">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Speaker Creation</h4>
+                      </div>
+                      <div class="modal-body" id="speakersCreationModal">
+                          <form method="POST" id="SpeakerCreationForm" action="/speakers_creation">{%csrf_token%}
+                              {{ speakerForm | crispy}}
+                              <img id="speaker-image-preview" src="#" alt="" width="100px" height="100px">
+                              <br>
+                              <p id="speaker-creation-error-modal"></p>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="speakerCreationSaveButton">Save changes</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="agenda">
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-6">
+                      <h3 class="font-bold">AGENDA</h3>
+                      <form role="form" autocomplete="off" id="agendaForm">
+                          <ol id="agenda-points-main-list">
+                              {% for point in agenda %}
+                                  <li class="agenda-list-point-remove">
+                                      <h5 id="h5" class="h5"></h5>
+                                      <p class="agenda-point-paragraph" title="Please click on the text to edit the agenda">{{ point }}</p>
+                                      <button class="btn btn-danger btn-remove" type="button">Remove</button>
+                                  </li>
+                              {% endfor %}
+                              <li class="agenda-list-point-add">
+                                  <label style=" margin-right:15px;margin-top:5px;width:115px;">Agenda Point: &ensp;</label>
+                                  <input name=agendaField  class="form-control agenda"  type="text" placeholder="Type Agenda Point Here.." />
+                                  <button class="btn btn-success btn-add" type="button">Add</button>
+                              </li>
+                          </ol>
+                          <button type="submit" class="btn btn-primary agenda-form-button" id="agendaSaveButton" >Save Agenda</button>
+                      </form>
+                  <p id="agenda-update-messages" style="display:none;margin:20px 0;"></p>
+                  </div>
+
+                  <div class="col-lg-2"></div>
+                  <div class ="col-lg-5 " id="asset-display-big-container">
+                      <h3 class="font-bold">ASSETS</h3>
+                      <div id="assets-display-main-container" class="assets-display-main-container">
+                          <div id="assets-display-container" class="asset-display-container-class">
+                              {% for asset in assets %}
+                                  <div value="{{ asset.id }}" class="assets-inner-container">
+                                      <input type="checkbox"  class="pull-right asset-delete-checkbox">
+                                      <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50">
+                                      <p>{{ asset.asset_name }}</p>
+                                  </div>
+                              {% endfor %}
+                              <button class="btn btn-primary" type="button" data-toggle="modal" aria-expanded="false" data-target="#myModalAssets" aria-controls="collapseExample">
+                                  Add Asset
+                              </button>
+                              <button class="btn btn-danger" type="button"  aria-expanded="false" id="asset-delete-button" style="display:none">
+                                  Remove Asset
+                              </button>
+                              <button class="btn btn-success" type="button"  aria-expanded="false" id="asset-create-button" data-toggle="modal" data-target="#myModalAssetUpload">
+                                  Upload New Asset
+                              </button>
+                          </div>
+                      </div>
+                  <p id="assets-update-messages" style="display:none;margin:20px 0;"></p>
+                  <p id="assets-update-messages-deletion" style="display:none;margin:20px 0;"></p>
+                  </div>
+              </div>
+          </div>
+          <div class="modal fade" id="myModalAssetUpload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document" id="modalDialogAssetCreation">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title" id="myModalAssetLabel">Asset Upload</h4>
+                      </div>
+                      <div class="modal-body" id="AssetCreationModal">
+                          <form method="POST" id="AssetCreationForm">{%csrf_token%}
+                              {{  assetsForm | crispy}}
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="assetCreationSaveButton">Save changes</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="myModalAssets" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modalAssetsAddition" role="document" id="modalAssets">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">Asset Addition</h4>
+                  </div>
+                  <div class="modal-body" >
+                      <form method="POST" id="assetsSelection" >
+                          {% for asset in all_assets %}
+                              <div value="{{ asset.id }}" class="modal-asset-container">
+                                  <a href="#" class="asset-selector-id-add pull-right" >Add</a>
+                                  <a href="#" class="asset-selector-id-remove pull-right">Remove</a>
+                                  <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50">
+                                  <h5>{{ asset.asset_name }}</h5>
+                              </div>
+                          {% endfor %}
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" id="assetsSelectionSaveButton">Save changes</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="settings">
+          <div class="container">
+              <form method="post" enctype="multipart/form-data" id="thumbnail-submit">{%csrf_token%}
+                  {{ thumbnailUploadForm |crispy }}
+                  <video id="video-element" width="500px" height="300px" controls crossOrigin="anonymous">
+                      <source src="{{ webcast.webcast_video }}">
+                  </video>
+                  <canvas id="canvas-element" style="display:none;"></canvas>
+                  <div id="thumbnail-container">
+                      <input type="submit" id="download-link" class="btn btn-default" value="Save Thumbnail">
+                  </div>
+              </form>
+              <p id="thumbnail-success-message" ></p>
+              <p id="thumbnail-error-message">Ooops, an error has occurred</p>
+          </div>
+      </div>
+  </div>
+</div>
+<script>$(document).ajaxStart(function() {
+      $("#loader").css("display", "block");
+      $("#loader-container").css("display", "block");
+     });
+
+     $(document).ajaxComplete(function() {
+      $("#loader").css("display", "none");
+      $("#loader-container").css("display", "none");
+     });
+     </script>
+<footer class="container">
+    <div class="navbar navbar-default" >
+        <ul class="nav navbar-nav">
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/">
+                    <i class="fa fa-external fa-lg"></i> UKParliament Site
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/azindex/">
+                    <i class="fa fa-external fa-lg"></i> A-Z index
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/glossary/">
+                    <i class="fa fa-external fa-lg"></i> Glossary
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/contact-us/">
+                    <i class="fa fa-external fa-lg"></i> Contact us
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/foi/">
+                    <i class="fa fa-external fa-lg"></i> Freedom of Information
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/job-opportunities/">
+                    <i class="fa fa-external fa-lg"></i> Jobs
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/using-this-website/">
+                    <i class="fa fa-external fa-lg"></i> Using this website
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="http://www.parliament.uk/site-information/copyright/">
+                    <i class="fa fa-external fa-lg"></i> Copyright
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>
+<script src="{% static 'js/main.js'%}"></script>
+<script src="{% static 'js/eventEdit.js' %}"></script>
+
+{% endblock %}
