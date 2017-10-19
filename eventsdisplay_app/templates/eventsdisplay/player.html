@@ -1,4 +1,4 @@
-{% extends "eventsdisplay_templates/index.html" %}
+{% extends "eventsdisplay/index.html" %}
 {% block page_content %}
     {% load static from staticfiles %}
 
@@ -20,8 +20,8 @@
 
                         <div class="single-icon-container"><a href=javascript:return false><img src="{% static '/fonts/Icons/png/text-lines-4.png'%}" width="50" height="50"  onclick="toggleInfoAppear(this)" id="buttonDocuments">Documents</a></div>
                         <div class="single-icon-container"><a href=javascript:return false ><img src="{% static 'fonts/Icons/png/chatting-2.png'%}" width="50" height="50" onclick="toggleInfoAppear(this)" id="buttonComments">Meetings</a></div>
-                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/assistant.png'%}" width="50" height="50"><br>Support</a></div>
-                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/contact-icon-png-4050.png'%}" width="50" height="50"><br>Contact Us</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/assistant.png' %}" width="50" height="50"><br>Support</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/contact-icon-png-4050.png' %}" width="50" height="50"><br>Contact Us</a></div>
                     </div>
                 </div>
             </div>
@@ -149,8 +149,8 @@
                 </div>
                 <hr>
                 <ul >
-                    <li> <img src="{% static '/img/Post event video.jpeg'%}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(20)"> The Power of Video - 00:00:20</a></li>
-                    <li><img src="{% static '/img/The Clients Services.jpeg'%}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(40)"> Engage & Share - 00:00:40</a></li>
+                    <li> <img src="{% static '/img/Post event video.jpeg' %}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(20)"> The Power of Video - 00:00:20</a></li>
+                    <li><img src="{% static '/img/The Clients Services.jpeg' %}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(40)"> Engage & Share - 00:00:40</a></li>
                 </ul>
             </div>
 
@@ -161,7 +161,7 @@
                 <hr>
                 <ul>
                     {% for asset in assets %}
-                    <li><img src="{%  static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" width="45" height="50"><a href={{ MEDIA_URL }}{{asset.asset_upload}} target="_blank">{{asset.asset_name}}</a></li>
+                    <li><img src="{%  static 'fonts/Icons/Adobe-PDF-Document-icon.png' %}" width="45" height="50"><a href={{ MEDIA_URL }}{{asset.asset_upload}} target="_blank">{{asset.asset_name}}</a></li>
                    {% endfor %}
                 </ul>
             </div>
@@ -212,6 +212,6 @@
     </div>
 </section>
 
-<script src="{% static 'js/main.js'%}" ></script>
+<script src="{% static 'js/main.js' %}" ></script>
 
 {% endblock %}
