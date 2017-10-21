@@ -28,7 +28,7 @@ def event_player(request,id):
         agenda_list = Agenda.objects.get(webcast_id=id)
     except:
         agenda_list = None
-    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'webcast_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list})
+    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'event_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list})
 
 
 

@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from eventsdisplay_app import views
+from eventsmanager_app import views as eventsmanager_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page),
     url(r'^eventsmanager/', include('eventsmanager_app.urls')),
     url(r'^events/', include('eventsdisplay_app.urls')),
-
+    url(r'^agenda', eventsmanager_views.agendaView),
 ]

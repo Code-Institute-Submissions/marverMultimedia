@@ -66,7 +66,7 @@
                  if(origin === 'additionOnly'){
                      $(updateDataObject.modalContainer).modal('hide');
                     $(updateDataObject.containerToLoad).load(updateDataObject.innerContainer, function() {});
-                    $(updateDataObject.modalContainer).load(updateDataObject.modalInner, function() {})
+                    $(updateDataObject.modalContainer).load(updateDataObject.modalInner, function() {});
                      confirmationMessage('success',message,elementMessage)
                  }else {
                      $(updateDataObject.containerToLoad).load(updateDataObject.innerContainer, function () {
@@ -433,6 +433,8 @@
        }
 
        agenda = JSON.stringify(agendaArray);
+
+       console.log(agenda);
 
        $.ajax({
         type: 'POST',
