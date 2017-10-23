@@ -9,7 +9,7 @@
         {% csrf_token %}
         {{ form| crispy }}
         <input type="submit" class="btn btn-success " value="Update">
-        <a href="/administration"><input type="button"  class="btn btn-primary" value="Cancel"></a>
+        <a href="{% url "event_manager" pk=user.id %}"><input type="button"  class="btn btn-primary" value="Cancel"></a>
     <!-- Script to show/hide image and video upload fields when webcast is created-->
     <script>
     $('#div_id_webcast_img').css('display','none');
@@ -18,4 +18,5 @@
     </form>
 </div>
     <script src="{% static 'js/eventsManager.js' %}"></script>
+    <script>document.getElementById('id_user_id').value = "{{ user.id }}"  </script>
 {% endblock %}

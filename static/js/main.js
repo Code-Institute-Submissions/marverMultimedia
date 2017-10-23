@@ -114,7 +114,7 @@
             $('#validate_card_btn').attr('disabled',true);
             Stripe.createToken(card, function(status,response){
                 if(status === 200){
-                    console.log(status,response);
+                    console.log(response);
                     $('#credit-card-errors').hide();
                     $('#id_stripe_id').val(response.id);
                     form.submit();

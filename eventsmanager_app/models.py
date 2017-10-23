@@ -26,7 +26,12 @@ class AccountUserManager(UserManager):
         return user
 
 class User(AbstractUser):
+    stripe_id = models.CharField(max_length=40, default='')
+    subscription_end = models.DateTimeField(default=timezone.now)
     objects=AccountUserManager()
+
+    def get_absolute_url(self):
+        return "/eventsmanager/manage_subscription/customer_%s" %(self.id)
 
 
 class Customers(models.Model):
@@ -77,13 +82,14 @@ class Assets(models.Model):
 
 class Webcast(models.Model):
     customer_id = models.ForeignKey(Customers, default=None, on_delete=models.CASCADE)
+    user_id = models.IntegerField(default=None)
     creation_date = models.DateTimeField(auto_now_add=True)
     webcast_status = models.CharField(max_length=30,default=None, choices=(('OD','ON-DEMAND'),('LIVE','LIVE')),verbose_name='Webcast Type')
     webcast_title = models.CharField(max_length=150,default=None)
     webcast_date = models.DateField(default=None)
     webcast_time = models.TimeField(default=None)
     webcast_asset_ID = models.ManyToManyField(Assets,verbose_name='Select Assets',blank=True)
-    webcast_img = models.ImageField(upload_to=webcast_image_path,default='marverhigres.png',verbose_name='Upload Main Image',blank=True)
+    webcast_img = models.ImageField(upload_to='media/',default='marverhigres.png',verbose_name='Upload Main Image',blank=True)
     speaker_id = models.ManyToManyField(Speakers,verbose_name='Speakers Creation/Selection ',blank=True)
     webcast_description = models.TextField(blank=True)
     webcast_video = S3DirectField(dest='example_destination', verbose_name='On-Demand Video Upload', blank=True)
@@ -99,15 +105,7 @@ class Webcast(models.Model):
         return "/events/player/event_%s/%s" %(self.id,self.webcast_title)
 
 
-    def get_absolute_url_edit(self):
-        return reverse("/administration/webcast_edit/webcast_%s" %(self.id), kwargs={'pk':self.pk})
-
 class Agenda(models.Model):
     agenda= JSONField()
     webcast_id = models.ForeignKey(Webcast,on_delete=models.CASCADE,to_field='id', default=None)
 
-
-class Thumbnails(models.Model):
-    webcast_image = models.ImageField(upload_to=webcast_image_path, default='marverhigres.png',
-                                    verbose_name='Upload Main Image', blank=True)
-    webcast_id = models.ForeignKey(Webcast, on_delete=models.CASCADE, to_field='id', default=None)

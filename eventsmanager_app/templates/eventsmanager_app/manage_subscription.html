@@ -1,0 +1,36 @@
+{% extends "eventsmanager_app/site_admin.html" %}
+{% load crispy_forms_tags %}
+{% block page_content %}
+    {% load static from staticfiles %}
+    {% load humanize %}
+
+    <div class="container subscription-container">
+    <header>
+        <h1>MANAGE SUBSCRIPTION</h1>
+        <h4>Hello {{ user.email }}!!</h4>
+    </header>
+    <p>Your stripe id is {{ user.stripe_id }} </p>
+    <h2>Subscription Details</h2>
+    <p> Plan : {{ subscription_details.plan.name  }}</p>
+    <p> Cost : {{ amount | intcomma }} {{ subscription_details.plan.currency }}</p>
+    <p> Statement Description : {{ subscription_details.plan.statement_descriptor }}</p>
+   {% if subscription_status %}
+        <p>Your subscription has been cancelled and will expire on {{ user.subscription_end | naturalday}}  </p>
+        <a href="{% url 'reactivatesubscription' user.id %}" class="btn btn-success">Reactivate</a>
+       {% else %}
+      <p> Next Payment Due: {{ user.subscription_end | naturalday}}</p>
+            <p>To cancel your subscription click 'Cancel Subscription' below</p>
+            <a href="{% url "cancelsubscription" %}" class="btn btn-danger"
+            onclick="return cancelSubscriptionCheck();">Cancel Subscription</a>
+        {% endif %}
+    </div>
+    <script>
+    function cancelSubscriptionCheck(){
+        if(confirm('Are you sure you would like to cancel')){
+            return true
+        }
+        return false;
+    }
+    </script>
+
+{% endblock %}

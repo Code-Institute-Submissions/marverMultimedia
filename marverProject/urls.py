@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^eventsmanager/', include('eventsmanager_app.urls')),
     url(r'^events/', include('eventsdisplay_app.urls')),
     url(r'^agenda', eventsmanager_views.agendaView),
+    url(r'^thumbnail_upload',eventsmanager_views.thumbnail_upload),
 ]

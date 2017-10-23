@@ -17,9 +17,9 @@
     <script> webcastId={{ webcast.id }}; agenda_id = {{ agenda_id }};</script>
     <script src="{% static 'js/3rd_party_libraries/jquery-3.2.1.min.js'%}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/bootstrap-timepicker.min.js'%}"></script>
+    <script src="{% static 'js/3rd_party_libraries/bootstrap-timepicker.min.js'%}"></script>
     <script src="{% static '/jquery-ui-1.12.1/jquery-ui.min.js'%}"></script>
-    <script src="{% static 'js/bluebird.js'%}"></script>
+    <script src="{% static 'js/3rd_party_libraries/bluebird.js'%}"></script>
     {{ videoUpload.media }}
 </head>
 <body>
@@ -30,21 +30,27 @@
     <div class="navbar navbar-default navbar-fixed-top main-website-navbar" >
         <div class="container">
             <div class="navbar-header">
-                <img class="menu-header-image" src="{% static '/img/logo-main.png' %}" width="300" height="80" alt="Marver Logo">
+                <img class="menu-header-image" src="{% static 'img/logo-main.png'%}" width="250" height="60" alt="Marver Logo">
                 <span class="pull-right fa fa-bars fa-4x mobile-menu"></span>
             </div>
             <div class="navigation-list">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/eventsmanager" >EVENTS MANAGER</a>
+                        <a href="/eventsmanager/customer_{{ user.id }}" >EVENTS MANAGER</a>
                     </li>
                     <li>
-                        <a href="/eventsmanager/eventcreation">CREATE EVENT</a>
+                        <a href="/eventsmanager/webcast_creation" >CREATE EVENT</a>
                     </li>
-                    <li>
-                        <a href="/eventsmanager/logout">LOGOUT</a>
+
+                    <li id="dropdown-link">
+                        <a style="margin-bottom:20px;">ACCOUNT</a>
+                        <div id="dropdown-menu" style="display:none">
+                            <a href="/eventsmanager/manage_subscription" style="padding-top: 20px;font-size:0.8em;color:rgb(34,34,34)">MANAGE SUBSCRIPTION</a>
+                        <a href="/eventsmanager/logout" style="color:rgb(34,34,34)">LOGOUT</a><br>
+                        </div>
                     </li>
                 </ul>
+                <p style="font-size:0.8em;position:absolute;float: right; margin:50px 0 0 75%;">Welcome {{ user.email }}</p>
             </div>
         </div>
     </div>
@@ -149,7 +155,7 @@
                           <h4 class="modal-title" id="myModalLabel">Speaker Creation</h4>
                       </div>
                       <div class="modal-body" id="speakersCreationModal">
-                          <form method="POST" id="SpeakerCreationForm" action="/speakers_creation">{%csrf_token%}
+                          <form method="POST" id="SpeakerCreationForm" action="eventsmanager/speakers_creation">{%csrf_token%}
                               {{ speakerForm | crispy}}
                               <img id="speaker-image-preview" src="#" alt="" width="100px" height="100px">
                               <br>

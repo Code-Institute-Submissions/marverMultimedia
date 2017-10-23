@@ -71,18 +71,9 @@ class EventCreation(forms.ModelForm):
         widgets = {
             'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
             'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
-            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'})
-        }
-        exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
+            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'}),
+            'user_id': widgets.HiddenInput()
 
-class WebcastCreation(forms.ModelForm):
-    class Meta:
-        model = Webcast
-        fields = '__all__'
-        widgets = {
-            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
-            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
-            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'})
         }
         exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
 
@@ -94,6 +85,7 @@ class WebcastEditForm(forms.ModelForm):
         widgets = {
             'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
             'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
+            'user_id': widgets.HiddenInput()
         }
         exclude = ('speaker_id','webcast_asset_ID','agenda_id','webcast_img')
 
@@ -130,6 +122,9 @@ class S3DirectUploadForm(forms.ModelForm):
         model = Webcast
         fields = ('webcast_video',)
 
-class ThumbnailsUpload(forms.Form):#
-    webcast_image = forms.CharField(max_length=10000 , widget=forms.HiddenInput())
+class ThumbnailsUpload(forms.Form):
+    webcast_image = forms.CharField(max_length=10000, widget=forms.HiddenInput())
     webcast_id = forms.CharField(max_length=4, widget=forms.HiddenInput())
+
+    """webcast_image = forms.CharField(max_length=10000 , widget=forms.HiddenInput())
+    webcast_id = forms.CharField(max_length=4, widget=forms.HiddenInput())"""

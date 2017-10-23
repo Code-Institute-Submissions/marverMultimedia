@@ -4,14 +4,16 @@ from django.shortcuts import render,HttpResponseRedirect, redirect,get_object_or
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.http import HttpResponse
-from django.db import connection
-from django.views.generic import UpdateView,DeleteView
+from django.db import connection,IntegrityError,DatabaseError,DataError
+from django.views.generic import UpdateView,DeleteView,View,TemplateView,DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
 import boto3
 from django.contrib import messages, auth
 from django.template.context_processors import csrf
+from django.core import serializers
 import datetime
+import json
 import stripe
 import arrow
 import re
@@ -31,6 +33,7 @@ def register(request):
                     card=form.cleaned_data['stripe_id'],
                     plan='REG_MONTHLY'
                 )
+
                 if customer:
                     user = form.save()
                     user.stripe_id = customer.id
@@ -41,12 +44,12 @@ def register(request):
                     if user:
                         auth.login(request,user)
                         messages.success(request, "You have Successfully registered")
-                        return redirect('events_manager')
+                        return redirect('/eventsmanager/customer_%s' % user.id)
                     else:
                         messages.error(request, "Unable to log you in at this time!")
                 else:
                     messages.error(request,"We were unable to take your payment with that card")
-            except stripe.error.CardError, e:
+            except stripe.error.CardError:
                 messages.error(request,"Your card was declined!")
     else:
         today =datetime.date.today()
@@ -62,14 +65,21 @@ def login(request):
         form = UserLoginForm(request.POST)
         if form.is_valid():
 
+            subscription_active = User.objects.get(email=request.POST.get('email'))
+
+
             user = auth.authenticate(email=request.POST.get('email'),
                                      password = request.POST.get('password'))
+            print (subscription_active.subscription_end)
             if user is not None:
-                auth.login(request,user)
-                messages.success(request,"You have Successfully Logged In")
-                return redirect('events_manager')
+                if subscription_active.subscription_end > arrow.now():
+                    auth.login(request,user)
+                    messages.success(request,"You have Successfully Logged In")
+                    return redirect('/eventsmanager/customer_%s' % user.id)
+                else:
+                    form.add_error(None, "Your Subscription has ended, please contact Support")
             else:
-                form.add_error(None,"Your Details were not recognised! Please contact the administrator to request access")
+                form.add_error(None,"Your Details were not recognised! Please register")
     else:
         form = UserLoginForm()
     args = {'form':form}
@@ -81,12 +91,93 @@ def logout(request):
     messages.success(request,'You have successfully logged out')
     return redirect('login')
 
+@login_required(login_url='/login/')
+def cancel_subscription(request):
+    try:
+        customer = stripe.Customer.retrieve(request.user.stripe_id)
+        customer.cancel_subscription(at_period_end=True)
+    except stripe.InvalidRequestError:
+        messages.error(request,"Sorry there has been an error, please try again")
+    return redirect('/eventsmanager/manage_subscription/customer_%s' % request.user.id)
+
+@login_required(login_url='/login/')
+def reactivate_subscription(request,pk):
+    try:
+        customer = User.objects.get(pk=pk)
+
+        customer_sub = stripe.Customer.retrieve(
+            customer.stripe_id
+        )
+
+        subscription = stripe.Subscription.retrieve(
+            customer_sub.subscriptions.data[0].id
+        )
+        print(subscription)
+        item_id = subscription['items']['data'][0].id
+        plan= subscription['items']['data'][0]
+
+        stripe.Subscription.modify(customer_sub.subscriptions.data[0].id,
+                            items=[{
+                                "id": item_id,
+                                "plan" : "REG_MONTHLY"
+                            }]
+                                    )
+
+        return HttpResponseRedirect('/eventsmanager/manage_subscription/customer_%s' % pk)
+
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect('/eventsmanager/manage_subscription/customer_%s' % pk)
+
+
+
+
+@method_decorator(login_required(login_url='/login/'),name='dispatch')
+class ManageSubscription(DetailView):
+
+    template_name = 'eventsmanager_app/manage_subscription.html'
+
+    model=User
+
+    def get_context_data(self, **kwargs):
+        customer = User.objects.get(pk=self.kwargs['pk'])
+        customer= stripe.Customer.retrieve(
+            customer.stripe_id
+        )
+        subscription_details = customer.subscriptions.data[0]
+        amount = customer.subscriptions.data[0].plan.amount / 100
+        subscription_status = customer.subscriptions.data[0].cancel_at_period_end
+        context = super(ManageSubscription, self).get_context_data(**kwargs)
+        context['subscription_status'] = subscription_status
+        context['subscription_details'] = subscription_details
+        context['amount'] = amount
+
+        return context
+
+
+@csrf_exempt
+def invoice_paid_webhook(request):
+    event_json = json.loads(request.body)
+    try:
+        #event = stripe.Event.retrieve(event_json['object']['id'])
+        cust= event_json['object']['customer']
+        paid = event_json['object']['paid']
+        user = User.objects.get(stripe_id=cust)
+        if user and paid:
+            user.subscription_end = arrow.now().replace(weeks=+4).datetime
+            user.save()
+    except stripe.InvalidRequestError:
+        return HttpResponse(status=404)
+    return HttpResponse(status=200)
+
+
+
 @login_required(login_url='login/')
-def eventsmanager(request):
-    webcast_list = Webcast.objects.all()
+def eventsmanager(request,pk):
+    webcast_list = Webcast.objects.all().filter(user_id=pk)
+    user_id=pk
     current_url = request.build_absolute_uri()
-    edit_url = current_url.replace('/eventsmanager/', '')
-    return render(request, 'eventsmanager_app/events_manager.html', {'webcasts': webcast_list, 'current_url':edit_url})
+    edit_url = current_url.replace('/eventsmanager/customer_%s/'% pk, '')
+    return render(request, 'eventsmanager_app/events_manager.html', {'webcasts': webcast_list, 'current_url':edit_url,'user_id':user_id})
 
 @login_required(login_url='login/')
 def eventCreation(request):
@@ -95,32 +186,11 @@ def eventCreation(request):
         form = EventCreation(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-        return HttpResponseRedirect('/eventsmanager/')
+        return HttpResponseRedirect('/eventsmanager/customer_%s' % form.cleaned_data['user_id'])
     else:
         form = EventCreation()
 
     return render(request, 'eventsmanager_app/event_creation.html', {'form': form})
-
-@login_required(login_url='/login/')
-def administration(request):
-    webcast_list = Webcast.objects.all()
-    current_url = request.build_absolute_uri()
-    edit_url = current_url.replace('/administration/', '')
-    return render(request,'eventsmanager_app/events_manager.html',{'webcasts': webcast_list,'current_url':edit_url})
-
-@login_required(login_url='/login/')
-def webcastCreation(request):
-
-    if request.method == 'POST':
-        form = WebcastCreation(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-        return HttpResponseRedirect('/administration/')
-    else:
-        form = WebcastCreation()
-    webcast_speakers = Speakers.objects.all()
-
-    return render(request, 'eventsmanager_app/event_creation.html', {'form': form, 'speakers':webcast_speakers})
 
 @method_decorator(login_required(login_url='/login/'),name='dispatch')
 class UpdateEvent(UpdateView):
@@ -158,14 +228,14 @@ class UpdateEvent(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('events_manager')
+        return '/eventsmanager/customer_%s/'% self.request.user.id
 
 class DeleteEvent(DeleteView):
     model = Webcast
     template_name =  'eventsmanager_app/event_deletion.html'
 
     def get_success_url(self):
-        return reverse('events_manager')
+        return '/eventsmanager/customer_%s/' % self.request.user.id
 
 def updatespeaker(request):
     if request.method == 'POST':
@@ -173,7 +243,7 @@ def updatespeaker(request):
         webcast_id = request.POST['webcast_id']
     try:
         with connection.cursor() as cursor:
-            cursor.execute("""INSERT INTO eb.marvermultimedia_app_webcast_speaker_id (webcast_id, speakers_id) VALUES  (%s , %s)""", [webcast_id,speakers_id])
+            cursor.execute("""INSERT INTO marver.eventsmanager_app_webcast_speaker_id (webcast_id, speakers_id) VALUES  (%s , %s)""", [webcast_id,speakers_id])
             return HttpResponse('Speakers list updated successfully!')
     except:
             return HttpResponse('There have been an error processing the request, please try again')
@@ -182,12 +252,11 @@ def deletespeaker(request):
     if request.method == 'POST':
         speakers_id = request.POST['speakers_id']
         webcast_id = request.POST['webcast_id']
-    try:
+
         with connection.cursor() as cursor:
-            cursor.execute("""DELETE FROM eb.marvermultimedia_app_webcast_speaker_id WHERE webcast_id = %s AND speakers_id = %s""",  [webcast_id,speakers_id])
-        return HttpResponse('The Speaker/s have been successfully removed from this event')
-    except:
-        return HttpResponse('There has been a problem, please try again')
+            cursor.execute("""DELETE FROM marver.eventsmanager_app_webcast_speaker_id WHERE webcast_id = %s AND speakers_id = %s""",  [webcast_id,speakers_id])
+            return HttpResponse('The Speaker/s have been successfully removed from this event')
+
 
 def speakerCreation(request):
     if request.method == "POST":
@@ -214,29 +283,30 @@ def agendaView(request) :
                     cursor.execute("""INSERT INTO marver.eventsmanager_app_agenda (agenda,webcast_id_id) VALUES (%s , %s)""",[agenda_array,webcast_id])
                 return HttpResponse('The Agenda have been successfully added to this event')
             except:
-                return HttpResponse('There has been a problem, please try again')
+                return HttpResponse('There has been a problem creating the agenda, please try again')
         else:
             try:
                 with connection.cursor() as cursor:
                     cursor.execute(
-                    "UPDATE marver.eventsmanager_app_agenda SET agenda = (%s) WHERE id = %s ",
-                    [agenda_array,agenda_id])
+                    "UPDATE marver.eventsmanager_app_agenda SET agenda = (%s) WHERE id = %s ",[agenda_array,agenda_id])
                 return HttpResponse('The Agenda have been successfully updated')
             except:
-                return HttpResponse('There has been a problem, please try again')
+                return HttpResponse('There has been a problem with updating, please try again')
 
 def assetCreation(request):
     if request.method == "POST":
         user_form1 = AssetCreation(request.POST, request.FILES)
         if user_form1.is_valid():
-            response = HttpResponse('All Good', content_type="text/plain")
-            user_form1.save()
-            response.status_code = 200
-            return response
-        response = HttpResponse('An Error has occurred,please try again', content_type="text/plain")
-        response.status_code = 500
-        return response
-    return HttpResponse('')
+                user_form1.save()
+                response = HttpResponse('The Document has been uploaded successfully', content_type="text/plain")
+                response.status_code = 200
+                return response
+        else:
+                response = HttpResponse('Some Data in the form are in valid,please check and try again', content_type="text/plain")
+                response.status_code = 500
+                return response
+
+
 
 def assetAddition(request):
     if request.method == 'POST':
@@ -246,8 +316,10 @@ def assetAddition(request):
         with connection.cursor() as cursor:
             cursor.execute("""INSERT INTO marver.eventsmanager_app_webcast_webcast_asset_ID (webcast_id, assets_id) VALUES  (%s , %s)""", [webcast_id,assets_id])
         return HttpResponse('The Asset/s have been successfully added to this event')
-    except:
-        return HttpResponse('There has been a problem, please try again')
+    except IntegrityError:
+        response = HttpResponse('There has been a problem, please try again', content_type="text/plain")
+        response.status_code = 500
+        return response
 
 def assetDeletion(request):
     if request.method == 'POST':
@@ -257,8 +329,11 @@ def assetDeletion(request):
         with connection.cursor() as cursor:
             cursor.execute("""DELETE FROM marver.eventsmanager_app_webcast_webcast_asset_ID WHERE webcast_id = %s AND assets_id = %s""",[webcast_id,assets_id])
             return HttpResponse('Asset/s has been successfully removed from this event')
-    except:
-            return HttpResponse('There has been a problem, please try again')
+
+    except IntegrityError:
+            response = HttpResponse('There has been a problem, please try again',content_type="text/plain")
+            response.status_code = 500
+            return response
 
 @csrf_exempt
 def thumbnail_upload(request):

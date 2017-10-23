@@ -5,7 +5,6 @@ from django.test import SimpleTestCase,TestCase,TransactionTestCase
 from eventsdisplay_app.views import home_page,eventslibrary,event_player
 from django.core.urlresolvers import resolve
 from eventsmanager_app.models import Webcast,Customers,Speakers,Agenda,Assets
-# Create your tests here.
 
 class EventDisplayAppTest(SimpleTestCase):
     def test_home_page(self):
@@ -39,6 +38,7 @@ class EventDisplayStatusTest(TestCase):
         cls.webcast = Webcast.objects.create(
             id = 1,
             customer_id_id= 1,
+            user_id=1,
             creation_date = '2017-10-20',
             webcast_status = 'ON_DEMAND',
             webcast_title = 'test',
@@ -81,6 +81,7 @@ class ContextDataTest(TestCase):
         cls.webcast_future = Webcast.objects.create(
             id=1,
             customer_id_id=1,
+            user_id = 1,
             creation_date='2017-10-20',
             webcast_status='ON_DEMAND',
             webcast_title='test',
@@ -96,6 +97,7 @@ class ContextDataTest(TestCase):
         cls.webcast_archived = Webcast.objects.create(
             id=2,
             customer_id_id=1,
+            user_id=1,
             creation_date='2017-05-20',
             webcast_status='ON_DEMAND',
             webcast_title='test_archived',
@@ -132,8 +134,6 @@ class ContextDataTest(TestCase):
             asset_name = 'test'
         )
 
-        cls.speakers_id = Webcast.objects.filter(pk=1).update(speaker_id=1)
-
 
 
     def test_home_page_context_data(self):
@@ -148,7 +148,17 @@ class ContextDataTest(TestCase):
         self.assertEqual(len(events_library_test.context['events']),2)
 
     def test_events_player_context_data(self):
+        comment = {
+            'name': 'Luca',
+            'surname': 'Licata',
+            'email': 'lucalicata81@example.com',
+            'comment': 'test',
+            'webcast_id': 1,
+            'webcast_title':'test'
+        }
         events_player_test = self.client.get('/events/player/event_1/test')
+        events_player_feedback_test = self.client.post('/events/comment/',comment)
         self.assertEqual(len(events_player_test.context['webcasts']),1)
-        self.assertEqual(events_player_test.context['webcast_id'].webcast_title,'test')
+        self.assertEqual(events_player_test.context['event_id'].webcast_title,'test')
         self.assertEqual(events_player_test.context['agenda'].agenda,['agenda-point-1','agenda-point-2'])
+        self.assertEqual(events_player_feedback_test.content,'success')

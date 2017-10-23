@@ -1,4 +1,16 @@
- //Webcast Creation/Edit Form Details
+
+//Webcast Creation/Edit Form Details
+         //function in charge of returning the user to the event manager page in case they hit cancel in one of the
+        // event creation/modification pages
+
+     $(document).on('click', '#cancelbutton', function(e) {
+      e.preventDefault();
+      console.log('success');
+
+      location.href = '/eventsmanager'
+     });
+
+
     //webcastId variable has been initialized to 'undefined' on Webcast_creation form
 
         if (webcastId !== undefined) {
@@ -131,7 +143,7 @@
          for (i = 0; i < getSelected.length; i++) {
              $.ajax({
                  type: 'POST',
-                 url: "/speakers_deletion",
+                 url: "/eventsmanager/speakers_deletion",
                  data: {
                      speakers_id: getSelected[i].getAttribute('value'),
                      webcast_id: webcastId,
@@ -166,7 +178,7 @@
         //communication times and process portion of page reloads#
 
         var speakerUpdateDataObj ={
-            url : '/speakers_addition',
+            url : '/eventsmanager/speakers_addition',
             containerToLoad : '#speakers-container',
             innerContainer : ' #speakers-inner-container',
             modalContainer : '#myModal',
@@ -183,7 +195,7 @@
          console.log(formdata);
          $.ajax({
              type: 'POST',
-             url: "/speakers_creation",
+             url: "/eventsmanager/speakers_creation",
              data: formdata,
              success: function (message) {
                  $('#myModal').load(" #modalDialog", function () {
@@ -223,7 +235,7 @@
      //Assets Tab Functions
 
         var assetsUpdateDataObj ={
-            url : '/assets_addition',
+            url : '/eventsmanager/assets_addition',
             containerToLoad : '#assets-display-main-container',
             innerContainer : ' #assets-display-container',
             modalContainer : '#myModalAssets',
@@ -243,7 +255,7 @@
          console.log(formdata);
          $.ajax({
              type: 'POST',
-             url: "/asset_creation",
+             url: "/eventsmanager/asset_creation",
              data: formdata,
              success: function() {
                  $('#myModalAssets').load(" #modalAssets", function() {});
@@ -263,7 +275,6 @@
              e.preventDefault();
              var data = {};
              var getSelected = $('.asset-selected').get();
-             console.log(getSelected);
              for (i = 0; i < getSelected.length; i++) {
                  updateData(assetsUpdateDataObj, data = {
                      assets_id: getSelected[i].getAttribute('value'),
@@ -326,7 +337,7 @@
       for (i = 0; i < getSelected.length; i++) {
        $.ajax({
         type: 'POST',
-        url: "/assets_deletion",
+        url: "/eventsmanager/assets_deletion",
         data: {
          assets_id: getSelected[i].getAttribute('value'),
          webcast_id: webcastId,
@@ -397,7 +408,7 @@
          return false;
      });
 
-     //Function responsbile for collecting values from Agenda form, converting to Json and send to Python View
+     //Function responsbile for collecting values from Agenda form, converting to Json and send to web server
 
      $(document).on('click', '#agendaSaveButton',
       function(e) {
@@ -493,84 +504,55 @@
       readUrl(this);
      });
 
-     //function in charge of returning the user to the event manager page in case they hit cancel in one of the
-        // event creation/modification pages
-
-     $(document).on('click', '#cancelbutton', function(e) {
-      e.preventDefault();
-      console.log('success');
-
-      location.href = '/administration'
-     });
 
      //function in charge of capturing the data from the canvas and send them in a 64 bit format to Python in order to
         //create a JPG file and upload to the S3 server
 
       var _VIDEO = document.querySelector('#video-element'),
-      _CANVAS = document.querySelector('#canvas-element'),
-      _CANVAS_CTX = _CANVAS.getContext("2d");
+          _CANVAS = document.querySelector('#canvas-element'),
+          _CANVAS_CTX = _CANVAS.getContext("2d");
+
+        _CANVAS.width = _VIDEO.videoWidth;
+        _CANVAS.height = _VIDEO.videoHeight;
 
       document.querySelector('.file-input').addEventListener('change', function() {
-      console.log('change is done');
-      videoLink = document.querySelector('.file-link').getAttribute('href');
-      console.log(videoLink);
-      source = document.createElement('source');
-      document.querySelector('#video-element').appendChild(source);
-      document.querySelector('#video-element source').setAttribute('src', URL.createObjectURL(document.querySelector(".file-input").files[0]));
-
+          console.log('change is done');
+          videoLink = document.querySelector('.file-link').getAttribute('href');
+          console.log(videoLink);
+          source = document.createElement('source');
+          document.querySelector('#video-element').appendChild(source);
+          document.querySelector('#video-element source').setAttribute('src', URL.createObjectURL(document.querySelector(".file-input").files[0]));
      });
 
-
-
-     _VIDEO.addEventListener('loadedmetadata', function() {
-      _CANVAS.width = _VIDEO.videoWidth;
-      _CANVAS.height = _VIDEO.videoHeight;
-      _VIDEO.currentTime = 2;
-
+      _VIDEO.addEventListener('loadedmetadata', function() {
+          _CANVAS.width = _VIDEO.videoWidth;
+          _CANVAS.height = _VIDEO.videoHeight;
+          _VIDEO.currentTime = 2;
      });
 
+      document.querySelector('#download-link').addEventListener('click', function(e) {
 
-     document.querySelector('#download-link').addEventListener('click', function(e) {
+          e.preventDefault();
 
-      e.preventDefault();
+          _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
 
-      _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
+          var dataURL = _CANVAS.toDataURL('image/png');
+          var formdata = new FormData();
+          formdata.append('webcast_id',webcastId);
+          formdata.append('webcast_image',dataURL);
+          var request = new XMLHttpRequest();
+          request.onreadystatechange = function() {
+              if (this.readyState === 4 && this.status === 200) {
+                  document.getElementById('thumbnail-success-message').style.display = 'block';
+                  document.getElementById('thumbnail-success-message').innerHTML = this.responseText;
 
-      function dataURItoBlob(dataURI) {
-          var byteString = atob(dataURI.split(',')[1]);
-          var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-          var ab = new ArrayBuffer(byteString.length);
-          var ia = new Uint8Array(ab);
+                  setTimeout(function() {
+                      document.getElementById('thumbnail-success-message').style.display = 'none';
+                      }, 6000);
+              }
 
-          for (var i = 0; i < byteString.charCodeAt(i); i++) {
-              ia[i] = byteString.charCodeAt(i);
-          }
-
-          var bb = new Blob([ab], {
-              "type": mimeString
-          });
-
-          return bb;
-      }
-
-      var dataURL = _CANVAS.toDataURL('image/png');
-      document.getElementById('id_webcast_image').value = dataURL;
-      document.getElementById('id_webcast_id').value = webcastId;
-      console.log(document.getElementById('id_webcast_id').value);
-      var blob = dataURItoBlob(dataURL);
-      var formdata = new FormData($('#thumbnail-submit').get(0));
-      var request = new XMLHttpRequest();
-      request.onreadystatechange = function() {
-       if (this.readyState === 4 && this.status === 200) {
-        document.getElementById('thumbnail-success-message').style.display = 'block';
-        document.getElementById('thumbnail-success-message').innerHTML = this.responseText;
-        setTimeout(function() {
-         document.getElementById('thumbnail-success-message').style.display = 'none';
-        }, 6000);
-       }
-
-      };
-      request.open("POST", "/thumbnail_upload");
-      request.send(formdata);
-     });
+          };
+          request.open("POST", "/thumbnail_upload");
+          request.send(formdata);
+      });
     });

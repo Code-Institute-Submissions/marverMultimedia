@@ -87,7 +87,7 @@
                                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                     <div class="panel-body">
                                         <div class="player-agenda-comments-info-container">
-                                            <form method="post" action="" id="commentForm"> {%csrf_token%}
+                                            <form method="post" action="" id="commentForm" content="multipart/form-data"> {%csrf_token%}
                                                 <label>
                                                     <input type="hidden" value="{{event_id.id}}" id="webcast_id">
                                                 </label>
@@ -111,7 +111,7 @@
                                                     e.preventDefault();
                                                     $.ajax({
                                                         type: 'POST',
-                                                        url: "/webcasts/comment/",
+                                                        url: "/events/comment/",
                                                         data: {
                                                             name: $('#name').val(),
                                                             surname: $('#surname').val(),
