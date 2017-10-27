@@ -910,4 +910,18 @@
         width:100%;
     }
 
+     /* event re-order page*/
+
+    .empty-month-message{
+        display:none;
+    }
+    .empty-month-message h3{
+        text-align: center;
+    }
+
+    div.archive-events-container div.tab-content{
+        min-height:500px;
+
+    }
+
 }

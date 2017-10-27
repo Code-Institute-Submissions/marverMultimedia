@@ -2,12 +2,15 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render,get_object_or_404, redirect
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives,BadHeaderError
 from eventsmanager_app.models import *
 from eventsdisplay_app.models import Feedback
+from django.db import connection
 import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def home_page(request):
@@ -21,6 +24,28 @@ def eventslibrary(request):
     events_list = Webcast.objects.all()
     request.build_absolute_uri()
     return render(request, "eventsdisplay/events.html", {'events' : events_list})
+
+@csrf_exempt
+def events_order(request,option):
+
+     if  0  == int(option):
+         events_list = Webcast.objects.all().order_by('webcast_date')
+         return render(request,"eventsdisplay/events.html",{'events' : events_list})
+     else:
+         events_list = Webcast.objects.all().filter(webcast_date__month=int(option))
+         if len(events_list) > 0:
+             return render(request, "eventsdisplay/events.html", {'events': events_list})
+         else:
+             response = HttpResponse('OOOOps, it seems there were no events on the selected month', content_type="text/plain")
+             response.status_code=500
+             return response
+
+@csrf_exempt
+def search_events(request,search):
+
+    events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%'); """,[search])
+    return render(request,"eventsdisplay/events.html",{'events' : events_list})
+
 
 def event_player(request,id):
     event_id = get_object_or_404(Webcast, pk=id)

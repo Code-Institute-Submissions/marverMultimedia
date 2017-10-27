@@ -267,6 +267,7 @@ def speakerCreation(request):
                 response.status_code = 200
                 return response
             else:
+                print('none')
                 response = HttpResponse('An Error has occurred,please try again',content_type="text/plain")
                 response.status_code = 500
                 return response

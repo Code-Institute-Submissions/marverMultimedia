@@ -39,7 +39,7 @@
                                 <div class="single-webcast-text-container">
                                     <div class="single-webcast-text-inner-container">
                                     <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
-                                        <h4><b>HOUSE OF COMMONS</b></h4>
+                                        <h4 style="text-transform: uppercase"><b>{{ webcast.webcast_title }}</b></h4>
                                     <a href="{{ webcast.get_absolute_url }}" target="_blank">
                                         <img src="{% static '/fonts/Icons/video-play-4-xxl.png'%}" class="pull-left" width="70" height="70" alt="Event Play Icon"></a>
                                     </div>

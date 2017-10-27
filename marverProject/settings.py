@@ -169,8 +169,6 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '../static'),
 )
 AWS_S3_HOST = 's3.eu-west-2.amazonaws.com'
-AWS_STORAGE_BUCKET_NAME = 'elasticbeanstalk-eu-west-2-932524864295'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'

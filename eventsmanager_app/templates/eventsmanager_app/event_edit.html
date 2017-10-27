@@ -39,7 +39,7 @@
                         <a href="/eventsmanager/customer_{{ user.id }}" >EVENTS MANAGER</a>
                     </li>
                     <li>
-                        <a href="/eventsmanager/webcast_creation" >CREATE EVENT</a>
+                        <a href="/eventsmanager/eventcreation" >CREATE EVENT</a>
                     </li>
 
                     <li id="dropdown-link">
@@ -76,7 +76,7 @@
 
                 <div id="update-cancel-button-containter">
                     <input type="submit" class="btn btn-success " value="Update">
-                    <button id="cancelbutton" type="button" class="btn btn-primary" >Cancel</button>
+                    <a href="{% url "event_manager" pk=user.id %}"><input type="button"  class="btn btn-primary" value="Cancel"></a>
                 </div>
             </form>
         </div>
