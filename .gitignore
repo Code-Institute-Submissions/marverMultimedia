@@ -4,7 +4,6 @@
 marverProject/__init__.pyc
 /marverProject/config.py
 /static/img/
-!/settings/
 .idea/dataSources.local.xml
 .idea/dataSources.xml
 .idea/dataSources/
@@ -27,7 +26,4 @@ marverProject/staticfiles/
 marverProject/urls.pyc
 marverProject/wsgi.pyc
 output.png
-/settings/
-/settings/base.py
-/settings/dev.py
-/settings/staging.py
+
