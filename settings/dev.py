@@ -1,7 +1,6 @@
 import os
-from .base import *
 from .config import *
-
+from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS.append('localhost')
