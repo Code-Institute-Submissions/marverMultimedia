@@ -1,5 +1,5 @@
-from marverProject.config import *
 import os
+from base import *
 
 DEBUG = True
 
@@ -17,8 +17,6 @@ DATABASES = {
     }
         }
 }
-
-
 
 STRIPE_PUBLISHABLE = os.getenv('STRIPE_PUBLISHABLE','pk_test_hLMNTIjTI5BX4SLzE7buyXz4')
 STRIPE_SECRET =  os.getenv('STRIPE_SECRET','sk_test_4BdY6pB0aw6qgpvGYpriWfbu')

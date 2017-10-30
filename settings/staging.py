@@ -17,6 +17,9 @@ DATABASES = {
         }
 }
 
+SITE_URL = 'https://marverproject.herokuapp.com'
+ALLOWED_HOSTS.append('marverproject.herokuapp.com')
+
 STRIPE_PUBLISHABLE = os.getenv('STRIPE_PUBLISHABLE','pk_test_hLMNTIjTI5BX4SLzE7buyXz4')
 STRIPE_SECRET =  os.getenv('STRIPE_SECRET','sk_test_4BdY6pB0aw6qgpvGYpriWfbu')
 
