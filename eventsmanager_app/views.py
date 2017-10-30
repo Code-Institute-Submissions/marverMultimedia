@@ -19,7 +19,7 @@ import arrow
 import re
 from django.views.generic import FormView
 from django.views.decorators.csrf import csrf_exempt
-from marverProject.config import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+from settings.staging import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
 
 stripe.api_key = STRIPE_SECRET
 
