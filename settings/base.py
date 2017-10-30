@@ -14,7 +14,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 
 ALLOWED_HOSTS = []
-SITE_ID = 2
 
 SECRET_KEY = 'g3c@z7kst6#3z6k31kicnaywvwhnkwb4j4=v^zr58d2_4jsnq2'
 
@@ -153,8 +152,8 @@ AWS_STORAGE_BUCKET_NAME = 'elasticbeanstalk-eu-west-2-932524864295'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_HOST = 'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com' if not DEBUG else ''
-STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+STATIC_HOST = '/https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com' if not DEBUG else ''
+STATIC_URL = "/https://%s/" % AWS_S3_CUSTOM_DOMAIN
 #STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '../static'),

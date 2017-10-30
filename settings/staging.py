@@ -17,9 +17,6 @@ DATABASES = {
         }
 }
 
-AWS_S3_SECURE_URLS = False
-AWS_S3_URL_PROTOCOL = 'http'
-
 SITE_URL = 'https://marverproject.herokuapp.com'
 ALLOWED_HOSTS.append('marverproject.herokuapp.com')
 
