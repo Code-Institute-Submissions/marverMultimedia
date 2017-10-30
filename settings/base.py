@@ -153,15 +153,15 @@ AWS_STORAGE_BUCKET_NAME = 'elasticbeanstalk-eu-west-2-932524864295'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-#STATIC_HOST = 'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com' if not DEBUG else ''
-#STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
-STATIC_URL = '/static/'
+STATIC_HOST = 'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com' if not DEBUG else ''
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+#STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '../static'),
 )
 AWS_S3_HOST = 's3.eu-west-2.amazonaws.com'
-#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
