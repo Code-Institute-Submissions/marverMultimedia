@@ -9,7 +9,7 @@ ALLOWED_HOSTS.append('localhost')
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'eb',
+            'NAME': 'marver',
             'USER': DATABASE_USERNAME,
             'PASSWORD':DATABASE_PASSWORD,
             'HOST':DATABASE_HOST,

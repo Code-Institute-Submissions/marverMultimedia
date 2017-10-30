@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'marverProject.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'eb',
+            'NAME': 'marver',
             'USER': DATABASE_USERNAME,
             'PASSWORD':DATABASE_PASSWORD,
             'HOST':DATABASE_HOST,
