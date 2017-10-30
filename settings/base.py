@@ -1,5 +1,5 @@
 import os
-
+from .config import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -78,17 +78,18 @@ WSGI_APPLICATION = 'marverProject.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'marver',
-            'USER': 'marver',
-            'PASSWORD':'marverproject666',
-            'HOST':'marverproject.c66082eq1miy.eu-west-2.rds.amazonaws.com',
-            'PORT' :  '3306',
+            'NAME': 'eb',
+            'USER': DATABASE_USERNAME,
+            'PASSWORD':DATABASE_PASSWORD,
+            'HOST':DATABASE_HOST,
+            'PORT' : DATABASE_PORT,
             'OPTIONS':{
                 'charset' : 'utf8mb4',
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
     }
         }
 }
+
 
 
 # Password validation
