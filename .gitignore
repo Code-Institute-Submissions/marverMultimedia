@@ -27,3 +27,7 @@ marverProject/staticfiles/
 marverProject/urls.pyc
 marverProject/wsgi.pyc
 output.png
+/settings/
+/settings/base.py
+/settings/dev.py
+/settings/staging.py
