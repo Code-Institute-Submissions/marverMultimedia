@@ -6,7 +6,7 @@ from django.shortcuts import render,render_to_response
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives,BadHeaderError
 from eventsmanager_app.models import *
-from eventsdisplay_app.models import Feedback
+from eventsdisplay_app.models import Feedback,Support
 from django.db import connection
 import datetime
 from django.views.decorators.csrf import csrf_exempt
@@ -21,7 +21,7 @@ def home_page(request):
 
 def eventslibrary(request):
 
-    events_list = Webcast.objects.all()
+    events_list = Webcast.objects.all().order_by('-webcast_date')
     request.build_absolute_uri()
     return render(request, "eventsdisplay/events.html", {'events' : events_list})
 
@@ -44,7 +44,15 @@ def events_order(request,option):
 def search_events(request,search):
 
     events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%'); """,[search])
-    return render(request,"eventsdisplay/events.html",{'events' : events_list})
+
+    try:
+        print(events_list[0])
+        return render(request,"eventsdisplay/events.html",{'events' : events_list})
+    except IndexError:
+        response = HttpResponse('OOOOps, your search has not returned any results',
+                                content_type="text/plain")
+        response.status_code = 500
+        return response
 
 
 def event_player(request,id):
@@ -61,7 +69,38 @@ def event_player(request,id):
 
 def event_comment(request):
     if request.method == 'POST':
-        try:
+        if request.POST['form'] == "commentForm":
+            try:
+                name = request.POST['name']
+                surname = request.POST['surname']
+                email = request.POST['email']
+                comment = request.POST['comment']
+                webcast_id = request.POST['webcast_id']
+                webcast_title = request.POST['webcast_title']
+
+                Feedback.objects.create(
+                    name = name,
+                    surname = surname,
+                    email = email,
+                    comment = comment,
+                    webcast_id = webcast_id,
+                )
+
+                subject, from_email, to = 'Thank you for contacting Marver', 'lucalicata@hotmail.com', email
+                text_content = 'This is an important message.'
+                context = {
+                    'name' : name.upper(),
+                    'comment' : comment,
+                    'webcast_title' : webcast_title.upper()
+                }
+                message = get_template('eventsdisplay/comment_email_template.html')
+                msg = EmailMultiAlternatives(subject ,text_content, from_email, [to])
+                msg.attach_alternative(message.render(context),'text/html')
+                msg.send()
+                return HttpResponse('You have successfully submitted your feedback, thank you!!')
+            except BadHeaderError:
+                return HttpResponse('There have been an error please try again')
+        else:
             name = request.POST['name']
             surname = request.POST['surname']
             email = request.POST['email']
@@ -69,25 +108,23 @@ def event_comment(request):
             webcast_id = request.POST['webcast_id']
             webcast_title = request.POST['webcast_title']
 
-            Feedback.objects.create(
-                name = name,
-                surname = surname,
-                email = email,
-                comment = comment,
-                webcast_id = webcast_id,
+            Support.objects.create(
+                name=name,
+                surname=surname,
+                email=email,
+                support_request=comment,
+                webcast_id=webcast_id,
             )
 
-            subject, from_email, to = 'Thank you for contacting Marver', 'lucalicata@hotmail.com', email
+            subject, from_email, to = 'Thank you for your support request', 'lucalicata@hotmail.com', email
             text_content = 'This is an important message.'
             context = {
-                'name' : name.upper(),
-                'comment' : comment,
-                'webcast_title' : webcast_title.upper()
+                'name': name.upper(),
+                'comment': comment,
+                'webcast_title': webcast_title.upper()
             }
-            message = get_template('eventsdisplay/email_template.html')
-            msg = EmailMultiAlternatives(subject ,text_content, from_email, [to])
-            msg.attach_alternative(message.render(context),'text/html')
+            message = get_template('eventsdisplay/support_email_template.html')
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+            msg.attach_alternative(message.render(context), 'text/html')
             msg.send()
-            return HttpResponse('success')
-        except BadHeaderError:
-            return HttpResponse('There have been an error please try again')
+            return HttpResponse('You have successfully submitted a support request, we will be in touch shortly')

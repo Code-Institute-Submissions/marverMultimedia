@@ -12,3 +12,10 @@ class Feedback(models.Model):
     def __unicode__(self):
         data = self.webcast
         return data
+
+class Support(models.Model):
+    webcast = models.ForeignKey(Webcast, on_delete=models.CASCADE, to_field='id')
+    support_request = models.TextField()
+    name = models.CharField(max_length=100, default=None, null=False)
+    surname = models.CharField(max_length=100, null=False, default=None)
+    email = models.EmailField(default=None, null=False)

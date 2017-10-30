@@ -1,83 +1,82 @@
 {% extends "eventsdisplay/index.html" %}
 {% block page_content %}
     {% load static from staticfiles %}
-<div class="container archive-events-container">
-    <ul class="nav nav-tabs webcast-archive-nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#2017" aria-controls="2017" role="tab" data-toggle="tab">2017</a></li>
-    </ul>
-    <div class="tab-content" >
-        <div role="tabpanel" class="tab-pane active" id="2017">
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Archive</a>
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#" class="reorder">Order by Month <span class="sr-only">(current)</span></a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Months <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" class="reorder">January</a></li>
-                                    <li><a href="#" class="reorder">February</a></li>
-                                    <li><a href="#" class="reorder">March</a></li>
-                                    <li><a href="#" class="reorder">April</a></li>
-                                    <li><a href="#" class="reorder">May</a></li>
-                                    <li><a href="#" class="reorder">June</a></li>
-                                    <li><a href="#" class="reorder">July</a></li>
-                                    <li><a href="#" class="reorder">August</a></li>
-                                    <li><a href="#" class="reorder">September</a></li>
-                                    <li><a href="#" class="reorder">October</a></li>
-                                    <li><a href="#" class="reorder">November</a></li>
-                                    <li><a href="#" class="reorder">December</a></li>
+<section>
+    <div class="container archive-events-container">
+        <ul class="nav nav-tabs webcast-archive-nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#2017" aria-controls="2017" role="tab" data-toggle="tab">2017</a></li>
+        </ul>
+        <div class="tab-content" >
+            <div role="tabpanel" class="tab-pane active" id="2017">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">Archive</a>
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav">
+                                    <li><a href="#" class="reorder">All Events <span class="sr-only">(current)</span></a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Months <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#" class="reorder">January</a></li>
+                                            <li><a href="#" class="reorder">February</a></li>
+                                            <li><a href="#" class="reorder">March</a></li>
+                                            <li><a href="#" class="reorder">April</a></li>
+                                            <li><a href="#" class="reorder">May</a></li>
+                                            <li><a href="#" class="reorder">June</a></li>
+                                            <li><a href="#" class="reorder">July</a></li>
+                                            <li><a href="#" class="reorder">August</a></li>
+                                            <li><a href="#" class="reorder">September</a></li>
+                                            <li><a href="#" class="reorder">October</a></li>
+                                            <li><a href="#" class="reorder">November</a></li>
+                                            <li><a href="#" class="reorder">December</a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
-                            </li>
-                        </ul>
-                        <form class="navbar-form navbar-left">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search" id="search-input">
+                                <form class="navbar-form navbar-left">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Search" id="search-input">
+                                    </div>
+                                    <a href="#" class="btn btn-default" id="search-button">Submit Search</a>
+                                </form>
                             </div>
-                            <a href="#" class="btn btn-default" id="search-button">Submit Search</a>
-                        </form>
-
+                        </div>
+                    </div>
+                </nav>
+                <div class="container " id="events-container">
+                    <div class="row " id="events-inner-container">
+                        {% for event in events %}
+                            <div class="col-md-5 archive-index-webcast-single-container">
+                                <a href="{{ event.get_absolute_url }}" target="_blank">
+                                    <div class="archive-index-event-single-container-inner">
+                                        <div class="recent-webcast-overlay">
+                                            <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50" alt="HOUSE OF COMMONS">
+                                            <div class="archived-overlay-text-container">
+                                                <p>{{event.webcast_date}} {{event.webcast_time}} </p>
+                                                <h4 style="text-transform: uppercase"><b>{{ event.webcast_title }}</b></h4>
+                                            </div>
+                                        </div>
+                                        <img src="{{event.webcast_img}}" width="auto" height="250">
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </nav>
-            <div class="container " id="events-container">
-                <div class="row " id="events-inner-container">
-                    {% for event in events %}
-                        <div class="col-md-5 archive-index-webcast-single-container">
-                            <a href="{{ event.get_absolute_url }}" target="_blank">
-                                <div class="archive-index-event-single-container-inner">
-                                    <div class="recent-webcast-overlay">
-                                        <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50" alt="HOUSE OF COMMONS">
-                                        <div class="archived-overlay-text-container">
-                                            <p>{{event.webcast_date}} {{event.webcast_time}} </p>
-                                            <h4 style="text-transform: uppercase"><b>{{ event.webcast_title }}</b></h4>
-                                        </div>
-                                    </div>
-                                    <img src="{{event.webcast_img}}" width="auto" height="250">
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
+                <div class="empty-month-message">
+                    <h3>
+                    </h3>
                 </div>
             </div>
-        <div class="empty-month-message">
-            <h3>
-
-            </h3>
-        </div>
         </div>
     </div>
-</div>
+</section>
     <script src="{% static '/js/eventsDisplay.js' %}"></script>
 {% endblock %}

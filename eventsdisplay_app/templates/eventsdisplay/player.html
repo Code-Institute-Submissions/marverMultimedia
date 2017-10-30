@@ -22,17 +22,58 @@
 
                         <div class="single-icon-container"><a href=javascript:return false><img src="{% static '/fonts/Icons/text-lines-4.png'%}" width="50" height="50"  onclick="toggleInfoAppear(this)" id="buttonDocuments" alt="Documents Icon">Documents</a></div>
                         <div class="single-icon-container"><a href=javascript:return false ><img src="{% static 'fonts/Icons/chatting-2.png'%}" width="50" height="50" onclick="toggleInfoAppear(this)" id="buttonComments" alt="Meetings Icon">Meetings</a></div>
-                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/assistant.png' %}" width="50" height="50" alt="Support Icon"><br>Support</a></div>
-                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/contact-icon-png-4050.png' %}" width="50" height="50" alt="Contact Us"><br>Contact Us</a></div>
+                        <div class="single-icon-container"><a href=javascript:return false><img src="{% static 'fonts/Icons/assistant.png' %}" width="50" height="50" alt="Support Icon" data-toggle="modal" data-target="#supportContainer"><br>Support</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<!-- Container for the loader that activates when an Ajax request is sent-->
 <div id="loader-container">
     <div id="loader"></div>
+</div>
+<div id="supportContainer" class="modal fade" role="dialog">
+    <div class="modal-dialog" id="supportContainerInner">
+
+<!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Support Request</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="" id="supportForm" class="player-forms"> {%csrf_token%}
+                    <input type="hidden" value="supportForm" class="formType">
+                    <input type="hidden" value="{{ event_id.webcast_title }}" class="form-control webcast_title">
+                    <label>
+                        <input type="hidden" name="webcast_id" value="{{event_id.id}}" class="webcast_id">
+                    </label>
+                    <label>Webcast Title
+                        <input type="text" name="webcast_title" class="form-control webcast_title"  disabled value="{{ event_id.webcast_title }}">
+                    </label>
+                    <label>Name
+                        <input type="text" name="name" class="form-control name" required/>
+                    </label>
+                    <label>Surname
+                        <input  type="text" name="surname" class="form-control surname" required/>
+                    </label>
+                    <label>Email
+                        <input type="email" name="email" class="form-control email" required />
+                    </label><br>
+                    <label style="width:100%">Issue Experienced
+                        <textarea class="form-control comment" name="comment" rows="4" required></textarea>
+                    </label><br>
+                    <input type="button" class="btn btn-primary" value="Submit" onclick="sendForm('#supportForm',event.currentTarget,'#supportContainer')">
+                    <p class="supportFormMessage"></p>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <section>
@@ -85,49 +126,30 @@
                                     </h4>
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                        <div class="player-agenda-comments-info-container">
-                                            <form method="post" action="" id="commentForm" content="multipart/form-data"> {%csrf_token%}
+                                    <div class="panel-body" id="commentContainer">
+                                        <div class="player-agenda-comments-info-container" id="commentContainerInner">
+                                            <form method="post" action="" id="commentForm" class="player-forms"> {%csrf_token%}
+                                                <input type="hidden" value="commentForm" class="formType">
+                                                <input type="hidden" value="{{ event_id.webcast_title }}" class="form-control webcast_title">
                                                 <label>
-                                                    <input type="hidden" value="{{event_id.id}}" id="webcast_id">
+                                                    <input type="hidden" value="{{event_id.id}}" class="webcast_id">
                                                 </label>
                                                 <label>Name
-                                                    <input type="text" class="form-control" id="name" required/>
+                                                    <input type="text" class="form-control name"  required/>
                                                 </label>
                                                 <label>Surname
-                                                    <input  type="text" class="form-control" id="surname" required/>
+                                                    <input  type="text" class="form-control surname" required/>
                                                 </label>
                                                 <label>Email
-                                                    <input type="email" class="form-control" id="email" required />
+                                                    <input type="email" class="form-control email" required />
                                                 </label><br>
                                                 <label style="width:100%">Comment
-                                                    <textarea class="form-control" rows="4" id="comment" required></textarea>
+                                                    <textarea class="form-control comment" rows="4" id="comment" required></textarea>
                                                 </label><br>
-                                                <input type="submit" class="btn btn-primary" value="Submit">
+                                                <input type="button" class="btn btn-primary" value="Submit" onclick="sendForm('#commentForm',event.currentTarget,'#commentContainer')">
+                                                <p class="supportFormMessage"></p>
                                             </form>
-                                            <script>
-                                                var webcastTitle = "{{ event_id.webcast_title }}";
-                                                $(document).on('submit','#commentForm',function(e){
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: "/events/comment/",
-                                                        data: {
-                                                            name: $('#name').val(),
-                                                            surname: $('#surname').val(),
-                                                            email: $('#email').val(),
-                                                            comment: $('#comment').val(),
-                                                            webcast_id: $('#webcast_id').val(),
-                                                            webcast_title : webcastTitle,
-                                                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
 
-                                                        },
-                                                        success: function () {
-                                                            alert('successfull')
-                                                        }
-                                                    })
-                                                })
-                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -215,5 +237,6 @@
 </section>
 
 <script src="{% static 'js/main.js' %}" ></script>
+<script src="{% static 'js/eventsDisplay.js' %}" ></script>
 
 {% endblock %}

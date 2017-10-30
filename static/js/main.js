@@ -109,8 +109,6 @@
                 cvc:      $("#id_cvv").val()
             };
 
-            console.log(card.number);
-
             $('#validate_card_btn').attr('disabled',true);
             Stripe.createToken(card, function(status,response){
                 if(status === 200){
@@ -134,7 +132,6 @@ $(document).ready(function() {
 
     //mobile Menu Function
     $(document).on('click', '.mobile-menu', function (e) {
-        console.log('done');
         $('ul.nav').slideToggle();
     });
 
@@ -146,3 +143,31 @@ $(document).ready(function() {
     })
 
 });
+
+function sendForm (formType,current,elementToRefresh) {
+    $.ajax({
+        type: 'POST',
+        url: "/events/comment/",
+        data: {
+            form:$(formType + ' .formType').val(),
+            name: $(formType + ' .name').val(),
+            surname: $(formType + ' .surname').val(),
+            email: $(formType + ' .email').val(),
+            comment: $(formType + ' .comment').val(),
+            webcast_id: $(formType + ' .webcast_id').val(),
+            webcast_title: $(formType + ' .webcast_title').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+
+        },
+        success: function (message) {
+
+        $(current).next().css('color','red');
+        $(current).next().html(message);
+        setTimeout(function(){
+            $(current).next().hide();
+            $(elementToRefresh).modal('hide');
+            $(elementToRefresh).load(' '+ elementToRefresh +'Inner')
+            },3000)
+        }
+    })
+}

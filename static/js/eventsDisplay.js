@@ -42,7 +42,14 @@ $(document).on('click','.reorder',function(e){
                 $('#events-container').show();
                 $('.empty-month-message').css('display', 'none');
             })
+        }).fail(function (message) {
+            $('#events-container').hide();
+            $('#events-container').load(site, function () {
+            });
+            $('.empty-month-message h3').html(message.responseText);
+            $('.empty-month-message').css('display', 'block')
         })
-    })
+    });
 
 });
+
