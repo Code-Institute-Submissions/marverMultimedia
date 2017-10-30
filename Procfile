@@ -1,1 +1,1 @@
-web: gunicorn marverProject.wsgi
+web: gunicorn marverProject.wsgi:application

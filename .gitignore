@@ -4,7 +4,7 @@
 marverProject/__init__.pyc
 /marverProject/config.py
 /static/img/
-/settings/
+!/settings/
 .idea/dataSources.local.xml
 .idea/dataSources.xml
 .idea/dataSources/
