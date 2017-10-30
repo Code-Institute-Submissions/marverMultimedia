@@ -168,7 +168,6 @@ DEFAULT_FILE_STORAGE = 'eventsmanager_app.custom_storage.MediaStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 AWS_AUTO_CREATE_BUCKET = False
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_SECURE_URLS = False
 AWS_S3_CALLING_FORMAT = 'boto.s3.connection.OrdinaryCallingFormat'
 S3DIRECT_REGION = 'eu-west-2'
 S3DIRECT_DESTINATIONS = {
