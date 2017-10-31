@@ -15,6 +15,9 @@ from django.template.context_processors import csrf
 import datetime, json, stripe , arrow ,re , boto3
 from django.views.decorators.csrf import csrf_exempt
 from settings.config import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+from path import Path
+from threading import Timer
+from settings.base import BASE_DIR
 
 stripe.api_key = STRIPE_SECRET
 
@@ -210,6 +213,7 @@ class UpdateEvent(UpdateView):
     template_name = 'eventsmanager_app/event_edit.html'
     form_class = WebcastEditForm
 
+
     def get_context_data(self, **kwargs):
         saveThumbnail = ThumbnailsUpload(self.request.GET or None)
         assetCreationForm = AssetCreation(self.request.GET or None)
@@ -237,6 +241,8 @@ class UpdateEvent(UpdateView):
         except ObjectDoesNotExist:
             context['assets'] = None
         return context
+
+
 
     def get_success_url(self):
         return '/eventsmanager/customer_%s/'% self.request.user.id
@@ -346,21 +352,31 @@ def assetDeletion(request):
             response.status_code = 500
             return response
 
+
+def cleanupThumnailsfiles():
+    d = Path(BASE_DIR)
+    print(d.dirname)
+    for f in d.files('*.png'):
+        f.remove()
+
+
 @csrf_exempt
 def thumbnail_upload(request):
     if request.method == 'POST':
         datauri = request.POST.get('webcast_image','')
         webcast_id = request.POST.get('webcast_id','')
-        path = 'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com/media/webcast_'+ webcast_id +'/Thumbnail.png'
+        path = 'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com/media/webcast_'+ webcast_id +'/Thumbnail_%s.png' % webcast_id
         with connection.cursor() as cursor:
             cursor.execute(
                 "UPDATE marver.eventsmanager_app_webcast SET webcast_img = (%s) WHERE id = %s ",
                 [path, webcast_id])
         imgstr = re.search(r'base64,(.*)',datauri).group(1)
-        output = open('output.png','wb')
+        output = open('output_%s.png' % webcast_id,'wb')
         output.write(imgstr.decode('base64'))
         output.close()
-        data = open('output.png','rb')
+        data = open('output_%s.png' % webcast_id,'rb')
         s3 = boto3.resource('s3',aws_access_key_id= AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-        s3.Bucket('elasticbeanstalk-eu-west-2-932524864295').put_object(Key='media/webcast_'+ webcast_id + "/Thumbnail.png",Body=data)
+        s3.Bucket('elasticbeanstalk-eu-west-2-932524864295').put_object(Key='media/webcast_'+ webcast_id + "/Thumbnail_%s.png" % webcast_id,Body=data)
+        removeFiles = Timer(30.0,cleanupThumnailsfiles)
+        removeFiles.start()
         return HttpResponse('Your Thumbnail Has been Successfully Set')

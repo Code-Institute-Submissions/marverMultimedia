@@ -532,6 +532,8 @@
 
       document.querySelector('#download-link').addEventListener('click', function(e) {
 
+          $('#download-link').attr('disabled','true');
+
           e.preventDefault();
 
           _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
@@ -540,14 +542,17 @@
           var formdata = new FormData();
           formdata.append('webcast_id',webcastId);
           formdata.append('webcast_image',dataURL);
+
           var request = new XMLHttpRequest();
           request.onreadystatechange = function() {
               if (this.readyState === 4 && this.status === 200) {
                   document.getElementById('thumbnail-success-message').style.display = 'block';
                   document.getElementById('thumbnail-success-message').innerHTML = this.responseText;
+                  $('#download-link').attr('disabled','');
 
                   setTimeout(function() {
                       document.getElementById('thumbnail-success-message').style.display = 'none';
+
                       }, 6000);
               }
 
