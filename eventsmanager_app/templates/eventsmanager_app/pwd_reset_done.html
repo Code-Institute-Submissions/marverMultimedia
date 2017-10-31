@@ -1,0 +1,22 @@
+{% extends "eventsdisplay/index.html" %}
+{% block page_content %}
+    {% load crispy_forms_tags %}
+<body>
+
+<div class="container-form login-container">
+    <div class="header">
+        <h3>Password Reset</h3>
+    </div>
+    <p>Your Password reset process is almost completed!</p>
+    <p>If an account matching {{ user.username }} is present, you will receive an email with instructions on how to reset your password</p>
+    <p style="margin-top: 20px">You will be redirected to the Login page shortly</p>
+    <p><strong>If in rush</strong><a href="/eventsmanager/register"> Click Here</a></p>
+</div>
+</body>
+<script>
+setTimeout(function(){
+   location.href = '/eventsmanager/login'
+},7000)
+</script>
+
+{% endblock %}

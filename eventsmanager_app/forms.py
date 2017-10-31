@@ -3,7 +3,7 @@ from django.forms import widgets
 from s3direct.widgets import S3DirectWidget
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from django.contrib import messages
+from django.contrib.auth.forms import PasswordResetForm
 from .models import *
 
 class UserRegistrationForm(UserCreationForm):
@@ -63,6 +63,7 @@ class UserRegistrationForm(UserCreationForm):
 class UserLoginForm(forms.Form):
     email=forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
 
 class EventCreation(forms.ModelForm):
     class Meta:

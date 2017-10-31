@@ -98,7 +98,7 @@
 
     $(function(){
 
-        $('#register-form').submit(function(event){
+        $('.register-form').submit(function(event){
             event.preventDefault();
 
             var form = this;

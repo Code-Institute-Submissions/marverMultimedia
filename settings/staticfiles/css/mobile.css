@@ -1,0 +1,917 @@
+@media screen and (min-width:300px) {
+    html {
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    body {
+        font-family: "Karla", sans-serif;
+        position: relative;
+        margin: 0;
+        min-height: 100%;
+        padding-top: 110px;
+    }
+
+    hr {
+        width: auto;
+        display: block;
+        height: 2px !important;
+        border: 0;
+        border-top: 2px solid rgb(0, 0, 0) !important;
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    div.tab-pane div.container {
+        min-height: 100vh;
+    }
+
+    /*Mobile menu Selectors*/
+
+    .mobile-menu{
+        display:block;
+        padding:5px 0 0 0;
+    }
+
+    /* Index Page Selectors*/
+    /*Navigation Selections*/
+    div.main-website-navbar {
+        background: white;
+        border: none;
+        padding-bottom: 0;
+    }
+
+    footer div.navbar.navbar-default {
+        background: white;
+        border: none;
+        margin-bottom: 0;
+    }
+
+    .navbar-header{
+        width:100%;
+    }
+
+    div.container div.main-website-navbar div.navigation-list ul.navbar-nav {
+        width:200px;
+        margin:0 auto;
+        padding: 15px 0 0 0;
+        border: none;
+        font-size: 1.2em;
+        color: black;
+        display:none;
+    }
+
+    footer div.navbar.navbar-default ul {
+        margin: 0 15% 0 15%;
+        border: none;
+        color: black;
+    }
+
+    .main-website-navbar div ul li {
+        padding-top: 15px;
+        height: 80px;
+        width: 200px;
+        text-align: center;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+
+        transition: border 0.5s ease, font-weight 0.5s ease;
+    }
+
+    footer div.navbar.navbar-default ul li {
+        font-size: 0.9em;
+        height: 30px;
+        width: auto;
+        text-align: center;
+    }
+
+    footer div.navbar.navbar-default ul li:not(:first-child) {
+        border-left: none
+    }
+
+    footer div.navbar.navbar-default ul li a {
+        padding: 5px 10px 0 10px;
+    }
+
+    .main-website-navbar div ul li:hover {
+        border-bottom: 5px solid black;
+        font-weight: bold;
+    }
+
+    .main-website-navbar img.menu-header-image {
+        margin-top: 0;
+        padding: 10px 0 10px 10px;
+        width: 200px;
+        height:60px;
+    }
+
+    ul.nav-tabs li a {
+        color: rgb(34, 34, 34);
+        width: 200px;
+        height: 50px;
+        font-size: 1.8em;
+        text-decoration: none;
+        padding-top: 5px;
+    }
+
+    /* Home.html Selectors*/
+    .upcoming-events-container {
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+        background-image: url("../img/House-of-Commons.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+        display:none;
+    }
+
+    #upcoming{
+        display:none;
+    }
+
+    .upcoming-webcast-mobile{
+        display:block;
+        padding:0 50px;
+    }
+
+    .header-middle{
+        padding: 0 30px;
+    }
+
+     body > div.container.home-page-container > section > div > div.row.recent-webcasts > header > h2{
+         font-size: 2em;
+     }
+
+    .header-middle a {
+        background-color: rgb(6, 97, 53);
+        width: 200px;
+        transition: background-color 0.5s ease;
+    }
+
+    .header-middle a:hover {
+        background-color: rgb(78, 78, 78);
+    }
+
+    .home-page-header-container h1 {
+        width: 100%;
+        height: 70px;
+        background: rgb(6, 97, 53);
+        margin: 0;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        padding: 15px;
+        color: white;
+        font-size:2em;
+    }
+
+    .chevron-overlay-right {
+        position: absolute;
+        left: 1050px;
+        z-index: 100;
+        height: 100%;
+        width: 200px;
+        background-color: rgba(220, 220, 220, 0.5)
+    }
+
+    .chevron-overlay-left {
+        position: absolute;
+        z-index: 100;
+        height: 100%;
+        width: 100px;
+        background-color: rgba(220, 220, 220, 0.5)
+    }
+
+    .chevron-overlay-left a span {
+        position: relative;
+        left: 30px;
+        top: 180px;
+    }
+
+    .chevron-overlay-right a span {
+        position: relative;
+        top: 180px;
+        left: 30px;
+    }
+
+    .upcoming-events-container a {
+        color: rgb(34, 34, 34);
+    }
+
+    .events-images-inner-container img {
+        position: absolute;
+    }
+
+    .events-images-inner-container {
+        height: auto;
+        position: absolute;
+        transform: translatex(500px);
+        margin-top: 50px;
+    }
+
+    .webcasts-carousel-index-page {
+        width: 6000px;
+        transform: translatex(-800px);
+        position: relative;
+        height: 300px;
+    }
+
+    .webcast-image-overlay, .webcast-overlay-archived {
+        position: absolute;
+        width: 600px;
+        height: 300px;
+        left: 570px;
+        overflow: hidden;
+        -webkit-transition: transform 0.5s;
+        -moz-transition: transform 0.5s;
+        -ms-transition: transform 0.5s;
+        -o-transition: transform 0.5s;
+        transition: transform 0.5s;
+
+    }
+
+    .webcast-image-overlay:hover, .webcast-overlay-archived:hover {
+        transform: translate(0, 20px) scale(1.05, 1.05);
+    }
+
+    .webcast-image-overlay:hover .webcast-shadow-cast, .webcast-overlay-archived:hover .webcast-shadow-cast {
+        -webkit-transform: translate(0, 300px);
+        -moz-transform: translate(0, 300px);
+        -ms-transform: translate(0, 300px);
+        -o-transform: translate(0, 300px);
+        transform: translate(0, 300px);
+    }
+
+    .webcast-image-overlay h4, .webcast-overlay-archived h4 {
+        position: relative;
+        bottom: 0;
+        font-size: 1.5em;
+        color: white;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .webcast-image-overlay p, .webcast-image-overlay a, .webcast-overlay-archived p, .webcast-overlay-archived a {
+        padding: 0;
+        line-height: 1em;
+        font-size: 1.3em;
+    }
+
+    div.single-webcast-text-container {
+        position: absolute;
+        top: 190px;
+        height: 200px;
+        background-color: rgba(6, 97, 53, 0.9);
+        width: 100%;
+    }
+
+    .single-webcast-text-inner-container > a > img {
+        left: 20px;
+        right: 0;
+        top: 20px;
+        bottom: 0;
+    }
+
+    .single-webcast-text-inner-container {
+        margin: 25px 0 0 110px;
+        color: white;
+        border-left: white solid 1px;
+        padding: 5px 0 0 20px;
+    }
+
+    .webcast-shadow-cast {
+        position: absolute;
+        width: 600px;
+        height: 300px;
+        background: linear-gradient(to right, rgba(200, 200, 200, 0.8), rgba(255, 255, 255, 0.8));
+        top: -300px;
+        -webkit-transition: transform 0.2s;
+        -moz-transition: transform 0.2s;
+        -o-transition: transform 0.2s;
+        transition: transform 0.2s;
+    }
+
+    ul.event-edit-nav-tabs li a {
+        color: rgb(34, 34, 34);
+        width: 100px;
+        height: 50px;
+        font-size: 1.8em;
+        text-decoration: none;
+        padding-top: 5px;
+        text-align: center;
+
+    }
+
+    /* Modal window selectors*/
+    div.modal .modal-body {
+        background: linear-gradient(to top, rgba(200, 200, 200, 1.0), rgba(255, 255, 255, 1.0));
+    }
+
+    /* player.html Selectors*/
+
+    #meetingPlayerAccordion{
+        display:none;
+    }
+    svg {
+        margin: 20px 0 20px 0;
+    }
+
+    svg rect {
+        fill: black;
+        margin: 10px 0 10px 0;
+    }
+
+    div.row.webcast-main-container {
+        margin: 0;
+    }
+
+    .my-video-dimensions {
+        width: 100%;
+        height: 400px;
+    }
+
+    div.video-container {
+        position: relative;
+        left: 1%;
+        margin-bottom:20px;
+    }
+
+    .player-control-icons-container {
+        width: auto;
+        height: 80px;
+        margin: 0 20% 0 20%;
+        font-size: 1.3em;
+        display: inline-flex;
+        color: black;
+    }
+
+    .player-control-icons-container div.single-icon-container a {
+        color: black;
+        text-decoration: none;
+    }
+
+    div.container div.webcast-main-container div.video-container #myElement {
+        width: 100% !important;
+        height: 225px !important;
+    }
+
+    div.panel-body ol li {
+        margin: 8px 0;
+        font-weight: bold;
+    }
+
+    div.panel-group div.panel div.panel-heading {
+
+        background: rgb(14, 97, 56);
+        color: white;
+    }
+
+    .panel-heading h4 {
+        font-size: 1.3em;
+        font-weight: bolder;
+        text-transform: uppercase;
+    }
+
+    div.player-speakers-single-container {
+        width: 95%;
+        height: 30%;
+        margin: 0 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    div.player-speakers-single-container p, div.player-speakers-single-container h5 {
+        margin-left: 160px;
+        font-weight: bold;
+    }
+
+    .webcast-information-row {
+        margin: 20px 0;
+        display:none;
+    }
+
+    div.container div.webcast-information-row div.meeting {
+        background: rgba(240, 240, 240, 0.8);
+        margin-left: 25px;
+        height: 300px;
+        overflow: scroll;
+        padding-left: 0;
+    }
+
+    div.container div.webcast-information-row div.meeting.meeting::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, rgba(241, 142, 61, 0.8), rgb(207, 74, 51));
+        border-radius: 5px;
+    }
+
+    div.container div.webcast-information-row div.meeting.meeting::-webkit-scrollbar {
+        width: 0;
+        background: transparent; /* optional: just make scrollbar invisible */
+    }
+
+    div.webcast-information-row div.meeting ul {
+        padding: 15px;
+        list-style-type: none
+    }
+
+    .meeting ul li {
+        padding: 0 0 10px 0;
+    }
+
+    .meeting ul li a {
+        margin-left: 15px;
+        color: black;
+        font-weight: bold;
+    }
+
+    .player-webcast-title {
+        margin-left: 30px;
+        font-weight: bold;
+    }
+
+    .player-control-icons-container .single-icon-container {
+        width: 50px;
+        height: 50px;
+        -webkit-transition: transform 0.2s ease-in;
+        -moz-transition: transform 0.2s;
+        -ms-transition: transform 0.2s;
+        -o-transition: transform 0.2s;
+        transition: transform 0.2s ease-in;
+        margin: 0 40px;
+    }
+
+    .player-control-icons-container .single-icon-container:hover {
+
+        -webkit-transform: scale(1.2, 1.2);
+        -moz-transform: scale(1.2, 1.2);
+        -ms-transform: scale(1.2, 1.2);
+        -o-transform: scale(1.2, 1.2);
+        transform: scale(1.2, 1.2);
+    }
+
+    .player-upcoming-meetings-header {
+        height: 50px;
+        width: 100%;
+        background-color: rgb(14, 97, 56);
+        color: white;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .player-upcoming-meetings-header h2 {
+        margin: 0;
+        padding: 10px 0 0 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px; /* remove scrollbar space */
+        background: transparent /* optional: just make scrollbar invisible */
+    }
+
+    /* optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, rgba(241, 142, 61, 0.8), rgb(207, 74, 51));
+        border-radius: 5px;
+
+    }
+
+    div.col-md-5 div.row div.player-agenda-comments-containers {
+        background: rgb(240, 240, 240);
+        margin-bottom: 3px;
+        margin-left: 10px;
+        padding: 0;
+        position: relative;
+        width: 97%
+    }
+
+    /*Archive Webcasts section*/
+    div.archive-index-webcast-single-container {
+        padding: 0 30px;
+        margin: 20px 0 ;
+        position: relative;
+    }
+
+    div.recent-webcast-overlay {
+        top: 45%;
+        height: 55%;
+        width: 100%;
+        position: absolute;
+        background: rgba(6, 97, 53, 0.9);
+        color: white;
+        padding: 5px;
+        font-size: 100%;
+    }
+
+    .archived-overlay-text-container {
+        border-left: 1px solid white;
+        margin-left: 80px;
+        padding-left: 10px;
+        margin-top: 15px;
+    }
+
+    div.archive-index-event-single-container-inner div.recent-webcast-overlay div.archived-overlay-text-container h4 b{
+        font-size:0.8em;
+    }
+
+    div.archive-index-event-single-container-inner {
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        color: black;
+    }
+
+    div.archive-index-event-single-container-inner p {
+        padding: 0;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    div.archive-index-event-single-container-inner h4 {
+        font-weight: bolder;
+        font-size: 1.4em;
+    }
+
+    div.archive-index-webcast-single-container > a :hover {
+        color: grey;
+    }
+
+    div.archive-index-event-single-container-inner img {
+        width: 100%;
+        height: 80%;
+    }
+
+    div.archive-index-event-single-container-inner img.pull-left {
+        width: 50px;
+        height: 50px;
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+
+    ul.webcast-archive-nav-tabs > li > a {
+        text-align: center;
+        color: black
+    }
+
+    div.col-header {
+        background: linear-gradient(to top, rgba(200, 200, 200, 1.0), rgba(255, 255, 255, 1.0));
+        margin: 0 0 10px 0;
+        position: absolute;
+        width: 100%;
+        text-transform: uppercase;
+    }
+
+    div.player-agenda-comments-info-container {
+        padding: 10px;
+    }
+
+    div.col-header h4 {
+        margin-left: 10px;
+        font-weight: bolder;
+    }
+
+    /* site_admin.html Selectors*/
+    .single-webcast-info-container-administration {
+        margin-left: 220px;
+    }
+
+    div.single-webcast-info-container-administration a button {
+
+        margin-right: 20px;
+    }
+
+    .single-webcast-container-administration {
+        padding: 20px;
+        border-bottom: 0.5px solid darkslategray;
+    }
+
+    .single-webcast-container-administration img {
+        margin-top: 10px;
+    }
+
+    /*Loader Selectors*/
+    #loader {
+        position: absolute;
+        left: 45%;
+        top: 20%;
+        z-index: 10;
+        background-image: url('../img/marver2.png');
+        background-size: cover;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+        display: none;
+    }
+
+    #loader-container {
+        height: 100%;
+        background-color: rgba(50, 50, 50, 0.8);
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+        display: none;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /*webcast_edit.html selectors*/
+    li.agenda-list-point-remove p {
+        transition: font-size 0.5s, background-color 0.5s;
+    }
+
+    li.agenda-list-point-remove p:hover {
+        background-color: rgba(200, 200, 200, 0.5);
+        font-size: 1.2em;
+        border-radius: 5%;
+        cursor: text;
+    }
+
+    #div_id_webcast_video {
+        margin-bottom: 30px;
+    }
+
+    #div_id_webcast_description {
+        padding-top: 30px;
+    }
+
+    #update-cancel-button-containter {
+        width: 48%;
+        margin: 80px 0;
+    }
+
+    .single-speaker-info-container {
+        margin-left: 90px;
+    }
+
+    div.event-creation-container {
+        width: 50%;
+        margin-bottom: 50px;
+    }
+
+    div.single-speaker-container {
+        padding: 10px 10px;
+    }
+
+    .speaker-selection-class {
+        background-color: rgb(200, 200, 200);
+    }
+
+    .speaker-container {
+        margin-top: 40px;
+    }
+
+    .speaker-container h3 {
+        font-weight: 700;
+        padding-left: 10px;
+    }
+
+    .speakers-inner-container {
+        border: solid 1px rgb(217, 222, 226);
+    }
+
+    .single-speaker-container {
+        padding: 10px 10px;
+    }
+
+    div.event-edit-container {
+        width: 50%;
+    }
+
+    #speaker-image-preview {
+        margin-bottom: 10px;
+    }
+
+    .font-bold {
+        font-weight: bold;
+    }
+
+    ol li.agenda-list-point-remove {
+        display: flex;
+        list-style: decimal;
+        margin-top: 20px;
+        border-bottom: solid 0.2px rgba(10, 10, 10, 0.3);
+        padding-bottom: 10px;
+    }
+
+    #h5 {
+        padding-right: 15px;
+        margin-top: 5px;
+        width: 130px;
+        font-weight: bold
+
+    }
+
+    .agenda-point-paragraph {
+        width: 50%;
+        margin-right: 5px;
+        padding-left: 10px;
+        margin-top: 5px;
+    }
+
+    .agenda-list-point-add {
+        display: flex;
+        list-style: decimal;
+        margin-top: 20px;
+        border-bottom: solid 0.2px rgba(10, 10, 10, 0.3);
+        padding-bottom: 10px;
+    }
+
+    .agenda-list-point-add label {
+        margin-right: 15px;
+        margin-top: 5px;
+        width: 115px;
+    }
+
+    .agenda-list-point-add input {
+        width: 50%;
+        margin-right: 25px;
+    }
+
+    .asset-display-container-class {
+        height: auto;
+    }
+
+    .assets-inner-container {
+
+        display: inline-block;
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    div.assets-inner-container input.asset-delete-checkbox {
+        margin-top: 15px;
+    }
+
+    div.assets-inner-container p {
+        margin: 15px 0 0 60px;
+        font-weight: bold;
+        size: 1.2em;
+    }
+
+    div.assets-display-main-container {
+        padding: 10px 0 0 40px;
+    }
+
+    .modal-asset-container {
+        display: inline-block;
+        width: 100%;
+        padding: 10px 0
+    }
+
+    div.modal-asset-container a.asset-selector-id-add {
+        margin-top: 16px;
+    }
+
+    div.modal-asset-container a.asset-selector-id-remove {
+        margin-top: 16px;
+        display: none;
+    }
+
+    div.modal-asset-container h5 {
+        font-size: 1em;
+        font-weight: bold;
+        margin: 15px 0 0 60px;
+        width: 100%;
+    }
+
+    #thumbnail-success-message {
+        color: green;
+        display: none;
+    }
+
+    #thumbnail-error-message {
+        color: red;
+        display: none;
+    }
+
+    /*login.html and register.html Selectors*/
+    .login-container {
+
+        padding-top: 20px;
+        min-height: 100vh;
+    }
+
+    .container-form {
+        width: 30%;
+        max-width: 406px;
+        margin: 0 auto;
+        font-size: 1.2em;
+    }
+
+    #register-form {
+        padding: 0px 25px 25px;
+        background: #fff;
+        box-shadow: 0px 0px 0px 5px rgba(255, 255, 255, 0.4),
+        0px 4px 20px rgba(0, 0, 0, 0.33);
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        display: table;
+        position: static;
+    }
+
+    #register-form .header {
+        margin-bottom: 20px;
+    }
+
+    #register-form .header h3 {
+        color: #333333;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    #register-form .header p {
+        color: #8f8f8f;
+        font-size: 14px;
+        font-weight: 300;
+    }
+
+    #register-form .sep {
+        height: 1px;
+        background: #e8e8e8;
+        width: 406px;
+        margin: 0px -25px;
+    }
+
+    #register-form .inputs {
+        margin-top: 25px;
+    }
+
+    #register-form .inputs label {
+        color: rgb(34, 34, 34);
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        margin-bottom: 7px;
+        display: block;
+    }
+
+    input::-webkit-input-placeholder {
+        color: #b5b5b5;
+    }
+
+    input:-moz-placeholder {
+        color: #b5b5b5;
+    }
+
+    #register-form input:focus {
+        background: #fff;
+        box-shadow: 0px 0px 0px 3px rgb(100, 100, 100), inset 0px 2px 3px rgba(0, 0, 0, 0.2), 0px 5px 5px rgba(0, 0, 0, 0.15);
+        outline: none;
+    }
+
+
+    #register-form .inputs #submit {
+        width: 100%;
+        margin-top: 20px;
+        padding: 15px 0;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        background: rgb(14, 97, 56);
+
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        border: 1px solid #737b8d;
+        -moz-box-shadow: 0px 5px 5px rgba(000, 000, 000, 0.1),
+        inset 0px 1px 0px rgba(255, 255, 255, 0.5);
+        -webkit-box-shadow: 0px 5px 5px rgba(000, 000, 000, 0.1),
+        inset 0px 1px 0px rgba(255, 255, 255, 0.5);
+        box-shadow: 0px 5px 5px rgba(000, 000, 000, 0.1),
+        inset 0px 1px 0px rgba(255, 255, 255, 0.5);
+        text-shadow: 0px 1px 3px rgba(000, 000, 000, 0.3),
+        0px 0px 0px rgba(255, 255, 255, 0);
+        display: table;
+        position: static;
+        clear: both;
+    }
+
+    #register-form .inputs #submit:hover {
+        background: rgb(100, 100, 100)
+    }
+
+    #register-form .inputs label {
+        font-weight: bold;
+    }
+}

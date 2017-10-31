@@ -22,5 +22,11 @@ urlpatterns = [
         url(r'^cancel_subscription/$', views.cancel_subscription,name='cancelsubscription'),
         url(r'^reactivate_subscription/(?P<pk>\d+)/$', views.reactivate_subscription,name='reactivatesubscription'),
         url(r'^invoice_paid/$', views.invoice_paid_webhook,name='invoicepaidwebhook'),
+        url(r'^password_reset/$',views.PasswordReset.as_view()),
+        url(r'^password_reset/done/$',views.PasswordResetDone.as_view()),
+        url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            views.PasswordResetConfirm.as_view()),
+        url(r'^reset/done/$', views.PasswordResetCompleted.as_view(), name='password_reset_complete'),
+        url(r'^',include('django.contrib.auth.urls')),
 
 ]

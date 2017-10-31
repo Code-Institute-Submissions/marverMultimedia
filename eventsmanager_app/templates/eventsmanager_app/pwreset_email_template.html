@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="background-color:rgb(224, 225, 227); padding:50px;">
+
+Hello <strong>{{ user.username }}</strong>
+<p><strong>Thank you</strong> for submitting your passwword reset request </p>
+
+<p>Please click on the link below to reset your password:</p>
+{{ protocol}}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+<h2>The Support Team</h2>
+
+<footer>
+    <div>
+        <div class="row">
+            <div class="col-lg-4 footer-social-media footer-box">
+            </div>
+            <div class="col-lg-4 footer-logo footer-box">
+                <img src="http://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com/img/marver2.png" width="70" height="68" alt="Marver Logo">
+                <img src="http://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com/img/marverplayerlogol.png" width="300" height="70" alt="Marver Logo">
+            </div>
+            <div class="col-lg-4 footer-contact-info footer-box">
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

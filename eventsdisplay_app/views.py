@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.http import HttpResponse
-from django.shortcuts import render,get_object_or_404, redirect
-from django.shortcuts import render,render_to_response
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives,BadHeaderError
 from eventsmanager_app.models import *
 from eventsdisplay_app.models import Feedback,Support
-from django.db import connection
 import datetime
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
 
 
 def home_page(request):
@@ -69,15 +67,16 @@ def event_player(request,id):
 
 def event_comment(request):
     if request.method == 'POST':
-        if request.POST['form'] == "commentForm":
-            try:
-                name = request.POST['name']
-                surname = request.POST['surname']
-                email = request.POST['email']
-                comment = request.POST['comment']
-                webcast_id = request.POST['webcast_id']
-                webcast_title = request.POST['webcast_title']
+        name = request.POST['name']
+        surname = request.POST['surname']
+        email = request.POST['email']
+        comment = request.POST['comment']
+        webcast_id = request.POST['webcast_id']
+        webcast_title = request.POST['webcast_title']
 
+        if request.POST['form'] == "commentForm":
+
+            try:
                 Feedback.objects.create(
                     name = name,
                     surname = surname,
@@ -101,13 +100,6 @@ def event_comment(request):
             except BadHeaderError:
                 return HttpResponse('There have been an error please try again')
         else:
-            name = request.POST['name']
-            surname = request.POST['surname']
-            email = request.POST['email']
-            comment = request.POST['comment']
-            webcast_id = request.POST['webcast_id']
-            webcast_title = request.POST['webcast_title']
-
             Support.objects.create(
                 name=name,
                 surname=surname,

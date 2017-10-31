@@ -3,23 +3,18 @@ from __future__ import unicode_literals
 from django.shortcuts import render,HttpResponseRedirect, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import *
+from .backends import *
 from django.http import HttpResponse
-from django.db import connection,IntegrityError,DatabaseError,DataError
-from django.views.generic import UpdateView,DeleteView,View,TemplateView,DetailView
+from django.db import connection,IntegrityError
+from django.views.generic import UpdateView,DeleteView,DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.decorators import method_decorator
-import boto3
 from django.contrib import messages, auth
+from django.contrib.auth.views import PasswordResetView,PasswordResetConfirmView,PasswordResetCompleteView,PasswordResetDoneView
 from django.template.context_processors import csrf
-from django.core import serializers
-import datetime
-import json
-import stripe
-import arrow
-import re
-from django.views.generic import FormView
+import datetime, json, stripe , arrow ,re , boto3
 from django.views.decorators.csrf import csrf_exempt
-from settings.staging import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+from settings.config import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
 
 stripe.api_key = STRIPE_SECRET
 
@@ -64,22 +59,21 @@ def login(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
-
-            subscription_active = User.objects.get(email=request.POST.get('email'))
-
-
-            user = auth.authenticate(email=request.POST.get('email'),
-                                     password = request.POST.get('password'))
-            print (subscription_active.subscription_end)
-            if user is not None:
-                if subscription_active.subscription_end > arrow.now():
-                    auth.login(request,user)
-                    messages.success(request,"You have Successfully Logged In")
-                    return redirect('/eventsmanager/customer_%s' % user.id)
+            try:
+                subscription_active = User.objects.get(email=request.POST.get('email'))
+                user = auth.authenticate(email=request.POST.get('email'),
+                                         password = request.POST.get('password'))
+                if user is not None:
+                    if subscription_active.subscription_end > arrow.now():
+                        auth.login(request,user)
+                        messages.success(request,"You have Successfully Logged In")
+                        return redirect('/eventsmanager/customer_%s' % user.id)
+                    else:
+                        form.add_error(None, "Your Subscription has ended, please contact Support")
                 else:
-                    form.add_error(None, "Your Subscription has ended, please contact Support")
-            else:
-                form.add_error(None,"Your Details were not recognised! Please register")
+                    form.add_error(None,"Your Details were not recognised! Please check your password")
+            except ObjectDoesNotExist:
+                form.add_error(None, "Your Details were not recognised! Please register")
     else:
         form = UserLoginForm()
     args = {'form':form}
@@ -90,6 +84,24 @@ def logout(request):
     auth.logout(request)
     messages.success(request,'You have successfully logged out')
     return redirect('login')
+
+class PasswordReset(PasswordResetView):
+    template_name = 'eventsmanager_app/password_reset.html'
+    success_url = '/eventsmanager/password_reset/done'
+    from_email = 'lucalicata@hotmail.com'
+    html_email_template_name = 'eventsmanager_app/pwreset_email_template.html'
+
+class PasswordResetDone(PasswordResetDoneView):
+    template_name = 'eventsmanager_app/pwd_reset_done.html'
+
+class PasswordResetConfirm(PasswordResetConfirmView):
+    template_name = 'eventsmanager_app/pwd_reset_confirmation.html'
+    post_reset_login = True
+    success_url = '/eventsmanager/reset/done'
+
+class PasswordResetCompleted(PasswordResetCompleteView):
+    template_name = 'eventsmanager_app/pwd_reset_complete.html'
+
 
 @login_required(login_url='/login/')
 def cancel_subscription(request):
@@ -112,7 +124,6 @@ def reactivate_subscription(request,pk):
         subscription = stripe.Subscription.retrieve(
             customer_sub.subscriptions.data[0].id
         )
-        print(subscription)
         item_id = subscription['items']['data'][0].id
         plan= subscription['items']['data'][0]
 
@@ -267,7 +278,6 @@ def speakerCreation(request):
                 response.status_code = 200
                 return response
             else:
-                print('none')
                 response = HttpResponse('An Error has occurred,please try again',content_type="text/plain")
                 response.status_code = 500
                 return response
