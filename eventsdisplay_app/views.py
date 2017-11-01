@@ -9,7 +9,8 @@ from eventsmanager_app.models import *
 from eventsdisplay_app.models import Feedback,Support
 import datetime
 from django.views.decorators.csrf import csrf_exempt
-
+import json
+from django.core import serializers
 
 def home_page(request):
     upcoming_webcasts = Webcast.objects.all().filter(webcast_date__gte=datetime.date.today())
@@ -62,7 +63,13 @@ def event_player(request,id):
         agenda_list = Agenda.objects.get(webcast_id=id)
     except:
         agenda_list = None
-    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'event_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list})
+
+    try:
+        chapter_list = get_object_or_404(Chapters,webcast_id=id)
+    except:
+        chapter_list = None
+
+    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'event_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list , 'chapters_list' :chapter_list})
 
 
 def event_comment(request):

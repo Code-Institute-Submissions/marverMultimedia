@@ -171,10 +171,12 @@
                     <h4>Meeting Chapters</h4>
                 </div>
                 <hr>
+            <p></p>
                 <ul >
-                    <li> <img src="{% static '/img/Post event video.jpeg' %}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(20)"> The Power of Video - 00:00:20</a></li>
-                    <li><img src="{% static '/img/The Clients Services.jpeg' %}" alt="Webcast Image" width="125" height="70"><a href="#" onclick="jwplayer('myElement').seek(40)"> Engage & Share - 00:00:40</a></li>
-                </ul>
+                    {% for chapter in chapters_list.chapters %}
+                    <li> <img src="{{ chapter.imgUrl }}" alt="Webcast Image" width="125" height="70"><a href="javascript:return false" onclick="jwplayer('myElement').seek({{ chapter.time }})"> {{ chapter.title }}</a></li>
+                    {% endfor %}
+                 </ul>
             </div>
 
             <div class="col-lg-3 meeting meeting-documents" id="documents">

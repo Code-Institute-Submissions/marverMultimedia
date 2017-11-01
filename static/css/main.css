@@ -48,7 +48,7 @@
         margin-bottom: 0;
     }
 
-    .navbar-header{
+    div.main-website-navbar .navbar-header{
         width:25%;
     }
 
@@ -785,6 +785,14 @@
         font-weight: bold;
         margin: 15px 0 0 60px;
         width: 100%;
+    }
+
+    div.col-lg-6 form ol#chapters-points-main-list{
+        list-style: none;
+    }
+
+    div.col-lg-6 form ol#chapters-points-main-list input{
+        width:50%;
     }
 
     #thumbnail-success-message {

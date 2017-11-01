@@ -143,8 +143,6 @@ def reactivate_subscription(request,pk):
         return HttpResponseRedirect('/eventsmanager/manage_subscription/customer_%s' % pk)
 
 
-
-
 @method_decorator(login_required(login_url='/login/'),name='dispatch')
 class ManageSubscription(DetailView):
 
@@ -228,6 +226,7 @@ class UpdateEvent(UpdateView):
         context['speakerForm'] = speakerCreationForm
         context['assetsForm'] = assetCreationForm
         context['all_assets'] = Assets.objects.all().exclude(webcast__id__contains = self.kwargs['pk'] )
+        context['chapters_id'] = 1
         try:
             agenda_id = Agenda.objects.get(webcast_id=self.kwargs['pk'])
             agenda_id_edit = agenda_id.agenda
@@ -240,6 +239,13 @@ class UpdateEvent(UpdateView):
             context['assets'] = assets_id
         except ObjectDoesNotExist:
             context['assets'] = None
+
+        try:
+            chapters_list = get_object_or_404(Chapters, webcast_id=self.kwargs['pk'])
+            context['chapters_list'] = chapters_list
+        except:
+            context['chapters_list'] = None
+
         return context
 
 
@@ -310,6 +316,48 @@ def agendaView(request) :
             except:
                 return HttpResponse('There has been a problem with updating, please try again')
 
+def chaptersView(request):
+
+    if request.method == 'POST':
+        chapters_array = request.POST['chapters']
+        webcast_id = request.POST['webcast_id']
+        chapters_id = request.POST['chapters_id']
+        data_uri_array = json.loads(request.POST['thumbnailsImg'])
+        i = 0
+        while i<len(data_uri_array):
+            if "https" not in data_uri_array[i]:
+                imgstr = re.search(r'base64,(.*)', data_uri_array[i]).group(1)
+                output = open('output_%s.png' % i, 'wb')
+                output.write(imgstr.decode('base64'))
+                output.close()
+                data = open('output_%s.png' % i, 'rb')
+                s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+                s3.Bucket('elasticbeanstalk-eu-west-2-932524864295').put_object(
+                    Key='media/webcast_' + webcast_id + "/ChapterThumbnail_%s.png" % i, Body=data)
+                i += 1
+            else:
+                i += 1
+        removeFiles = Timer(40.0, cleanupThumnailsfiles)
+        removeFiles.start()
+        if chapters_id == "0":
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """INSERT INTO marver.eventsmanager_app_chapters (chapters,webcast_id_id) VALUES (%s , %s)""",
+                        [chapters_array, webcast_id])
+                return HttpResponse('The Chapters have been successfully added to this event')
+            except:
+                return HttpResponse('There has been a problem creating the agenda, please try again')
+        else:
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "UPDATE marver.eventsmanager_app_chapters SET chapters = (%s) WHERE id = %s ",
+                        [chapters_array, chapters_id])
+                return HttpResponse('The Chapters have been successfully updated')
+            except:
+                return HttpResponse('There has been a problem with updating, please try again')
+
 def assetCreation(request):
     if request.method == "POST":
         user_form1 = AssetCreation(request.POST, request.FILES)
@@ -377,6 +425,6 @@ def thumbnail_upload(request):
         data = open('output_%s.png' % webcast_id,'rb')
         s3 = boto3.resource('s3',aws_access_key_id= AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
         s3.Bucket('elasticbeanstalk-eu-west-2-932524864295').put_object(Key='media/webcast_'+ webcast_id + "/Thumbnail_%s.png" % webcast_id,Body=data)
-        removeFiles = Timer(30.0,cleanupThumnailsfiles)
+        removeFiles = Timer(20.0,cleanupThumnailsfiles)
         removeFiles.start()
         return HttpResponse('Your Thumbnail Has been Successfully Set')

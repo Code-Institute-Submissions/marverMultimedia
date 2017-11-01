@@ -364,7 +364,7 @@
 
      checkAgendaStatus = $('#agenda-points-main-list > li');
 
-     //set initially and maintain agenda points indexes in ordinal format, even when one of them is delete
+     //set initially and maintain agenda points indexes in ordinal format, even when one of them is deleted
         function setAgendaIndexes() {
             listPointsCounter = $('#agenda-points-main-list > li');
             for (i = 0; i < listPointsCounter.length; i++) {
@@ -530,34 +530,169 @@
           _VIDEO.currentTime = 2;
      });
 
-      document.querySelector('#download-link').addEventListener('click', function(e) {
-
-          $('#download-link').attr('disabled','true');
+      $(document).on('click','#download-link', function(e) {
 
           e.preventDefault();
 
           _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
 
           var dataURL = _CANVAS.toDataURL('image/png');
-          var formdata = new FormData();
-          formdata.append('webcast_id',webcastId);
-          formdata.append('webcast_image',dataURL);
 
-          var request = new XMLHttpRequest();
-          request.onreadystatechange = function() {
-              if (this.readyState === 4 && this.status === 200) {
-                  document.getElementById('thumbnail-success-message').style.display = 'block';
-                  document.getElementById('thumbnail-success-message').innerHTML = this.responseText;
-                  $('#download-link').attr('disabled','');
+           $.ajax({
+               type: 'POST',
+               url: "/thumbnail_upload",
+               data: {
+                   webcast_image : dataURL,
+                   webcast_id : webcastId
 
-                  setTimeout(function() {
-                      document.getElementById('thumbnail-success-message').style.display = 'none';
+               },
+               success: function (message) {
+                   $('#thumbnail-success-message').show();
+                   $('#thumbnail-success-message').html(message);
 
-                      }, 6000);
-              }
-
-          };
-          request.open("POST", "/thumbnail_upload");
-          request.send(formdata);
+                   setTimeout(function(){
+                       $('#thumbnail-success-message').hide();
+                   },5000)
+               },
+               error: function (message) {
+                   $('#thumbnail-success-message').show();
+                   $('#thumbnail-success-message').html(message);
+                   setTimeout(function(){
+                       $('#thumbnail-success-message').hide();
+                   },5000)
+               }
+           });
       });
+
+    //Chapter Create/Save/Edit
+
+     checkAgendaStatus = $('#chapters-points-main-list > li');
+
+     //set initially and maintain agenda points indexes in ordinal format, even when one of them is deleted
+        function setChaptersIndexes() {
+            listPointsCounter = $('#chapters-points-main-list > li');
+            for (i = 0; i < listPointsCounter.length; i++) {
+                listPointsCounter[i].childNodes[1].innerHTML = 'Chapter' + ' ' + (i + 1);
+            }
+        }
+        setChaptersIndexes();
+
+
+     $(document).on('click', '.chapter-btn-add',
+         function(e) {
+         var video = document.getElementById('video-element');
+         checkPointsCounter = $('#chapters-points-main-list > li');
+         //limit agenda to 15 points
+             if (checkPointsCounter.length <= 14) {
+                 if (video.currentTime !== 0 && $(this).prev('input').val()!== "") {
+                     $('#chapters-update-messages').hide();
+                     e.preventDefault();
+                     _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
+                     var dataURL = _CANVAS.toDataURL('image/png');
+                     var minutes = Math.floor(video.currentTime / 60);
+                     var seconds = Math.floor(video.currentTime - minutes *60);
+                     var newField = $('.chapter-list-point-add').clone(false);
+                     var imageContainer = document.createElement('img');
+
+                     if (seconds < 10){
+                       timeString = " " +  minutes + ":" + "0" + seconds;
+                     } else{
+                        timeString = "" +  minutes + ":" + seconds;
+                     }
+
+
+                     $(imageContainer).css('width','200px');
+                     $(imageContainer).css('height','115px');
+                     $(imageContainer).attr('src',dataURL);
+                     $(imageContainer).addClass('chapterThumbnailContainer');
+                     $(this).parent('.chapter-list-point-add').children('.chapter-title').val($(this).prev('input').val());
+                     $(this).parent('.chapter-list-point-add').children('.chapter-time').val(Math.floor(video.currentTime));
+                     $(this).parent('.chapter-list-point-add').children('.chapter-time-readable').val(timeString);
+                     $(this).prev('input').replaceWith('<p style="width:50%;margin-right:5px; margin-top:5px; padding-left:10px;" ' +
+                         'class="chapter-point-paragraph">' + "Time:" + timeString + '<br>' +  'Chapter Title:'+ $(this).prev('input').val() + '</p>');
+
+                     $(this).addClass('btn-danger chapter-btn-remove');
+                     $(this).removeClass('btn-success chapter-btn-add');
+                     $(this).html('Remove');
+                     $(this).parent('.chapter-list-point-add').append(imageContainer);
+                     $('#chapters-points-main-list').append(newField);
+                     newField.prev('li').removeClass('chapter-list-point-add').addClass('chapter-list-point-remove');
+                     $('#chapters-points-main-list > li:last-child').children('input').val('');
+                     setChaptersIndexes();
+                 }
+                 else {
+                     e.preventDefault();
+                     console.log('error');
+                     $('#chapters-update-messages').show();
+                     $('#chapters-update-messages').html('Please insert a title');
+                     return false
+                 }
+             }
+             else {
+                 return false;
+             }
+
+     }).on('click', '.chapter-btn-remove',
+         function(e) {
+         e.preventDefault();
+         $(this).parents('.chapter-list-point-remove').remove();
+         setChaptersIndexes();
+         return false;
+     });
+
+     //Function responsbile for collecting values from Agenda form, converting to Json and send to web server
+
+     $(document).on('click', '#chapterSaveButton',
+      function(e) {
+
+       e.preventDefault();
+
+       collectTitleElements = $('.chapter-title');
+       collectTimeElements = $('.chapter-time');
+       collectThumbnails = $('.chapterThumbnailContainer');
+       collectTimeReadableElements = $('.chapter-time-readable');
+
+        var chapterObject = {};
+        var chapterArray = [];
+        var thumbnailsArray = [];
+
+        for(i=0; i<collectTitleElements.length;i++){
+            if(collectTitleElements[i].value !== ""){
+            chapterObject = {
+                'time' : collectTimeElements[i].value,
+                'title' : collectTitleElements[i].value,
+                'imgUrl' :  'https://elasticbeanstalk-eu-west-2-932524864295.s3.amazonaws.com/media/webcast_'+ webcastId +'/ChapterThumbnail_'+i+'.png',
+                'timeReadable' : collectTimeReadableElements[i].value
+            };
+            chapterArray.push(chapterObject);
+            }
+        }
+
+        for(i=0;i<collectThumbnails.length;i++){
+            thumbnailsArray.push($(collectThumbnails[i]).attr('src'))
+        }
+        console.log(chapterArray);
+       chapters = JSON.stringify(chapterArray);
+       thumbnails = JSON.stringify(thumbnailsArray);
+       $.ajax({
+        type: 'POST',
+        url: "/chapters",
+        data: {
+         'chapters': chapters,
+         'webcast_id': webcastId,
+         'chapters_id': chapters_id,
+        'thumbnailsImg' : thumbnails,
+         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(message) {
+            confirmationMessage('success',message,'#chapters-update-messages')
+        },
+            error: function(message) {
+            confirmationMessage('error',message,'#chapters-update-messages')
+            }
+       });
+      });
+
+
+
     });

@@ -88,10 +88,11 @@ class Webcast(models.Model):
     webcast_date = models.DateField(default=None)
     webcast_time = models.TimeField(default=None)
     webcast_asset_ID = models.ManyToManyField(Assets,verbose_name='Select Assets',blank=True)
-    webcast_img = models.ImageField(upload_to='media/',default='marverhigres.png',verbose_name='Upload Main Image',blank=True)
+    webcast_img = models.ImageField(upload_to='media/',default='House-of-Commons.png',verbose_name='Upload Main Image',blank=True)
     speaker_id = models.ManyToManyField(Speakers,verbose_name='Speakers Creation/Selection ',blank=True)
     webcast_description = models.TextField(blank=True)
     webcast_video = S3DirectField(dest='example_destination', verbose_name='On-Demand Video Upload', blank=True)
+
 
 
     def __unicode__(self):
@@ -107,4 +108,8 @@ class Webcast(models.Model):
 class Agenda(models.Model):
     agenda= JSONField()
     webcast_id = models.ForeignKey(Webcast,on_delete=models.CASCADE,to_field='id', default=None)
+
+class Chapters(models.Model):
+    chapters = JSONField()
+    webcast_id = models.ForeignKey(Webcast,on_delete=models.CASCADE,to_field='id',default=None)
 

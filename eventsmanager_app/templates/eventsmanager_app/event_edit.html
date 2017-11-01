@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
      <link rel="stylesheet" type="text/css" media="all" href="{% static '/jquery-ui-1.12.1/jquery-ui.css'%}"/>
     <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
-    <script> webcastId={{ webcast.id }}; agenda_id = {{ agenda_id }};</script>
+    <script> webcastId={{ webcast.id }}; agenda_id = {{ agenda_id }}; chapters_id = {{ chapters_id }};</script>
     <script src="{% static 'js/3rd_party_libraries/jquery-3.2.1.min.js'%}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="{% static 'js/3rd_party_libraries/bootstrap-timepicker.min.js'%}"></script>
@@ -270,18 +270,50 @@
 
       <div role="tabpanel" class="tab-pane fade" id="settings">
           <div class="container">
-              <form method="post" enctype="multipart/form-data" id="thumbnail-submit">{%csrf_token%}
-                  {{ thumbnailUploadForm |crispy }}
-                  <video id="video-element" width="500px" height="300px" controls crossOrigin="anonymous">
-                      <source src="{{ webcast.webcast_video }}">
-                  </video>
-                  <canvas id="canvas-element" style="display:none;"></canvas>
-                  <div id="thumbnail-container">
-                      <input type="submit" id="download-link" class="btn btn-default" value="Save Thumbnail">
+              <div class="row">
+                  <div class="col-lg-6">
+                      <form method="post" enctype="multipart/form-data" id="thumbnail-submit" style="position:fixed;margin-top:50px;">{%csrf_token%}
+                          {{ thumbnailUploadForm |crispy }}
+                          <video id="video-element" width="500px" height="300px" controls crossOrigin="anonymous">
+                              <source src="{{ webcast.webcast_video }}">
+                          </video>
+                          <canvas id="canvas-element" style="display:none;"></canvas>
+                          <div id="thumbnail-container">
+                              <input type="submit" id="download-link" class="btn btn-default" value="Save Thumbnail">
+                          </div>
+                          <p id="thumbnail-success-message" ></p>
+                          <p id="thumbnail-error-message">Ooops, an error has occurred</p>
+                      </form>
                   </div>
-              </form>
-              <p id="thumbnail-success-message" ></p>
-              <p id="thumbnail-error-message">Ooops, an error has occurred</p>
+                  <div class="col-lg-6">
+                      <h3 class="font-bold">Chapters</h3>
+                      <form role="form" autocomplete="off" id="agendaForm">
+                          <ol id="chapters-points-main-list">
+                              {% for chapter in chapters_list.chapters %}
+                                  <li class="chapter-list-point-remove">
+                                      <h4 id="h5" class="h5"></h4>
+                                      <input type="hidden" class="chapter-title" value="{{ chapter.title }}">
+                                      <input type="hidden" class="chapter-time" value="{{ chapter.time }}">
+                                      <input type="hidden" class="chapter-time-readable" value="{{chapter.timeReadable}}">
+                                      <p class="chapter-point-paragraph" >Time:{{ chapter.timeReadable }} <br> Chapter Title: {{ chapter.title }}</p>
+                                      <button class="btn btn-danger chapter-btn-remove" type="button">Remove</button>
+                                      <img src="{{ chapter.imgUrl }}" width="200px" height="115px" class="chapterThumbnailContainer">
+                                  </li>
+                              {% endfor %}
+                              <li class="chapter-list-point-add">
+                                  <label style=" margin-right:15px;margin-top:5px;width:115px;">Chapter: &ensp;</label>
+                                  <input type="hidden" class="chapter-title">
+                                  <input type="hidden" class="chapter-time">
+                                  <input type="hidden" class="chapter-time-readable">
+                                  <input name=agendaField  class="form-control agenda"  type="text" placeholder="Type Agenda Point Here.." />
+                                  <button class="btn btn-success chapter-btn-add" type="button">Add Chapter</button>
+                              </li>
+                          </ol>
+                          <button type="submit" class="btn btn-primary agenda-form-button" id="chapterSaveButton" >Save Chapters</button>
+                      </form>
+                      <p id="chapters-update-messages" style="display:none;margin:20px 0;"></p>
+                  </div>
+              </div>
           </div>
       </div>
   </div>
