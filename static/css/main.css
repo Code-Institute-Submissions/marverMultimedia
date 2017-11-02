@@ -313,9 +313,12 @@
     }
 
     /* player.html Selectors*/
-    #meetingPlayerAccordion{
-        display:block;
+
+    .meeting{
+        display:none;
+        opacity:0;
     }
+
     svg {
         margin: 20px 0 20px 0;
     }
@@ -653,6 +656,7 @@
 
     .single-speaker-info-container {
         margin-left: 90px;
+        font-weight:bold;
     }
 
     div.event-creation-container {

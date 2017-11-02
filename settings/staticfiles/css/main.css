@@ -48,18 +48,18 @@
         margin-bottom: 0;
     }
 
-    .navbar-header{
+    div.main-website-navbar .navbar-header{
         width:25%;
     }
 
     div.container div.main-website-navbar div.navigation-list ul.navbar-nav {
-        width:75%;
-        margin:0 auto;
+        width:60%;
+        margin:0 0 0 100px;
         padding: 15px 0 0 30px;
         border: none;
         font-size: 1.2em;
         color: black;
-        display:block;
+        display:block!important;
     }
 
     footer div.navbar.navbar-default ul {
@@ -101,7 +101,7 @@
     .main-website-navbar img.menu-header-image {
         margin-top: 10px;
         padding: 10px 0 10px 10px;
-        width: 300px;
+        width: 400px;
         height:80px;
     }
 
@@ -785,6 +785,14 @@
         font-weight: bold;
         margin: 15px 0 0 60px;
         width: 100%;
+    }
+
+    div.col-lg-6 form ol#chapters-points-main-list{
+        list-style: none;
+    }
+
+    div.col-lg-6 form ol#chapters-points-main-list input{
+        width:50%;
     }
 
     #thumbnail-success-message {
