@@ -421,7 +421,7 @@ def thumbnail_upload(request):
                 [path, webcast_id])
         imgstr = re.search(r'base64,(.*)',datauri).group(1)
         output = open('output_%s.png' % webcast_id,'wb')
-        output.write(imgstr.decode('base64'))
+        output.write(base64.b64decode(imgstr))
         output.close()
         data = open('output_%s.png' % webcast_id,'rb')
         s3 = boto3.resource('s3',aws_access_key_id= AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
