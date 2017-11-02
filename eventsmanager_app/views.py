@@ -328,7 +328,7 @@ def chaptersView(request):
             if "https" not in data_uri_array[i]:
                 imgstr = re.search(r'base64,(.*)', data_uri_array[i]).group(1)
                 output = open('output_%s.png' % i, 'wb')
-                output.write(imgstr.decode('base64'))
+                output.write(imgstr)
                 output.close()
                 data = open('output_%s.png' % i, 'rb')
                 s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
