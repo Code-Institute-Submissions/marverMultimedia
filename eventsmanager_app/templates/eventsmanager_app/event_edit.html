@@ -30,7 +30,7 @@
     <div class="navbar navbar-default navbar-fixed-top main-website-navbar" >
         <div class="container">
             <div class="navbar-header">
-                <img class="menu-header-image" src="{% static 'img/logo-main.png'%}" width="250" height="60" alt="Marver Logo">
+                <img class="menu-header-image" src="{% static 'img/logo-main.png'%}" width="250" height="60" alt="Header Logo">
                 <span class="pull-right fa fa-bars fa-4x mobile-menu"></span>
             </div>
             <div class="navigation-list">
@@ -45,12 +45,11 @@
                     <li id="dropdown-link">
                         <a style="margin-bottom:20px;">ACCOUNT</a>
                         <div id="dropdown-menu" style="display:none">
-                            <a href="/eventsmanager/manage_subscription" style="padding-top: 20px;font-size:0.8em;color:rgb(34,34,34)">MANAGE SUBSCRIPTION</a>
+                            <a href="{{ user.get_absolute_url }}" style="padding-top: 20px;font-size:0.8em;color:rgb(34,34,34)">MANAGE SUBSCRIPTION</a>
                         <a href="/eventsmanager/logout" style="color:rgb(34,34,34)">LOGOUT</a><br>
                         </div>
                     </li>
                 </ul>
-                <p style="font-size:0.8em;position:absolute;float: right; margin:50px 0 0 75%;">Welcome {{ user.email }}</p>
             </div>
         </div>
     </div>
@@ -157,7 +156,7 @@
                       <div class="modal-body" id="speakersCreationModal">
                           <form method="POST" id="SpeakerCreationForm" action="eventsmanager/speakers_creation">{%csrf_token%}
                               {{ speakerForm | crispy}}
-                              <img id="speaker-image-preview" src="#" alt="" width="100px" height="100px">
+                              <img id="speaker-image-preview" src="#" alt="Speaker Picture" width="100px" height="100px">
                               <br>
                               <p id="speaker-creation-error-modal"></p>
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -202,7 +201,7 @@
                               {% for asset in assets %}
                                   <div value="{{ asset.id }}" class="assets-inner-container">
                                       <input type="checkbox"  class="pull-right asset-delete-checkbox">
-                                      <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50">
+                                      <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50" alt="Document Icon">
                                       <p>{{ asset.asset_name }}</p>
                                   </div>
                               {% endfor %}
@@ -254,7 +253,7 @@
                               <div value="{{ asset.id }}" class="modal-asset-container">
                                   <a href="#" class="asset-selector-id-add pull-right" >Add</a>
                                   <a href="#" class="asset-selector-id-remove pull-right">Remove</a>
-                                  <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50">
+                                  <img src="{% static 'fonts/Icons/Adobe-PDF-Document-icon.png'%}" class="pull-left" width="45" height="50" alt="Document Icon">
                                   <h5>{{ asset.asset_name }}</h5>
                               </div>
                           {% endfor %}
@@ -297,7 +296,7 @@
                                       <input type="hidden" class="chapter-time-readable" value="{{chapter.timeReadable}}">
                                       <p class="chapter-point-paragraph" >Time:{{ chapter.timeReadable }} <br> Chapter Title: {{ chapter.title }}</p>
                                       <button class="btn btn-danger chapter-btn-remove" type="button">Remove</button>
-                                      <img src="{{ chapter.imgUrl }}" width="200px" height="115px" class="chapterThumbnailContainer">
+                                      <img src="{{ chapter.imgUrl }}" width="200px" height="115px" class="chapterThumbnailContainer" alt="Chapter Image">
                                   </li>
                               {% endfor %}
                               <li class="chapter-list-point-add">

@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 
 $(document).on('click','.reorder',function(e){
@@ -51,5 +53,43 @@ $(document).on('click','.reorder',function(e){
         })
     });
 
+    $(document).on('click','input.star',function(e){
+        $('#ratingSubmit').show();
+        rating= e.currentTarget.value;
+        console.log(rating);
+    });
+
+    $('#ratingSubmit').click(function(e){
+        userHasRated = sessionStorage.getItem('sessionId');
+        console.log(userHasRated);
+        console.log(rating);
+        if(userHasRated === null) {
+            $.ajax({
+                type: "POST",
+                url: "/events/eventrating/",
+                data: {
+                    webcast_id: webcastId,
+                    rating: rating
+                },
+                success: function (message) {
+                    console.log(message);
+                    sessionStorage.setItem('sessionId',1);
+                    $('#ratingSubmit').hide();
+                    $('.rating-message').html(message);
+                    setTimeout(function(){$('.rating-message').hide();},3000);
+                }
+            })
+        }
+        else{
+            $('#ratingSubmit').hide();
+            $('.rating-message').show().html("You have already voted for this session");
+            setTimeout(function(){$('.rating-message').hide();},3000);
+        }
+    });
+
 });
+
+
+
+
 

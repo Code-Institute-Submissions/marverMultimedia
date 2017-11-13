@@ -536,7 +536,7 @@
 
           _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
 
-          var dataURL = _CANVAS.toDataURL('image/png');
+          var dataURL = _CANVAS.toDataURL('image/jpeg',0.7);
 
            $.ajax({
                type: 'POST',
@@ -588,7 +588,7 @@
                      $('#chapters-update-messages').hide();
                      e.preventDefault();
                      _CANVAS_CTX.drawImage(_VIDEO, 0, 0, _VIDEO.videoWidth, _VIDEO.videoHeight);
-                     var dataURL = _CANVAS.toDataURL('image/png');
+                     var dataURL = _CANVAS.toDataURL('image/jpeg',0.30);
                      var minutes = Math.floor(video.currentTime / 60);
                      var seconds = Math.floor(video.currentTime - minutes *60);
                      var newField = $('.chapter-list-point-add').clone(false);
@@ -644,6 +644,8 @@
 
      $(document).on('click', '#chapterSaveButton',
       function(e) {
+
+
 
        e.preventDefault();
 

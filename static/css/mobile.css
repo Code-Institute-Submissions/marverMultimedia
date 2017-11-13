@@ -307,6 +307,10 @@
 
     /* player.html Selectors*/
 
+    .player-menu-container{
+        display:none;
+    }
+
     #meetingPlayerAccordion{
         display:none;
     }

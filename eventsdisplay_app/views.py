@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives,BadHeaderError
 from eventsmanager_app.models import *
-from eventsdisplay_app.models import Feedback,Support
+from eventsdisplay_app.models import Feedback,Support,EventRating
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -61,15 +61,20 @@ def event_player(request,id):
     speakers_list = Speakers.objects.all().filter(webcast__id__contains=id)
     try:
         agenda_list = Agenda.objects.get(webcast_id=id)
+        print(agenda_list)
+        agenda_id = agenda_list.id
     except:
         agenda_list = None
+        agenda_id= 0
+
+        print(agenda_id)
 
     try:
         chapter_list = get_object_or_404(Chapters,webcast_id=id)
     except:
         chapter_list = None
 
-    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'event_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list , 'chapters_list' :chapter_list})
+    return render(request, "eventsdisplay/player.html", {'webcasts':event_list, 'event_id':event_id, 'assets':single_assets_list, 'agenda':agenda_list, 'speakers_list':speakers_list , 'chapters_list' :chapter_list,'agenda_id' : agenda_id})
 
 
 def event_comment(request):
@@ -127,3 +132,21 @@ def event_comment(request):
             msg.attach_alternative(message.render(context), 'text/html')
             msg.send()
             return HttpResponse('You have successfully submitted a support request, we will be in touch shortly')
+
+@csrf_exempt
+def event_rating(request):
+
+        webcast_id = request.POST['webcast_id']
+        rating = request.POST['rating']
+        try:
+            EventRating.objects.create(
+
+                webcast_id = webcast_id,
+                rating = rating
+            )
+            return HttpResponse('Thank you!!')
+        except Exception:
+            return HttpResponse('There has been an error, please try again')
+
+
+

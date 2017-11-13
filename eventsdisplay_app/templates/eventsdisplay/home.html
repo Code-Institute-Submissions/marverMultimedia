@@ -32,7 +32,7 @@
                         <div class="events-images-inner-container clearfix" id="carousel">
                             {% for webcast in webcasts %}
                             <div class="webcast-image-overlay">
-                                <img src="{{webcast.webcast_img}}" width="600px" height="300px;">
+                                <img src="{{webcast.webcast_img}}" width="600px" height="300px;" alt="Event Image">
                                 <div class="webcast-shadow-cast"></div>
                                 <div class="single-webcast-text-container">
                                     <div class="single-webcast-text-inner-container">
@@ -60,13 +60,13 @@
                          <a href="{{ webcast.get_absolute_url }}" target="_blank">
                              <div class="archive-index-event-single-container-inner">
                                  <div class="recent-webcast-overlay">
-                                     <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50">
+                                     <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50" alt="Event Play Icon">
                                      <div class="archived-overlay-text-container">
                                          <p>{{webcast.webcast_date}} {{webcast.webcast_time}} </p>
                                          <h4><b>HOUSE OF COMMONS</b></h4>
                                      </div>
                                  </div>
-                                 <img src="{{webcast.webcast_img}}" width="auto" height="250">
+                                 <img src="{{webcast.webcast_img}}" width="auto" height="250" alt="Event Thumbnail">
                              </div></a>
                      </div>
                  {% endfor %}

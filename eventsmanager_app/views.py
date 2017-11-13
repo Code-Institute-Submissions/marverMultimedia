@@ -243,8 +243,10 @@ class UpdateEvent(UpdateView):
         try:
             chapters_list = get_object_or_404(Chapters, webcast_id=self.kwargs['pk'])
             context['chapters_list'] = chapters_list
+            context['chapters_id'] = chapters_list.id
         except:
             context['chapters_list'] = None
+            context['chapters_id'] = 0
 
         return context
 
