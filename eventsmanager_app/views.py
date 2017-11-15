@@ -443,4 +443,19 @@ def increase_site_visits(request):
             platform = platform,
             device = device
         )
+    return HttpResponse('')\
+
+@csrf_exempt
+def increase_event_visits(request):
+    if request.method == 'POST':
+        date = request.POST['date']
+        platform = request.POST['platform']
+        device = request.POST['device']
+        event_id = request.POST['event_id']
+        WebcastVisits.objects.create(
+            date=date,
+            platform = platform,
+            device = device,
+            event_id_id = event_id
+        )
     return HttpResponse('')

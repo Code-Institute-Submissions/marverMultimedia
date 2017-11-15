@@ -11,17 +11,17 @@ var today = new Date();
     var date = year + "-" + month +  "-" + day;
 
 
- function increaseAttendace() {
+ function increaseAttendace(page,eventId) {
 
-     platform = navigator.platform;
-     console.log(platform);
+     if(page === 'player'){
 
-     $.ajax({
+         $.ajax({
            type: "POST",
-                url: "/increase_siteattendance/",
+                url: "/increase_eventattendance/",
                 data: {
+                    event_id : eventId,
                     date: date,
-                    platform : platform,
+                    platform : navigator.platform,
                     device : navigator.userAgent
                 },
                 success: function (message) {
@@ -29,6 +29,23 @@ var today = new Date();
                 }
 
         })
+
+     }else{
+
+     $.ajax({
+           type: "POST",
+                url: "/increase_siteattendance/",
+                data: {
+                    date: date,
+                    platform : navigator.platform,
+                    device : navigator.userAgent
+                },
+                success: function (message) {
+                    console.log(message);
+                }
+
+        })
+         }
     }
 
 /* Home Page Carousel Function */
