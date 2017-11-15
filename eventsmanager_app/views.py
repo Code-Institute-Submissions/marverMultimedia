@@ -431,3 +431,16 @@ def thumbnail_upload(request):
         removeFiles = Timer(20.0,cleanupThumnailsfiles)
         removeFiles.start()
         return HttpResponse('Your Thumbnail Has been Successfully Set')
+
+@csrf_exempt
+def increase_site_visits(request):
+    if request.method == 'POST':
+        date = request.POST['date']
+        platform = request.POST['platform']
+        device = request.POST['device']
+        SiteVisits.objects.create(
+            date=date,
+            platform = platform,
+            device = device
+        )
+    return HttpResponse('')

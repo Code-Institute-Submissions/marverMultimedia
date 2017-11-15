@@ -1,5 +1,8 @@
 
-
+if (window.location.pathname === '/' || window.location.pathname === '/events/') {
+console.log(window.location);
+    increaseAttendace();
+}
 $(document).ready(function(){
 
 $(document).on('click','.reorder',function(e){

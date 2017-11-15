@@ -63,7 +63,7 @@
                                      <img src="{% static '/img/video-play-4-xxl.png'%}" class="pull-left" width="50" height="50" alt="Event Play Icon">
                                      <div class="archived-overlay-text-container">
                                          <p>{{webcast.webcast_date}} {{webcast.webcast_time}} </p>
-                                         <h4><b>HOUSE OF COMMONS</b></h4>
+                                         <h4 style="text-transform: uppercase">{{ webcast.webcast_title }}</h4>
                                      </div>
                                  </div>
                                  <img src="{{webcast.webcast_img}}" width="auto" height="250" alt="Event Thumbnail">

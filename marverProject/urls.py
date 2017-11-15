@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^agenda', eventsmanager_views.agendaView),
     url(r'^chapters', eventsmanager_views.chaptersView),
     url(r'^thumbnail_upload',eventsmanager_views.thumbnail_upload),
+    url(r'^increase_siteattendance/',eventsmanager_views.increase_site_visits, name='increase_site_visits'),
 ]

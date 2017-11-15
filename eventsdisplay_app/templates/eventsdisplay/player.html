@@ -36,6 +36,13 @@
                     <label>Email
                         <input type="email" name="email" class="form-control email" required />
                     </label><br>
+                    <label>Issue Type
+                        <select name="issue" class="form-control issue">
+                            <option value="Video Problem">Video Problem</option>
+                            <option value="Usability Problem">Usability Problem</option>
+                            <option value="User Interface Problem">User Interface Problem</option>
+                        </select>
+                    </label><br>
                     <label style="width:100%">Issue Experienced
                         <textarea class="form-control comment" name="comment" rows="4" required></textarea>
                     </label><br>
@@ -181,7 +188,7 @@
                     {% for chapter in chapters_list.chapters %}
                     <li> <img src="{{ chapter.imgUrl }}" alt="Event Chapter Image" width="125" height="70">
                         <a href="javascript:return false" onclick="jwplayer('myElement').seek({{ chapter.time }})">
-                            {{ chapter.title }} <br> Time: {{ chapter.timeReadable }}</a></li>
+                            {{ chapter.title }} - {{ chapter.timeReadable }}</a></li>
                     {% endfor %}
                  </ul>
             </div>

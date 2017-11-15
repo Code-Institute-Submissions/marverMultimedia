@@ -6,5 +6,9 @@
     playerInstance.on('pause', function () {
         sessionStorage.setItem('attedance', playerInstance.getPosition())
     });
+
+    $.ajax({
+
+    })
 })();
 

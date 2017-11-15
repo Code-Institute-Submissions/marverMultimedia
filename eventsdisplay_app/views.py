@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives,BadHeaderError
 from eventsmanager_app.models import *
-from eventsdisplay_app.models import Feedback,Support,EventRating
+from eventsmanager_app.models import Feedback,Support,EventRating
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -85,6 +85,7 @@ def event_comment(request):
         comment = request.POST['comment']
         webcast_id = request.POST['webcast_id']
         webcast_title = request.POST['webcast_title']
+        date = request.POST['date']
 
         if request.POST['form'] == "commentForm":
 
@@ -95,6 +96,7 @@ def event_comment(request):
                     email = email,
                     comment = comment,
                     webcast_id = webcast_id,
+                    date=date
                 )
 
                 subject, from_email, to = 'Thank you for contacting Marver', 'lucalicata@hotmail.com', email
@@ -112,12 +114,15 @@ def event_comment(request):
             except BadHeaderError:
                 return HttpResponse('There have been an error please try again')
         else:
+            issue_type = request.POST['issue_type']
             Support.objects.create(
                 name=name,
                 surname=surname,
                 email=email,
                 support_request=comment,
                 webcast_id=webcast_id,
+                issue_type = issue_type,
+                date = date
             )
 
             subject, from_email, to = 'Thank you for your support request', 'lucalicata@hotmail.com', email
@@ -147,6 +152,13 @@ def event_rating(request):
             return HttpResponse('Thank you!!')
         except Exception:
             return HttpResponse('There has been an error, please try again')
+
+#@csrf_exempt
+#def site_attendance(request):
+
+
+
+
 
 
 

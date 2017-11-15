@@ -1,4 +1,37 @@
- /* Home Page Carousel Function */
+/*site/player visitis capturing function*/
+
+var today = new Date();
+
+    var day = today.getDate();
+
+    var month = today.getMonth();
+
+    var year = today.getFullYear();
+
+    var date = year + "-" + month +  "-" + day;
+
+
+ function increaseAttendace() {
+
+     platform = navigator.platform;
+     console.log(platform);
+
+     $.ajax({
+           type: "POST",
+                url: "/increase_siteattendance/",
+                data: {
+                    date: date,
+                    platform : platform,
+                    device : navigator.userAgent
+                },
+                success: function (message) {
+                    console.log(message);
+                }
+
+        })
+    }
+
+/* Home Page Carousel Function */
 
     function carousell(element, side, node, webcasts) {
         element.preventDefault();
@@ -145,6 +178,11 @@ $(document).ready(function() {
 });
 
 function sendForm (formType,current,elementToRefresh) {
+
+
+
+    console.log($(formType + ' .issue').val());
+
     $.ajax({
         type: 'POST',
         url: "/events/comment/",
@@ -156,6 +194,8 @@ function sendForm (formType,current,elementToRefresh) {
             comment: $(formType + ' .comment').val(),
             webcast_id: $(formType + ' .webcast_id').val(),
             webcast_title: $(formType + ' .webcast_title').val(),
+            date : date,
+            issue_type :$(formType + ' .issue').val(),
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
 
         },
