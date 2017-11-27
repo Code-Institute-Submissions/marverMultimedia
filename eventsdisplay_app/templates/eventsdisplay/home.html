@@ -48,15 +48,15 @@
                     </div>
                 </div>
         </div>
-        <div class="row recent-webcasts">
-            <header class="header-middle">
+    <header class="header-middle">
                 <a href="/events" class="btn btn-lg btn-success pull-right">VISIT ARCHIVE <i class="fa fa-lg fa-angle-double-right"></i>
                 </a>
                 <h2>RECENTLY ARCHIVED</h2>
                 <hr>
             </header>
-                 {% for webcast in archived_webcasts %}
-                     <div class="col-md-5 archive-index-webcast-single-container">
+        <div class="row recent-webcasts">
+                 {% for webcast in archived_webcasts|slice:":4" %}
+                     <div class="col-sm-5 archive-index-webcast-single-container">
                          <a href="{{ webcast.get_absolute_url }}" target="_blank">
                              <div class="archive-index-event-single-container-inner">
                                  <div class="recent-webcast-overlay">

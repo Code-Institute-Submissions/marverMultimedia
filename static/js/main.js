@@ -7,11 +7,16 @@ var today = new Date();
     var month = today.getMonth();
 
     var year = today.getFullYear();
+    var hours = today.getHours();
+    var minutes = today.getMinutes();
+    var seconds = today.getSeconds();
 
-    var date = year + "-" + month +  "-" + day;
+    var date = year + "-" + (month +1) +  "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+    console.log(today);
 
 
- function increaseAttendace(page,eventId) {
+
+ function increaseAttendace(page,eventId,event_title) {
 
      if(page === 'player'){
 
@@ -22,7 +27,8 @@ var today = new Date();
                     event_id : eventId,
                     date: date,
                     platform : navigator.platform,
-                    device : navigator.userAgent
+                    device : navigator.userAgent,
+                    event_title : event_title
                 },
                 success: function (message) {
                     console.log(message);
@@ -194,37 +200,3 @@ $(document).ready(function() {
 
 });
 
-function sendForm (formType,current,elementToRefresh) {
-
-
-
-    console.log($(formType + ' .issue').val());
-
-    $.ajax({
-        type: 'POST',
-        url: "/events/comment/",
-        data: {
-            form:$(formType + ' .formType').val(),
-            name: $(formType + ' .name').val(),
-            surname: $(formType + ' .surname').val(),
-            email: $(formType + ' .email').val(),
-            comment: $(formType + ' .comment').val(),
-            webcast_id: $(formType + ' .webcast_id').val(),
-            webcast_title: $(formType + ' .webcast_title').val(),
-            date : date,
-            issue_type :$(formType + ' .issue').val(),
-            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-
-        },
-        success: function (message) {
-
-        $(current).next().css('color','red');
-        $(current).next().html(message);
-        setTimeout(function(){
-            $(current).next().hide();
-            $(elementToRefresh).modal('hide');
-            $(elementToRefresh).load(' '+ elementToRefresh +'Inner')
-            },3000)
-        }
-    })
-}

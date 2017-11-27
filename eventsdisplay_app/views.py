@@ -115,6 +115,8 @@ def event_comment(request):
                 return HttpResponse('There have been an error please try again')
         else:
             issue_type = request.POST['issue_type']
+            platform = request.POST['platform']
+            device = request.POST['device']
             Support.objects.create(
                 name=name,
                 surname=surname,
@@ -122,7 +124,10 @@ def event_comment(request):
                 support_request=comment,
                 webcast_id=webcast_id,
                 issue_type = issue_type,
-                date = date
+                date = date,
+                platform = platform,
+                device = device,
+                event_title = webcast_title
             )
 
             subject, from_email, to = 'Thank you for your support request', 'lucalicata@hotmail.com', email
@@ -143,18 +148,18 @@ def event_rating(request):
 
         webcast_id = request.POST['webcast_id']
         rating = request.POST['rating']
+        event_title = request.POST['event_title']
         try:
             EventRating.objects.create(
 
                 webcast_id = webcast_id,
-                rating = rating
+                rating = rating,
+                event_title = event_title
             )
             return HttpResponse('Thank you!!')
         except Exception:
             return HttpResponse('There has been an error, please try again')
 
-#@csrf_exempt
-#def site_attendance(request):
 
 
 

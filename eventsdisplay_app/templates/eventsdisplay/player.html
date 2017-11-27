@@ -4,6 +4,7 @@
   <script src="{% static 'js/jwplayer-7.12.2/jwplayer.js' %}"></script>
     <script>jwplayer.key="Bd+SvQlaIgPfkPvQCVEOfpmILmXJNDpt4D2Y0Q==";</script>
 
+
 <!-- Container for the loader that activates when an Ajax request is sent-->
 <div id="loader-container">
     <div id="loader"></div>
@@ -143,7 +144,7 @@
                                                 <input type="hidden" value="commentForm" class="formType">
                                                 <input type="hidden" value="{{ event_id.webcast_title }}" class="form-control webcast_title">
                                                 <label>
-                                                    <input type="hidden" value="{{event_id.id}}" class="webcast_id">
+                                                    <input type="hidden" value="{{event_id.id}}" class="webcast_id" id="event_id">
                                                 </label>
                                                 <label>Name
                                                     <input type="text" class="form-control name"  required/>
@@ -184,7 +185,7 @@
                 </div>
                 <hr>
                 <p></p>
-                <ul >
+                <ul>
                     {% for chapter in chapters_list.chapters %}
                     <li> <img src="{{ chapter.imgUrl }}" alt="Event Chapter Image" width="125" height="70">
                         <a href="javascript:return false" onclick="jwplayer('myElement').seek({{ chapter.time }})">
@@ -263,9 +264,6 @@
         </svg>
     </div>
 </section>
-
 <script src="{% static 'js/main.js' %}" ></script>
-<script src="{% static 'js/eventsDisplay.js' %}" ></script>
-<script src="{% static 'js/eventPlayer.js' %}" ></script>
 
 {% endblock %}
