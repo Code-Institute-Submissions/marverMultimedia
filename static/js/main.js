@@ -188,7 +188,7 @@ $(document).ready(function() {
 
     //mobile Menu Function
     $(document).on('click', '.mobile-menu', function (e) {
-        $('ul.nav').slideToggle();
+        $('ul.main-navbar').slideToggle();
     });
 
     $(document).on('mouseover', '#dropdown-link',function(e){

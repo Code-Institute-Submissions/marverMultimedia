@@ -1,5 +1,5 @@
 
-@media screen and (min-width:992px) {
+@media screen and (min-width:1200px) {
     html {
         -ms-overflow-style: -ms-autohiding-scrollbar;
     }
@@ -314,8 +314,19 @@
 
     /* player.html Selectors*/
 
+    .rating-message{
+
+        height:35px;
+        margin-top:35px;
+    }
+
     .player-header{
         display:inline-flex;
+    }
+
+    .player-header-inner{
+        display:inline-flex;
+
     }
     .stars{
         padding:20px;
@@ -962,7 +973,7 @@
         font-weight: bold;
     }
 
-    /* Subscription Managemenet Page */
+    /* Subscription Management Page */
 
     div.subscription-container{
         height:100vh;

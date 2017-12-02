@@ -62,6 +62,7 @@
     <div class="container ">
         <header class="player-header">
             <h1 class="player-webcast-title">{{event_id.webcast_title}}</h1>
+            <div class="player-header-inner">
         <div class="stars">
 
   <form action="">
@@ -90,7 +91,9 @@
 
 </div>
 <a href="#" class="btn btn-default" style="height:35px; margin-top:28px; display:none" id="ratingSubmit">Submit Rating</a>
-            <p class="rating-message" style="height:35px; margin-top:35px;"></p>
+
+                </div>
+            <p class="rating-message" ></p>
         </header>
         <div class="row webcast-main-container">
             <div class="col-lg-7 video-container">
@@ -246,8 +249,8 @@
             <h2>RECENTLY ARCHIVED</h2>
         </div>
         <div class="row">
-            {% for webcast in webcasts %}
-                <div class="col-md-3 archive-index-webcast-single-container">
+            {% for webcast in webcasts|slice:":6" %}
+                <div class="col-lg-3 archive-index-webcast-single-container">
                     <a href="{{ webcast.get_absolute_url }}" target="_blank"> <div class="archive-index-event-single-container-inner">
                         <div class="recent-webcast-overlay">
                             <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
