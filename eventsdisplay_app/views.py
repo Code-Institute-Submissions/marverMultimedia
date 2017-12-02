@@ -96,7 +96,8 @@ def event_comment(request):
                     email = email,
                     comment = comment,
                     webcast_id = webcast_id,
-                    date=date
+                    date=date,
+                    event_title=webcast_title
                 )
 
                 subject, from_email, to = 'Thank you for contacting Marver', 'lucalicata@hotmail.com', email

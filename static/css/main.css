@@ -986,6 +986,16 @@
         width:100%;
     }
 
+    .subscription-inner-container{
+        border-top:1px solid black;
+        border-bottom:1px solid black;
+        padding:30px;
+    }
+
+    .subscription-inner-container p{
+        font-size:1.4em;
+    }
+
      /* event re-order page*/
 
     .empty-month-message{

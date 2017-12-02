@@ -20,7 +20,7 @@ SECRET_KEY = 'g3c@z7kst6#3z6k31kicnaywvwhnkwb4j4=v^zr58d2_4jsnq2'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
-EMAIL_HOST = 'email-smtp.eu-west-1.amazonaws.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

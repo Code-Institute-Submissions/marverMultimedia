@@ -5,11 +5,12 @@
     {% load humanize %}
 
     <div class="container subscription-container">
+        <div class="subscription-inner-container">
         <header>
             <h1>MANAGE SUBSCRIPTION</h1>
             <h4>Hello {{ user.email }}!!</h4>
         </header>
-        <p>Your stripe id is {{ user.stripe_id }} </p>
+        <p>Your Subscription ID is <b>{{ user.stripe_id }}</b> </p>
         <h2>Subscription Details</h2>
         <p> Plan : {{ subscription_details.plan.name  }}</p>
         <p> Cost : {{ amount | intcomma }} {{ subscription_details.plan.currency }}</p>
@@ -23,6 +24,7 @@
            <a href="{% url "cancelsubscription" %}" class="btn btn-danger"
               onclick="return cancelSubscriptionCheck();">Cancel Subscription</a>
         {% endif %}
+    </div>
     </div>
     <script>
     function cancelSubscriptionCheck(){
