@@ -10,8 +10,7 @@ marverProject/__init__.pyc
 marverProject/staticfiles/
 marverProject/urls.pyc
 marverProject/wsgi.pyc
-output.png
-
+static/jquery-ui-1.12.1
 
 /settings/config.py
 /settings/config.pyc

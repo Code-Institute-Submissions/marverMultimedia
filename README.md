@@ -1,121 +1,118 @@
 # Marver Webcast ON-DEMAND Platform
 
-This Project has been created to give organization that communicate information and messages via video to
-store the videos and provide the users with a simple to use platform for video replay, document download, Speaker info
+This Project has been created to give organization the possibility of easily and efficiently deliver video(and multimedia) content to
+users, this platform gives the organization the opportunity to host and share On-Demand videos whilst also providing other informational
+capabilities like document download, agenda points, chapters, speakers, Support, etc.
 
 The Project is divided into two Django Applications:
 
 #### Events Manager
 
-- Application in charge of the creation, editing and publishing of Events, Login, Registration and Subscription
+- Application in charge of the creation, editing and publishing of Events, Login, Registration and Service Subscription
 
 #### Events Display
 
-- Application in charge of Storage, organization, replay of On-Demand video events
+- Application in charge of Display, Organize ad Share On-Demand video webcasts
 
 ## Features
 
 #### Existing Features
 
-- Ability to implement subscription payment model via Stripe
-- Ability to create Webcast Events that are unique per single user, but that are readily published ot the platform
+- Ability to implement and manage service subscription payment model via Stripe
+- Ability for users to register and obtain their own login details based on their subscription
+- Ability to create and instantly publish Webcast Events that are unique per single user
 - Ability to edit the Webcast Events information and upload large video file size(directly to Amazon S3)
 - Ability to create Speaker Information that includes Bio, Picture, etc.
 - Ability to create Agenda points
 - Ability to upload new downloadable assets assigned to the specific Webcast event(re-usable for other webcasts also)
-- Ability to select part of video as Thumbnail for more attracting display
-- Ability to select various parts of the video as chapter thumbnail for provision into the Webcast Player
+- Ability to select part of video as Thumbnail for Webcast Event Display
+- Ability to extract various parts of the video as image chapter thumbnail for provisioning into the Webcast Player and to enable more targeted video navigation
+- Ability to submit feedback per single Webcast which is stored in a database for later reporting usage
+- Ability to submit support requests per single Webcast which are stored in a database for later reporting usage
+- Ability to submit Star based rating per single Webcast which is stored in a database for later reporting usage
 
 ## Getting Started
 
 ##### This project has been built on Python version 2.7 however certain adjustment have been applied to make sure is compatible with Python 3.6 due to Heroku Deployment
 
 1. Firstly you will need to clone this repository by running the ```git clone https://github.com/Diomede81/marverMultimedia.git``` command
-2. After you've done that please make sure that(if you are using a Windows Environment) you have **python** and **pip(which comes pre-installed with Python)** installed - Python comes pre-installed with Linux and MacOS
+2. After the cloning process has ended please make sure that(if you are using a Windows Environment) you have **python** and **pip(which comes pre-installed with Python)** installed - Python comes pre-installed with Linux and MacOS
 
-    1. You can get **Python** by the donwload page [here](https://www.python.org/downloads/)
+    1. You can get **Python** by the download page [here](https://www.python.org/downloads/)
     2. Once you've installed Python you'll need to run the following command to install the Virtual Environment package:
 
        `pip install virtualenv # this may require sudo on Mac/Linux`
+    3. After the successfull installation of virtualenv please activate the environment by following this
+        [guide](https://virtualenv.pypa.io/en/stable/userguide/#usage)
+    4. To complete the packages installation, type the following command in order to install all the necessary
+        dependencies for this application, these are stored in the provided requirements.txt file
+        please ensure that you are located in the root project folder when running this command
+        `pip install -r requirements.txt`
 
-3. Once **npm** and **bower** are installed, you'll need to install all of the dependencies in *package.json* and *bower.json*
-  ```
-  npm install
-
-  bower install
-  ```
-4. After those dependencies have been installed you'll need to make sure that you have **http-server** installed. You can install this by running the following: ```npm install -g http-server # this also may require sudo on Mac/Linux```
-5. Once **http-server** is installed run ```http-server -c-1```
-6. The project will now run on [localhost](http://127.0.0.1:8080)
+2. Within the Settings folder, open the file named config.py and add the information related to your project(Database details, AWS Security details, Etc.)
+before you go further as the project will not work without at least a database configured(you can utilize MySQL lite which can be downloaded [here](https://www.sqlite.org/)
+3. Once all of the dependency packages have been installed and the config file have been populated with all the necessary information, please test the Django deployment by typing the following command(ensure you are in the project root folder before running it)
+    1. `python manage.py runserver --settings=settings.dev`
+    2. This will start the server in development mode and serve the static files from your local static folder
+4. If you would like to test the staging mode(the final version before production) please ensure that you have configured your AWS S3 bucket and have run the following command
+    1.  `python manage.py collectstatic --settings=settings.staging`
+    2.  This will upload automatically to the S3 Bucket all the files necessary for the correct functionality of the site
+6. The project will now run on [localhost](http://127.0.0.1:8000) unless otherwise stated on the terminal
 7. Make changes to the code and if you think it belongs in here then just submit a pull request
 
 
 ## Running the tests
 
-Jasmine/Karma testing suite have been used to test the user action of adding items to the basket and eventual basket calculation about
-prices and quantities
+The Application has been extensively tested with multiple Operative Systems and multiple browser types
 
-Jasmine/Karma(if you follow the installation procedure correctly) will be installed with NPM/Bower packages and ready to use
+**Javascript Testing**:
 
-if you have any trouble installing please visit the this [link](https://karma-runner.github.io/1.0/intro/installation.html)
+ Javascript testing has been performed manually via testing of different scenarios in multiple browsers, the utilization of
+ a testing suite has not been used as most of the Javascript functions are utilized to modify DOM elements and could easily be tested manually
+
+**Python Testing**:
+
+  Django integrated testing suite has been utilized to test that each view would successfully connect to a database and provide back the correct information and HTTP messages
+
+  Each Application's views has veeb tested using the above method and successfully provide the required information and HTTP messages
+
 
 ### Tests
 
-The Tests have been designed to verify correct functionality of the services that will take care of the shopping basket
-and other APIs(I.e. the API that will retrieve list of addresses from postcode provided)
+The below example of view test will receive an image and ensure that the necessary information are saved into the database for later retrieval
 
 An Example:
 
 ```
 
-// Factory responsible for adding wines to the basket
+    def test_thumbnail_upload(self):
+        img = BytesIO(b'myImage')
+        img.name = 'webcast.jpg'
 
-    describe('.addItemTobasket()', function () {
+        thumbnail_upload_test = self.client.post('/thumbnail_upload/',data={
+            'webcast_id' : 1,
+            'webcast_image' : img
+        })
 
-
-        var item =
-            {
-                wine: {
-
-                    id: 4,
-                    totalBasket:0
-                }
-
-            };
-
-        var basket = null;
-
-        var element = "";
-
-        var quantity = 2;
-
-        var addItemToBasketDomSpy
-
-        beforeEach(function(){
-
-            addItemToBasketDomSpy = spyOn(DomManipulation,'addItemToBasketDom').and.returnValue(2);
-            addItemToBasketDomSpy2 = spyOn(DomManipulation,'makeBasketIconAppearDisappear').and.returnValue(2);
-
-        });
-
-
-        it('should Exist', inject(function (BasketService) {
-
-            expect(BasketService.addItemTobasket(item,element,quantity,basket)).toEqual([{id:4, totalBasket:2}]);
-            expect(addItemToBasketDomSpy).toHaveBeenCalledWith(element);
-            expect(addItemToBasketDomSpy2).toHaveBeenCalledWith('appear');
-            expect(addItemToBasketDomSpy).toHaveBeenCalledTimes(1);
-
-        }))
-
-    });
-
+        self.assertEqual(thumbnail_upload_test.status_code,200)
 ```
 
 
 ## Deployment
 
-The application is ready to be deployed on a live web server, just copy the files in the designated Web-Server Folder and the site should be loading successfully
+
+
+The application has been deployed using the following:
+
+ - Heroku to manage the Django Web Server & WSGI Support
+ - AWS RDS to manage the MySQL database
+ - AWS S3 to manage the serving of static and media files
+ - GMAIL to manage the automated mail responses
+
+
+For deployment instruction on Heroku please visit [Here](https://devcenter.heroku.com/categories/python)
+For Deployment instruction on AWS please visit [Here](https://aws.amazon.com/documentation/gettingstarted/)
+
 
 ## Built With
 
@@ -124,12 +121,30 @@ The application is ready to be deployed on a live web server, just copy the file
 * [Bootstrap 3.3](https://getbootstrap.com/docs/3.3/) - The responsive design development Framework Used
 * JAVASCRIPT - The language used to build the interactivity of the web page elements
 * [JQuery](https://jquery.com/) - The Library used to enhance the interactivity of the web page elements for cross-browser successful implementation
-* [AngularJS](https://angularjs.org/) - The Javascript framework used for implementing local-storage, page-routing
-* [NPM](https://www.npmjs.com/) - Dependency Management
-* [Bower](https://bower.io/) - Dependency Management
-* [Jasmine](https://jasmine.github.io/) - The testing framework used
-* [Karma](https://karma-runner.github.io/1.0/index.html) - The test runner used
-* [JetBrains Webstorm](https://www.jetbrains.com/webstorm/) - The IDE used to develop and test the application
+* [PYTHON](https://www.python.org/) - The Language utilized to manage the Server Side connections with Database and relevant services
+* [Django](https://www.djangoproject.com/) - The Python Framework utilized to create a structured, stable and efficient application based on the Python language
+* [JetBrains PyCharm](https://www.jetbrains.com/pycharm/) - The IDE used to develop and test the application
+
+### More Information about build libraries
+
+The following library has been also used to enhance the user experience:
+
+#### [BootStrap-Timepicker](https://jdewit.github.io/bootstrap-timepicker):
+- This library has been utilized to implement date-picker for web browser that do not have a native support for time picker
+
+#### Jquery-UI:
+
+- This specific library has been used to implement a date picker for browsers that do not natively support one
+
+#### [S3-Direct](https://github.com/bradleyg/django-s3direct):
+
+- This library has been used to implement the upload of video files directly to AWS S3 in order to bypass the Web-Server and limit load on operations
+
+#### [Boto3](http://boto3.readthedocs.io/en/latest/):
+
+- Boto 3 has been used to implement the link between the Django application and AWS S3 in order to enable the serving of static
+files and upload of media files to the S3 Bucket.
+
 
 ## Versioning
 
