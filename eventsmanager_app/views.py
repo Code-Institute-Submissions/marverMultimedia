@@ -466,7 +466,7 @@ def increase_event_visits(request):
 @csrf_exempt
 def search_events_manager(request,pk,search):
 
-    events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%'); """,[search])
+    events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%') AND customer_id_id = %s; """,[search,pk])
 
     try:
         print(events_list[0])
@@ -481,10 +481,10 @@ def search_events_manager(request,pk,search):
 def events_order_manager(request,pk,option):
 
      if  0  == int(option):
-         events_list = Webcast.objects.all().order_by('webcast_date')
+         events_list = Webcast.objects.filter(customer_id_id=pk).order_by('webcast_date')
          return render(request,"eventsmanager_app/events_manager.html",{'events' : events_list})
      else:
-         events_list = Webcast.objects.all().filter(webcast_date__month=int(option))
+         events_list = Webcast.objects.filter(customer_id_id=pk).filter(webcast_date__month=int(option))
          if len(events_list) > 0:
              return render(request, "eventsmanager_app/events_manager.html", {'events': events_list})
          else:
