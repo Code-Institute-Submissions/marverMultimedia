@@ -35,8 +35,9 @@ $(document).ready(function(){
         })
 
     }).fail(function(message){
-        $('#events-container').hide();
-        $('#events-container').load(site, function() {});
+        $('#events-manager-events-container').hide();
+        $('#events-manager-events-container').load(site, function() {});
+        console.log(message.responseText);
         $('.empty-month-message h3').html(message.responseText);
         $('.empty-month-message').css('display','block')
 
@@ -57,8 +58,8 @@ $(document).ready(function(){
             $('.empty-month-message').css('display','none');
             })
         }).fail(function (message) {
-            $('#events-container').hide();
-            $('#events-container').load(site, function () {
+            $('#events-manager-events-container').hide();
+            $('#events-manager-events-container').load(site, function () {
             });
             $('.empty-month-message h3').html(message.responseText);
             $('.empty-month-message').css('display', 'block')
