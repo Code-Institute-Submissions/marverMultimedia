@@ -19,6 +19,7 @@ from eventsdisplay_app import views
 from eventsmanager_app import views as eventsmanager_views
 
 urlpatterns = [
+
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page),
     url(r'^eventsmanager/', include('eventsmanager_app.urls')),
@@ -28,4 +29,5 @@ urlpatterns = [
     url(r'^thumbnail_upload',eventsmanager_views.thumbnail_upload),
     url(r'^increase_siteattendance/',eventsmanager_views.increase_site_visits, name='increase_site_visits'),
     url(r'^increase_eventattendance/',eventsmanager_views.increase_event_visits, name='increase_event_visits'),
+
 ]

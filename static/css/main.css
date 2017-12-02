@@ -541,11 +541,17 @@
         width: 97%
     }
 
+
+
     /*Archive Webcasts section*/
     div.archive-index-webcast-single-container {
-        padding: 0;
-        margin: 20px 0 20px 5%;
+        /*margin: 20px 0 20px 5%;*/
+        padding:10px;
         position: relative;
+    }
+
+    div.upcoming-meetings-container div.row{
+        padding:0 2%;
     }
 
     div.recent-webcast-overlay {

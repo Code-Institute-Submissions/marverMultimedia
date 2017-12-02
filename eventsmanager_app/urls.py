@@ -4,7 +4,10 @@ from eventsmanager_app import views
 
 urlpatterns = [
 
+
         url(r'^customer_(?P<pk>\d+)/$', views.eventsmanager, name='event_manager'),
+        url(r'^customer_(?P<pk>\d+)/orderevents/option_(?P<option>[0-9A-Za-z_]+)/$', views.events_order_manager, name='events_order_manager'),
+        url(r'^customer_(?P<pk>\d+)/searchevents/search_(?P<search>[0-9A-Za-z_]+)/$', views.search_events_manager, name='events_search_manager'),
         url(r'^eventcreation/$', views.eventCreation,name='event_creation'),
         url(r'^eventupdate/event_(?P<pk>\d+)/$', views.UpdateEvent.as_view(), name='event_edit'),
         url(r'^event_deletion/event_(?P<pk>\d+)/$', views.DeleteEvent.as_view(), name='event_deletion'),

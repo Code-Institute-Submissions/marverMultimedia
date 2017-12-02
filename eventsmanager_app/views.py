@@ -189,7 +189,7 @@ def eventsmanager(request,pk):
     user_id=pk
     current_url = request.build_absolute_uri()
     edit_url = current_url.replace('/eventsmanager/customer_%s/'% pk, '')
-    return render(request, 'eventsmanager_app/events_manager.html', {'webcasts': webcast_list, 'current_url':edit_url,'user_id':user_id})
+    return render(request, 'eventsmanager_app/events_manager.html', {'events': webcast_list, 'current_url':edit_url,'user_id':user_id})
 
 @login_required(login_url='login/')
 def eventCreation(request):
@@ -462,3 +462,32 @@ def increase_event_visits(request):
             event_title = event_title
         )
     return HttpResponse('')
+
+@csrf_exempt
+def search_events_manager(request,pk,search):
+
+    events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%'); """,[search])
+
+    try:
+        print(events_list[0])
+        return render(request,"eventsmanager_app/events_manager.html",{'events' : events_list})
+    except IndexError:
+        response = HttpResponse('OOOOps, your search has not returned any results',
+                                content_type="text/plain")
+        response.status_code = 500
+        return response
+
+@csrf_exempt
+def events_order_manager(request,pk,option):
+
+     if  0  == int(option):
+         events_list = Webcast.objects.all().order_by('webcast_date')
+         return render(request,"eventsmanager_app/events_manager.html",{'events' : events_list})
+     else:
+         events_list = Webcast.objects.all().filter(webcast_date__month=int(option))
+         if len(events_list) > 0:
+             return render(request, "eventsmanager_app/events_manager.html", {'events': events_list})
+         else:
+             response = HttpResponse('OOOOps, it seems there were no events on the selected month', content_type="text/plain")
+             response.status_code=500
+             return response

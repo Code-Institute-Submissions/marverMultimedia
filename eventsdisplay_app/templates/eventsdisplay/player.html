@@ -250,11 +250,11 @@
         </div>
         <div class="row">
             {% for webcast in webcasts|slice:":6" %}
-                <div class="col-lg-3 archive-index-webcast-single-container">
+                <div class="col-lg-4 archive-index-webcast-single-container">
                     <a href="{{ webcast.get_absolute_url }}" target="_blank"> <div class="archive-index-event-single-container-inner">
                         <div class="recent-webcast-overlay">
                             <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
-                            <h5>HOUSE OF COMMONS</h5>
+                            <h5 style="text-transform: uppercase">{{ webcast.webcast_title }}</h5>
                         </div>
                         <img src="{{webcast.webcast_img}}" width="auto" height="250" alt="Event Thumbnail">
                     </div>
