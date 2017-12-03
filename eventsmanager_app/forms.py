@@ -47,9 +47,11 @@ class UserRegistrationForm(UserCreationForm):
         return password2
 
     def save(self,commit=True):
+        print(commit)
         instance = super(UserRegistrationForm,self).save(commit=False)
         instance.username = instance.email
         if commit:
+            print('saving')
             instance.save()
         return instance
 

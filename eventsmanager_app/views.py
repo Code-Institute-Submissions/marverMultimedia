@@ -15,6 +15,7 @@ from django.template.context_processors import csrf
 import datetime, json, stripe , arrow ,re , boto3
 from django.views.decorators.csrf import csrf_exempt
 from settings.config import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+from django.core.mail import EmailMessage
 from path import Path
 from threading import Timer
 from settings.base import BASE_DIR
@@ -33,18 +34,37 @@ def register(request):
                 )
 
                 if customer:
-                    user = form.save()
-                    user.stripe_id = customer.id
-                    user.subscription_end = arrow.now().replace(weeks=+4).datetime
-                    user.save()
-                    user = auth.authenticate(email=request.POST.get('email'),
-                                         password=request.POST.get('password1'))
-                    if user:
-                        auth.login(request,user)
-                        messages.success(request, "You have Successfully registered")
-                        return redirect('/eventsmanager/customer_%s' % user.id)
-                    else:
-                        messages.error(request, "Unable to log you in at this time!")
+                    try:
+                        user = form.save(commit=False)
+                        user.stripe_id = customer.id
+                        user.subscription_end = arrow.now().replace(weeks=+4).datetime
+                        user.save()
+                        print('saved')
+                        user = auth.authenticate(email=request.POST.get('email'),
+                                             password=request.POST.get('password1'))
+                        if user:
+                            auth.login(request,user)
+                            messages.success(request, "You have Successfully registered")
+                            subject, from_email, to = 'Somebody has just registered to the Events Manager', 'lucalicata81@gmail.com', 'lucalicata@hotmail.com'
+                            text_content = '%s has just registered' %request.POST.get('email')
+                            msg = EmailMessage(subject, text_content, from_email, [to])
+                            msg.send()
+                            return redirect('/eventsmanager/customer_%s' % user.id)
+                        else:
+                            messages.error(request, "Unable to log you in at this time!")
+                    except IntegrityError:
+
+                        user = auth.authenticate(email=request.POST.get('email'),
+                                                 password=request.POST.get('password1'))
+                        if user:
+                            auth.login(request, user)
+                            messages.success(request, "You have Successfully registered")
+                            subject, from_email, to = 'Somebody has just registered to the Events Manager', 'lucalicata81@gmail.com', 'lucalicata@hotmail.com'
+                            text_content = '%s has just registered' % request.POST.get('email')
+                            msg = EmailMessage(subject, text_content, from_email, [to])
+                            msg.send()
+                            return redirect('/eventsmanager/customer_%s' % user.id)
+
                 else:
                     messages.error(request,"We were unable to take your payment with that card")
             except stripe.error.CardError:
