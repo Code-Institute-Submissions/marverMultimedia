@@ -10,9 +10,17 @@ The Project is divided into two Django Applications:
 
 - Application in charge of the creation, editing and publishing of Events, Login, Registration and Service Subscription
 
+- Events Manager can be accessed using this [link](https://marverproject.herokuapp.com/eventsmanager/login/)
+
+    - please note that the registration process is demo only and the Credit Card payment is fictitious, please choose one of the
+     card numbers(Demo) at this [link](https://stripe.com/docs/testing) to register
+
+
 #### Events Display
 
 - Application in charge of Display, Organize ad Share On-Demand video webcasts
+
+- Events Display can be viewed at this [link](https://marverproject.herokuapp.com/)
 
 ## Features
 
@@ -33,7 +41,7 @@ The Project is divided into two Django Applications:
 
 ## Getting Started
 
-##### This project has been built on Python version 2.7 however certain adjustment have been applied to make sure is compatible with Python 3.6 due to Heroku Deployment
+##### This project has been built on Python version 2.7 however certain adjustments have been applied to make sure is compatible with Python 3.6 due to Heroku Deployment
 
 1. Firstly you will need to clone this repository by running the ```git clone https://github.com/Diomede81/marverMultimedia.git``` command
 2. After the cloning process has ended please make sure that(if you are using a Windows Environment) you have **python** and **pip(which comes pre-installed with Python)** installed - Python comes pre-installed with Linux and MacOS
@@ -123,16 +131,17 @@ For Deployment instruction on AWS please visit [Here](https://aws.amazon.com/doc
 * [JQuery](https://jquery.com/) - The Library used to enhance the interactivity of the web page elements for cross-browser successful implementation
 * [PYTHON](https://www.python.org/) - The Language utilized to manage the Server Side connections with Database and relevant services
 * [Django](https://www.djangoproject.com/) - The Python Framework utilized to create a structured, stable and efficient application based on the Python language
+* [JWPLAYER](https://www.jwplayer.com/) - The video player utilized to enhance usability
 * [JetBrains PyCharm](https://www.jetbrains.com/pycharm/) - The IDE used to develop and test the application
 
 ### More Information about build libraries
 
-The following library has been also used to enhance the user experience:
+The following libraries has been also used to enhance the user experience:
 
 #### [BootStrap-Timepicker](https://jdewit.github.io/bootstrap-timepicker):
 - This library has been utilized to implement date-picker for web browser that do not have a native support for time picker
 
-#### Jquery-UI:
+#### [Jquery-UI](https://jqueryui.com/):
 
 - This specific library has been used to implement a date picker for browsers that do not natively support one
 

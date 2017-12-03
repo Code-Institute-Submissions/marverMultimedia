@@ -1,6 +1,6 @@
 event_id = $('#event_id').val();
 event_title = $('.webcast_title').val();
-/*increaseAttendace('player',event_id,event_title);*/
+increaseAttendace('player',event_id,event_title);
 sessionStorage.removeItem('sessionId');
 
 $(document).ready(function(){
