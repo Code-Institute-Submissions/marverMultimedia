@@ -1,6 +1,6 @@
-# Marver Webcast ON-DEMAND Platform
+# Marver Webcast On-Demand Video Platform
 
-This Project has been created to give organization the possibility of easily and efficiently deliver video(and multimedia) content to
+This Project has been created to give organizations the possibility of easily and efficiently deliver video(and multimedia) content to
 users, this platform gives the organization the opportunity to host and share On-Demand videos whilst also providing other informational
 capabilities like document download, agenda points, chapters, speakers, Support, etc.
 

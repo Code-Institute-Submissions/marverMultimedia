@@ -249,7 +249,7 @@
         </div>
         <div class="row">
             {% for webcast in webcasts|slice:":6" %}
-                <div class="col-lg-4 archive-index-webcast-single-container">
+                <div class="col-lg-4 archive-player-webcast-single-container">
                     <a href="{{ webcast.get_absolute_url }}" target="_blank"> <div class="archive-index-event-single-container-inner">
                         <div class="recent-webcast-overlay">
                             <p>{{webcast.webcast_date}} {{webcast.webcast_time}}</p>
