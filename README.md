@@ -76,13 +76,13 @@ The Application has been extensively tested with multiple Operative Systems and 
 **Javascript Testing**:
 
  Javascript testing has been performed manually via testing of different scenarios in multiple browsers, the utilization of
- a testing suite has not been used as most of the Javascript functions are utilized to modify DOM elements and could easily be tested manually
+ a testing suite has not been used as most of the Javascript functions are utilized to modify DOM elements and could be tested manually
 
 **Python Testing**:
 
-  Django integrated testing suite has been utilized to test that each view would successfully connect to a database and provide back the correct information and HTTP messages
+  Django integrated testing suite has been utilized to test that each view would successfully connect to a database and provide back the correct information and HTTP objects
 
-  Each Application's views has veeb tested using the above method and successfully provide the required information and HTTP messages
+  Each Application's view has been tested using the above method and successfully provide the required information and HTTP objects when different scenarios are simulated
 
 
 ### Tests
@@ -131,7 +131,7 @@ For Deployment instruction on AWS please visit [Here](https://aws.amazon.com/doc
 * [JQuery](https://jquery.com/) - The Library used to enhance the interactivity of the web page elements for cross-browser successful implementation
 * [PYTHON](https://www.python.org/) - The Language utilized to manage the Server Side connections with Database and relevant services
 * [Django](https://www.djangoproject.com/) - The Python Framework utilized to create a structured, stable and efficient application based on the Python language
-* [JWPLAYER](https://www.jwplayer.com/) - The video player utilized to enhance usability
+* [JWPLAYER](https://www.jwplayer.com/) - The video player utilized to enhance usability of the video delivery application
 * [JetBrains PyCharm](https://www.jetbrains.com/pycharm/) - The IDE used to develop and test the application
 
 ### More Information about build libraries
@@ -147,7 +147,7 @@ The following libraries has been also used to enhance the user experience:
 
 #### [S3-Direct](https://github.com/bradleyg/django-s3direct):
 
-- This library has been used to implement the upload of video files directly to AWS S3 in order to bypass the Web-Server and limit load on operations
+- This library has been used to implement the upload of video files directly to AWS S3 in order to bypass the Web-Server and limit extra load on operations
 
 #### [Boto3](http://boto3.readthedocs.io/en/latest/):
 
@@ -157,7 +157,7 @@ files and upload of media files to the S3 Bucket.
 
 ## Versioning
 
-I have used [Git](https://git-scm.com/) & [GitHub](https://github.com/)( for versioning.
+I have used [Git](https://git-scm.com/) & [GitHub](https://github.com/) for version control.
 
 ## Author
 
