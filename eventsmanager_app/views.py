@@ -52,6 +52,7 @@ def register(request):
                             return redirect('/eventsmanager/customer_%s' % user.id)
                         else:
                             messages.error(request, "Unable to log you in at this time!")
+
                     except IntegrityError:
 
                         user = auth.authenticate(email=request.POST.get('email'),
@@ -59,12 +60,7 @@ def register(request):
                         if user:
                             auth.login(request, user)
                             messages.success(request, "You have Successfully registered")
-                            subject, from_email, to = 'Somebody has just registered to the Events Manager', 'lucalicata81@gmail.com', 'lucalicata@hotmail.com'
-                            text_content = '%s has just registered' % request.POST.get('email')
-                            msg = EmailMessage(subject, text_content, from_email, [to])
-                            msg.send()
                             return redirect('/eventsmanager/customer_%s' % user.id)
-
                 else:
                     messages.error(request,"We were unable to take your payment with that card")
             except stripe.error.CardError:
@@ -201,8 +197,6 @@ def invoice_paid_webhook(request):
         return HttpResponse(status=404)
     return HttpResponse(status=200)
 
-
-
 @login_required(login_url='login/')
 def eventsmanager(request,pk):
     webcast_list = Webcast.objects.all().filter(user_id=pk)
@@ -230,7 +224,6 @@ class UpdateEvent(UpdateView):
     model = Webcast
     template_name = 'eventsmanager_app/event_edit.html'
     form_class = WebcastEditForm
-
 
     def get_context_data(self, **kwargs):
         saveThumbnail = ThumbnailsUpload(self.request.GET or None)
@@ -269,7 +262,6 @@ class UpdateEvent(UpdateView):
             context['chapters_id'] = 0
 
         return context
-
 
 
     def get_success_url(self):
@@ -426,7 +418,6 @@ def assetDeletion(request):
 
 def cleanupThumnailsfiles():
     d = Path(BASE_DIR)
-    print(d.dirname)
     for f in d.files('*.png'):
         f.remove()
 
@@ -484,7 +475,11 @@ def increase_event_visits(request):
     return HttpResponse('')
 
 @csrf_exempt
-def search_events_manager(request,pk,search):
+def search_events_manager(request):
+
+    pk = request.GET.get('pk')
+
+    search = request.GET.get('search')
 
     events_list =  Webcast.objects.raw("""SELECT * FROM marver.eventsmanager_app_webcast WHERE webcast_title LIKE concat('%%', %s, '%%') AND customer_id_id = %s; """,[search,pk])
 
@@ -494,11 +489,15 @@ def search_events_manager(request,pk,search):
     except IndexError:
         response = HttpResponse('OOOOps, your search has not returned any results',
                                 content_type="text/plain")
-        response.status_code = 500
+        response.status_code = 404
         return response
 
 @csrf_exempt
-def events_order_manager(request,pk,option):
+def events_order_manager(request):
+
+     pk = request.GET.get('pk')
+
+     option = request.GET.get('option')
 
      if  0  == int(option):
          events_list = Webcast.objects.filter(customer_id_id=pk).order_by('webcast_date')
@@ -509,5 +508,5 @@ def events_order_manager(request,pk,option):
              return render(request, "eventsmanager_app/events_manager.html", {'events': events_list})
          else:
              response = HttpResponse('OOOOps, it seems there were no events on the selected month', content_type="text/plain")
-             response.status_code=500
+             response.status_code=404
              return response

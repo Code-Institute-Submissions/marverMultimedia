@@ -1,7 +1,6 @@
 
 if (window.location.pathname === '/' || window.location.pathname === '/events/') {
-console.log(window.location);
-    increaseAttendace();
+    increaseAttendance();
 }
 $(document).ready(function(){
 
@@ -17,9 +16,9 @@ $(document).on('click','.reorder',function(e){
         }
     }
 
-    var url = 'orderevents/option_' + action;
+    var url = 'order?option=' + action;
     var site = url + " #events-inner-container";
-    $.get('/events/orderevents/option_' + action, function(){
+    $.get('/events/order?option=' + action, function(){
         $('#events-container').load(site, function() {
             $('#events-container').show();
             $('.empty-month-message').css('display','none');
@@ -29,7 +28,7 @@ $(document).on('click','.reorder',function(e){
         $('#events-container').hide();
         $('#events-container').load(site, function() {});
         $('.empty-month-message h3').html(message.responseText);
-        $('.empty-month-message').css('display','block')
+        $('.empty-month-message').css('display','block');
 
     })
 
@@ -37,12 +36,16 @@ $(document).on('click','.reorder',function(e){
 
     $('#search-button').click(function(e) {
 
+        if ($('#search-input').val()=== ''){
+            return null
+        }
+        else{
         e.preventDefault();
 
         string = $('#search-input').val();
-        var url = 'searchevents/search_' + string;
+        var url = 'searchevents?search=' + string;
         site = url + " #events-inner-container";
-        $.get('/events/searchevents/search_' + string, function () {
+        $.get('/events/searchevents?search=' + string, function () {
             $('#events-container').load(site, function () {
                 $('#events-container').show();
                 $('.empty-month-message').css('display', 'none');
@@ -54,8 +57,8 @@ $(document).on('click','.reorder',function(e){
             $('.empty-month-message h3').html(message.responseText);
             $('.empty-month-message').css('display', 'block')
         })
+            }
     });
-
 
 });
 

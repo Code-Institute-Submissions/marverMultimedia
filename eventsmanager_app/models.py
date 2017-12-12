@@ -93,8 +93,6 @@ class Webcast(models.Model):
     webcast_description = models.TextField(blank=True)
     webcast_video = S3DirectField(dest='example_destination', verbose_name='On-Demand Video Upload', blank=True)
 
-
-
     def __unicode__(self):
         return self.webcast_title
 

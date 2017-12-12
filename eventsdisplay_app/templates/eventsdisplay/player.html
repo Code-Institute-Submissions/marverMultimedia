@@ -19,7 +19,7 @@
                 <h4 class="modal-title">Support Request</h4>
             </div>
             <div class="modal-body">
-                <form method="post" action="" id="supportForm" class="player-forms"> {%csrf_token%}
+                <form method="post" action="" id="supportForm"  class="player-forms playerForm"> {%csrf_token%}
                     <input type="hidden" value="supportForm" class="formType">
                     <input type="hidden" value="{{ event_id.webcast_title }}" class="form-control webcast_title">
                     <label>
@@ -47,7 +47,7 @@
                     <label style="width:100%">Issue Experienced
                         <textarea class="form-control comment" name="comment" rows="4" required></textarea>
                     </label><br>
-                    <input type="button" class="btn btn-primary" value="Submit" onclick="sendForm('#supportForm',event.currentTarget,'#supportContainer')">
+                    <input type="submit" class="btn btn-primary" value="Submit">
                     <p class="supportFormMessage"></p>
                 </form>
             </div>
@@ -137,22 +137,22 @@
                                     </h4>
                                 </div>
                                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body" id="commentContainer">
+                                    <div class="panel-body commentContainerClass" id="commentContainer">
                                         <div class="player-agenda-comments-info-container" id="commentContainerInner">
-                                            <form method="post" action="" id="commentForm" class="player-forms"> {%csrf_token%}
+                                            <form method="post" action="" id="commentForm" class="player-forms playerForm"> {%csrf_token%}
                                                 <input type="hidden" value="commentForm" class="formType">
                                                 <input type="hidden" value="{{ event_id.webcast_title }}" class="form-control webcast_title">
                                                 <label>
                                                     <input type="hidden" value="{{event_id.id}}" class="webcast_id" id="event_id">
                                                 </label>
                                                 <label>Name
-                                                    <input type="text" class="form-control name"  required/>
+                                                    <input type="text" class="form-control name"  required>
                                                 </label>
                                                 <label>Surname
-                                                    <input  type="text" class="form-control surname" required/>
+                                                    <input  type="text" class="form-control surname" required >
                                                 </label>
                                                 <label>Email
-                                                    <input type="email" class="form-control email" required />
+                                                    <input type="email" class="form-control email" required >
                                                 </label>
                                                  <label>Webcast Title
                                                 <input type="text" name="webcast_title" class="form-control webcast_title"  disabled value="{{ event_id.webcast_title }}">
@@ -161,7 +161,7 @@
                                                     <textarea class="form-control comment" rows="4" id="comment" required></textarea>
                                                 </label><br>
 
-                                                <input type="button" class="btn btn-primary" value="Submit" onclick="sendForm('#commentForm',event.currentTarget,'#commentContainer')">
+                                                <input type="submit" class="btn btn-primary" value="Submit">
                                                 <p class="supportFormMessage"></p>
                                             </form>
 

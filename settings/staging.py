@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 DEBUG = False
 
@@ -6,10 +7,10 @@ DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'marver',
-            'USER': DATABASE_USERNAME,
-            'PASSWORD':DATABASE_PASSWORD,
-            'HOST':DATABASE_HOST,
-            'PORT' : DATABASE_PORT,
+            'USER': os.getenv('DATABASE_USERNAME'),
+            'PASSWORD':os.getenv('DATABASE_PASSWORD'),
+            'HOST':os.getenv('DATABASE_HOST'),
+            'PORT' : os.getenv('DATABASE_PORT'),
             'OPTIONS':{
                 'charset' : 'utf8mb4',
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",

@@ -456,7 +456,7 @@
     }
 
     div.container div.webcast-information-row div.meeting.meeting::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, rgba(241, 142, 61, 0.8), rgb(207, 74, 51));
+        background: linear-gradient(to bottom, rgba(1, 106, 0, 0.8), rgb(48, 85, 0));
         border-radius: 5px;
     }
 
@@ -527,7 +527,7 @@
 
     /* optional: show position indicator in red */
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, rgba(241, 142, 61, 0.8), rgb(207, 74, 51));
+        background: linear-gradient(to bottom, rgba(1, 106, 0, 0.8), rgb(48, 85, 0));
         border-radius: 5px;
 
     }
@@ -1012,6 +1012,16 @@
     div.archive-events-container div.tab-content{
         min-height:500px;
 
+    }
+
+    /*event deletion page */
+
+    form.event-delete-form{
+
+        width:80%;
+        margin:0 auto;
+        font-size:2em;
+        height:100vh;
     }
 
 }

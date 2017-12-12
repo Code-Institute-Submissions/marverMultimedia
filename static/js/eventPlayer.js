@@ -1,20 +1,20 @@
+
+
+if (window.location.pathname !== '/' && window.location.pathname !== '/events/'){
 event_id = $('#event_id').val();
 event_title = $('.webcast_title').val();
-increaseAttendace('player',event_id,event_title);
-sessionStorage.removeItem('sessionId');
+increaseAttendance('player',event_id,event_title);
+}
 
 $(document).ready(function(){
 
     $(document).on('click','input.star',function(e){
         $('#ratingSubmit').show();
         rating= e.currentTarget.value;
-        console.log(rating);
     });
 
     $('#ratingSubmit').click(function(e){
         userHasRated = sessionStorage.getItem('sessionId');
-        console.log(userHasRated);
-        console.log(rating);
         if(userHasRated === null) {
             $.ajax({
                 type: "POST",
@@ -25,7 +25,6 @@ $(document).ready(function(){
                     event_title:event_title
                 },
                 success: function (message) {
-                    console.log(message);
                     sessionStorage.setItem('sessionId',1);
                     $('#ratingSubmit').hide();
                     $('.rating-message').html(message);
@@ -41,9 +40,17 @@ $(document).ready(function(){
     });
 });
 
-function sendForm (formType,current,elementToRefresh) {
+$('.playerForm').submit(function(e){
 
-    $.ajax({
+    e.preventDefault();
+
+    var formType = '#' + e.currentTarget.getAttribute('id');
+
+    var current =  e.currentTarget;
+
+    var elementToRefresh = $(e.currentTarget).parents('.commentContainerClass').attr('id');
+
+       $.ajax({
         type: 'POST',
         url: "/events/comment/",
         data: {
@@ -66,10 +73,11 @@ function sendForm (formType,current,elementToRefresh) {
         $(current).next().css('color','red');
         $(current).next().html(message);
         setTimeout(function(){
-            $(current).next().hide();
+            $(current).next().children('.supportFormMessage');
             $(elementToRefresh).modal('hide');
             $(elementToRefresh).load(' '+ elementToRefresh +'Inner')
             },3000)
         }
     })
-}
+
+});

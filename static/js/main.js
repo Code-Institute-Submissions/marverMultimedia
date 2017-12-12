@@ -1,4 +1,4 @@
-/*site/player visitis capturing function*/
+/*site/player visits capturing function*/
 
 var today = new Date();
 
@@ -12,11 +12,9 @@ var today = new Date();
     var seconds = today.getSeconds();
 
     var date = year + "-" + (month +1) +  "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-    console.log(today);
 
 
-
- function increaseAttendace(page,eventId,event_title) {
+ function increaseAttendance(page, eventId, event_title) {
 
      if(page === 'player'){
 
@@ -31,7 +29,6 @@ var today = new Date();
                     event_title : event_title
                 },
                 success: function (message) {
-                    console.log(message);
                 }
 
         })
@@ -47,7 +44,6 @@ var today = new Date();
                     device : navigator.userAgent
                 },
                 success: function (message) {
-                    console.log(message);
                 }
 
         })
@@ -59,7 +55,6 @@ var today = new Date();
     function carousell(element, side, node, webcasts) {
         element.preventDefault();
         var getNumberOfImages = document.getElementById(node).getElementsByClassName(webcasts);
-        console.log(getNumberOfImages);
         var imagesArrayLength = getNumberOfImages.length - 1;
         var pos = 570;
         var carousel = document.getElementById(node);
@@ -168,7 +163,6 @@ var today = new Date();
             $('#validate_card_btn').attr('disabled',true);
             Stripe.createToken(card, function(status,response){
                 if(status === 200){
-                    console.log(response);
                     $('#credit-card-errors').hide();
                     $('#id_stripe_id').val(response.id);
                     form.submit();
