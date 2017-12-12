@@ -1,5 +1,5 @@
 import os
-from .config import *
+#from .config import *
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,7 +15,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
-SECRET_KEY = 'g3c@z7kst6#3z6k31kicnaywvwhnkwb4j4=v^zr58d2_4jsnq2'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
@@ -70,26 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'marverProject.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'marver',
-            'USER': DATABASE_USERNAME,
-            'PASSWORD':DATABASE_PASSWORD,
-            'HOST':DATABASE_HOST,
-            'PORT' : DATABASE_PORT,
-            'OPTIONS':{
-                'charset' : 'utf8mb4',
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    }
-        }
-}
-
 
 
 # Password validation
