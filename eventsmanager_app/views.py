@@ -14,7 +14,7 @@ from django.contrib.auth.views import PasswordResetView,PasswordResetConfirmView
 from django.template.context_processors import csrf
 import datetime, json, stripe , arrow ,re , boto3
 from django.views.decorators.csrf import csrf_exempt
-from settings.config import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+from settings.staging import STRIPE_PUBLISHABLE,STRIPE_SECRET,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
 from django.core.mail import EmailMessage
 from path import Path
 from threading import Timer
