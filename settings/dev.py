@@ -1,5 +1,5 @@
 import os
-from .config import *
+#from .config import *
 from .base import *
 DEBUG = True
 
