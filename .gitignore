@@ -12,7 +12,6 @@ marverProject/urls.pyc
 marverProject/wsgi.pyc
 static/jquery-ui-1.12.1
 settings/config.py
-settings/dev.py
 marvervirtualenv
 *.pyc
 __pycache__
