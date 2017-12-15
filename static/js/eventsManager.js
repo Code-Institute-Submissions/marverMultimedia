@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 //Datepicker function
 
-     /*$('#dateInput').datepicker({
+$('#dateInput').datepicker({
       altField: "#value",
       dateFormat: 'dd/mm/yy',
       altFormat: 'yy/mm/dd'
@@ -12,7 +12,7 @@ $(document).ready(function(){
 
      $('#timepicker').timepicker({
       showMeridian: false
-     });*/
+     });
 
      $(document).on('click','.reorder',function(e){
          e.preventDefault();

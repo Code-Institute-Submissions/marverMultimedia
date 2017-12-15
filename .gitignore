@@ -1,12 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 /virtualenv/
-.idea/workspace.xml
+.idea/
 marverProject/__init__.pyc
 /static/img/
-.idea/dataSources.local.xml
-.idea/dataSources.xml
-.idea/dataSources/
-.idea/misc.xml
+
 marverProject/staticfiles/
 marverProject/urls.pyc
 marverProject/wsgi.pyc
