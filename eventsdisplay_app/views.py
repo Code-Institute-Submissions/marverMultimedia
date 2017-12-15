@@ -24,7 +24,7 @@ def eventslibrary(request):
     request.build_absolute_uri()
     return render(request, "eventsdisplay/events.html", {'events' : events_list})
 
-
+#view responsible for arranging events by month
 @csrf_exempt
 def events_order(request):
 
@@ -43,7 +43,7 @@ def events_order(request):
             response.status_code = 404
             return response
 
-
+#Event Search Section
 @csrf_exempt
 def search_events(request):
 
@@ -60,6 +60,8 @@ def search_events(request):
         response.status_code = 404
         return response
 
+
+#Event Player Management
 
 def event_player(request, id):
     event_id = get_object_or_404(Webcast, pk=id)

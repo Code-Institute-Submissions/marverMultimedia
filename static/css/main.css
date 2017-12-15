@@ -888,6 +888,12 @@
         font-size: 1.2em;
     }
 
+    input.register-button{
+        width:100%;
+        background:rgb(14, 97, 56);
+
+    }
+
     #register-form {
         padding: 0px 25px 25px;
         background: #fff;

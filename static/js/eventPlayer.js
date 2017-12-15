@@ -46,9 +46,13 @@ $('.playerForm').submit(function(e){
 
     var formType = '#' + e.currentTarget.getAttribute('id');
 
-    var current =  e.currentTarget;
+    var current =  $(e.currentTarget).children('input[type=submit]');
 
-    var elementToRefresh = $(e.currentTarget).parents('.commentContainerClass').attr('id');
+    var elementToRefresh = '#'+ $(e.currentTarget).parents('.ContainerClass').attr('id');
+
+    console.log(elementToRefresh);
+
+    console.log(current);
 
        $.ajax({
         type: 'POST',

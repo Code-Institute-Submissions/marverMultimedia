@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import PasswordResetForm
 from .models import *
 
+
 class UserRegistrationForm(UserCreationForm):
     MONTH_ABBREVIATIONS = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June',
@@ -32,23 +33,22 @@ class UserRegistrationForm(UserCreationForm):
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
-        model=User
-        fields = ['email','password1','password2','stripe_id']
+        model = User
+        fields = ['email', 'password1', 'password2', 'stripe_id']
         exclude = ['username']
 
-
     def clean_password2(self):
-        password1= self.cleaned_data.get('password1')
-        password2= self.cleaned_data.get('password2')
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
 
         if password1 and password2 and password1 != password2:
             message = 'Passwords do not match'
             raise ValidationError(message)
         return password2
 
-    def save(self,commit=True):
+    def save(self, commit=True):
         print(commit)
-        instance = super(UserRegistrationForm,self).save(commit=False)
+        instance = super(UserRegistrationForm, self).save(commit=False)
         instance.username = instance.email
         if commit:
             print('saving')
@@ -62,8 +62,9 @@ class UserRegistrationForm(UserCreationForm):
         else:
             return email
 
+
 class UserLoginForm(forms.Form):
-    email=forms.EmailField()
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
 
@@ -72,58 +73,61 @@ class EventCreation(forms.ModelForm):
         model = Webcast
         fields = '__all__'
         widgets = {
-            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
-            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
-            'webcast_img' : widgets.FileInput(attrs={'id': 'imageform'}),
+            'webcast_date': widgets.DateInput(attrs={'id': 'dateInput'}),
+            'webcast_time': widgets.TimeInput(attrs={'id': 'timepicker'}),
+            'webcast_img': widgets.FileInput(attrs={'id': 'imageform'}),
             'user_id': widgets.HiddenInput()
 
         }
         exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_foreign',)
 
+
 class WebcastEditForm(forms.ModelForm):
     class Meta:
-        model=Webcast
+        model = Webcast
         fields = '__all__'
 
         widgets = {
-            'webcast_date' : widgets.DateInput(attrs={'id' : 'dateInput'}),
-            'webcast_time' : widgets.TimeInput(attrs={'id' : 'timepicker'}),
+            'webcast_date': widgets.DateInput(attrs={'id': 'dateInput'}),
+            'webcast_time': widgets.TimeInput(attrs={'id': 'timepicker'}),
             'user_id': widgets.HiddenInput()
         }
-        exclude = ('speaker_id','webcast_asset_ID','agenda_id','webcast_img')
+        exclude = ('speaker_id', 'webcast_asset_ID', 'agenda_id', 'webcast_img')
+
 
 class SpeakerCreation(forms.ModelForm):
     class Meta:
-        model=Speakers
+        model = Speakers
         fields = '__all__'
         help_texts = {
-            'speaker_pic_url' : 'Please ensure that the chosen image has an aspect ratio of 4x3 '
-                                'and a size of 100 X 100 Pixels otherwise the image might not appear correctly',
+            'speaker_pic_url': 'Please ensure that the chosen image has an aspect ratio of 4x3 '
+            'and a size of 100 X 100 Pixels otherwise the image might not appear correctly',
         }
         widgets = {
 
-           'speaker_email':widgets.EmailInput,
-            'speaker_pic_url' : widgets.ClearableFileInput,
-            'speaker_bio' : widgets.Textarea
+            'speaker_email': widgets.EmailInput,
+            'speaker_pic_url': widgets.ClearableFileInput,
+            'speaker_bio': widgets.Textarea
         }
-
 
 
 class AssetCreation(forms.ModelForm):
     class Meta:
-        model=Assets
+        model = Assets
         fields = '__all__'
 
 
 class AgendaEdit(forms.ModelForm):
     class Meta:
-        model=Agenda
+        model = Agenda
         fields = '__all__'
+
 
 class S3DirectUploadForm(forms.ModelForm):
     class Meta:
         model = Webcast
         fields = ('webcast_video',)
+
 
 class ThumbnailsUpload(forms.Form):
     webcast_image = forms.CharField(max_length=10000, widget=forms.HiddenInput())

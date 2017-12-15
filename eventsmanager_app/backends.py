@@ -1,8 +1,9 @@
 from .models import User
 
+
 class EmailAuth(object):
 
-    def authenticate(self,email=None,password=None):
+    def authenticate(self, email=None, password=None):
         try:
             user = User.objects.get(email=email)
             if user.check_password(password):
